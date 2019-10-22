@@ -10,6 +10,18 @@ syntax on
 " For plug-ins to load correctly.
 filetype plugin indent on
 
+call plug#begin()
+
+    Plug 'scrooloose/nerdcommenter'
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-repeat'
+    "Plug 'vim-airline/vim-airline'
+    Plug 'valloric/youcompleteme'
+    Plug 'jiangmiao/auto-pairs'
+    Plug 'christoomey/vim-system-copy'
+
+call plug#end()
+
 " Turn off modelines
 set modelines=0
 
