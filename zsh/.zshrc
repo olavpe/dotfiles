@@ -138,13 +138,13 @@ alias pac='sudo pacman -Syu'
 
 # Shortcut to often edited config files
 alias i3config='vim ~/.config/i3/config' 
-alias zshconfig='vim ~/.zshrc' 
 alias urxvtconfig='vim ~/.Xresources' 
 alias comptonconfig='vim ~/.config/compton/compton.conf' 
 alias polybarconfig='vim ~/.config/polybar/config' 
 alias zshconfig="vim ~/.zshrc"
 alias ohmyzsh="vim ~/.oh-my-zsh"
 alias emacsconfig="vim ~/.emacs.d/init.el"
+alias vimconfig="vim .vimrc"
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/olav/.oh-my-zsh"
