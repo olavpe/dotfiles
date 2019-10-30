@@ -229,6 +229,7 @@ bindsym $mod+f                  fullscreen toggle
 bindsym $mod+n                  [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
 bindsym $mod+m                  [instance="math"] scratchpad show; [instance="math"] move position center
 bindsym $mod+o                  exec --no-startup-id ~/.config/desktopScripts/openFileDmenu.sh
+bindsym $mod+q                  exec --no-startup-id compton-trans -c +5
 bindsym $mod+Shift+q            kill
 bindsym $mod+r                  mode "resize"
 bindsym $mod+Shift+r            restart
@@ -237,6 +238,8 @@ bindsym $mod+v                  split v
 bindsym $mod+u                  exec --no-startup-id flash_window
 bindsym $mod+t                  split h
 bindsym $mod+w                  layout tabbed
+bindsym $mod+z                  exec --no-startup-id compton-trans -c -5
+
 
 
 ####################
