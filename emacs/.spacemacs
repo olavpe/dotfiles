@@ -142,8 +142,11 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
-                         spacemacs-light)
+   dotspacemacs-themes '(xresources
+                         ;; ewal
+                         ;; spacemacs-dark
+                         ;;spacemacs-light
+                         )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -325,6 +328,25 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+
+  (setq TeX-source-correlate-mode t)
+  (setq TeX-source-correlate-start-server t)
+  (setq TeX-source-correlate-method 'synctex)
+
+  (setq TeX-view-program-list
+        '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
+          ;; ("Skim" "displayline -b -g %n %o %b")
+          ("Zathura"
+           ("zathura %o"
+            (mode-io-correlate
+             " --synctex-forward %n:0:%b -x \"emacsclient +%{line} %{input}\"")))))
+  (cond
+   ;; ((spacemacs/system-is-mac) (setq TeX-view-program-selection '((output-pdf "Skim"))))
+   ;; For linux, use Okular or perhaps Zathura.
+   ((spacemacs/system-is-linux) (setq TeX-view-program-selection '((output-pdf "Zathura")))))
+  
+
+
   (use-package ewal
     :init (setq ewal-use-built-in-always-p nil
                 ewal-use-built-in-on-failure-p t
@@ -342,6 +364,7 @@ you should place your code here."
     :config (progn
               (load-theme 'ewal-spacemacs-modern t)
               (enable-theme 'ewal-spacemacs-modern))))
+  (load-theme 'xresources t)
   ;; (use-package ewal-spacemacs-themes
   ;;   ;; :straight t
   ;;   :defer nil
@@ -362,10 +385,81 @@ you should place your code here."
   ;;                ("zathura %o"
   ;;                 (mode-io-correlate " --synctex-forward %n:0:%b -x \"emacsclient --socket-name=%sn --no-wait +%{line} %{input}\""))
   ;;                "zathura"))
-  (setq-default TeX-master "main") ;; All master files called "main".
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-        TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-        TeX-source-correlate-start-server t) 
+
+  ;; This is for using the built in pdfviewer in emacs
+  ;; (setq-default TeX-master "main") ;; All master files called "main".
+  ;; (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+  ;;       TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+  ;;       TeX-source-correlate-start-server t)
+
+  ;; This is to use Zathura as the pdfviewer
+  ;; (setq TeX-source-correlate-mode t)        ; activate forward/reverse search
+  ;; (setq TeX-PDF-mode t)
+  ;; (add-to-list 'TeX-view-program-list '("zathura" zathura-forward-search))
+  ;; (setq TeX-view-program-selection (quote ((output-pdf "zathura") (output-dvi "xdvi"))))
+
+  ;; Suggested Zathura system
+;;   (defvar TeX-view-program-list-builtin
+;;   (cond
+;;    ((eq system-type 'windows-nt)
+;;     '(("Yap" ("yap -1" (mode-io-correlate " -s %n%b") " %o") "yap")
+;;       ("dviout" ("dviout -1 "
+;; 		 ((paper-a4 paper-portrait) "-y=A4 ")
+;; 		 ((paper-a4 paper-landscape) "-y=A4L ")
+;; 		 ((paper-a5 paper-portrait) "-y=A5 ")
+;; 		 ((paper-a5 paper-landscape) "-y=A5L ")
+;; 		 ((paper-b5 paper-portrait) "-y=E5 ")
+;; 		 ((paper-b5 paper-landscape) "-y=E5L ")
+;; 		 ((paper-b4jis paper-portrait) "-y=B4 ")
+;; 		 ((paper-b4jis paper-landscape) "-y=B4L ")
+;; 		 ((paper-b5jis paper-portrait) "-y=B5 ")
+;; 		 ((paper-b5jis paper-landscape) "-y=B5L ")
+;; 		 (paper-legal "-y=Legal ")
+;; 		 (paper-letter "-y=Letter ")
+;; 		 (paper-executive "-y=Executive ")
+;; 		 "%d" (mode-io-correlate " \"# %n '%b'\"")) "dviout")
+;;       ("SumatraPDF"
+;;        ("SumatraPDF -reuse-instance"
+;; 	(mode-io-correlate " -forward-search \"%b\" %n") " %o")
+;;        "SumatraPDF")
+;;       ("dvips and start" "dvips %d -o && start \"\" %f" "dvips")
+;;       ("start" "start \"\" %o")))
+;;    ((eq system-type 'darwin)
+;;     '(("Preview.app" "open -a Preview.app %o" "open")
+;;       ("Skim" "open -a Skim.app %o" "open")
+;;       ("displayline" "displayline %n %o %b" "displayline")
+;;       ("open" "open %o" "open")))
+;;    (t
+;;     `(("dvi2tty" ("dvi2tty -q -w 132 %o"))
+;;       ("xdvi" ("%(o?)xdvi"
+;; 	       (mode-io-correlate " -sourceposition \"%n %b\" -editor \"%cS\"")
+;; 	       ((paper-a4 paper-portrait) " -paper a4")
+;; 	       ((paper-a4 paper-landscape) " -paper a4r")
+;; 	       ((paper-a5 paper-portrait) " -paper a5")
+;; 	       ((paper-a5 paper-landscape) " -paper a5r")
+;; 	       (paper-b5 " -paper b5")
+;; 	       (paper-letter " -paper us")
+;; 	       (paper-legal " -paper legal")
+;; 	       (paper-executive " -paper 7.25x10.5in")
+;; 	       " %d") "%(o?)xdvi")
+;;       ("dvips and gv" "%(o?)dvips %d -o && gv %f" ,(list "%(o?)dvips" "gv"))
+;;       ("gv" "gv %o" "gv")
+;;       ("xpdf" ("xpdf -remote %s -raise %o" (mode-io-correlate " %(outpage)")) "xpdf")
+;;       ("Evince" ,(TeX-view-program-select-evince "gnome" "evince") "evince")
+;;       ("Atril" ,(TeX-view-program-select-evince "mate" "atril") "atril")
+;;       ("Okular" ("okular --unique %o" (mode-io-correlate "#src:%n%a")) "okular")
+;;       ("xdg-open" "xdg-open %o" "xdg-open")
+;;       ("PDF Tools" TeX-pdf-tools-sync-view)
+;;       ("Zathura"
+;;        ("zathura %o"
+;; 	(mode-io-correlate
+;; 	 " --synctex-forward %n:0:%b -x \"emacsclient +%{line} %{input}\""))
+;;        "zathura"))))
+;;   "Alist of built-in viewer specifications.
+;; This variable should not be changed by the user who can use
+;; `TeX-view-program-list' to add new viewers or overwrite the
+;; definition of built-in ones.  The latter variable also contains a
+;; description of the data format.")
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
