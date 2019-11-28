@@ -39,6 +39,8 @@ values."
      ;; ----------------------------------------------------------------
      helm
      auto-completion
+     (c-c++ :variables
+            c-c++-enable-clang-support t)
      better-defaults
      emacs-lisp
      git
@@ -48,9 +50,9 @@ values."
             latex-enable-auto-fill t
             latex-enable-folding t
             latex-enable-magic t)
-     pdf-tools
+     pandoc
      python
-     ipython-notebook
+     ;; ipython-notebook
      org
      (shell :variables
             shell-default-height 30
@@ -67,9 +69,11 @@ values."
                                       ein
                                       jupyter
                                       xresources-theme
-                                      ewal
+                                      ;; ewal
                                       ewal-spacemacs-themes
                                       ewal-evil-cursors autopair
+                                      yasnippet-classic-snippets
+                                      yasnippet-snippets
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -106,6 +110,16 @@ values."
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
    ;; whenever you start Emacs. (default nil)
+
+   ;; If non-nil then Spacelpa repository is the primary source to install
+   ;; a locked version of packages. If nil then Spacemacs will install the
+   ;; latest version of packages from MELPA. (default nil)
+   dotspacemacs-use-spacelpa t
+
+   ;; If non-nil then verify the signature for downloaded Spacelpa archives.
+   ;; (default t)
+   dotspacemacs-verify-spacelpa-archives t
+
    dotspacemacs-check-for-update nil
    ;; If non-nil, a form that evaluates to a package directory. For example, to
    ;; use different package directories for different Emacs versions, set this
@@ -142,8 +156,9 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(xresources
-                         ;; ewal
+   dotspacemacs-themes '(
+                         ;; xresources
+                         ewal-spacemacs-modern
                          ;; spacemacs-dark
                          ;;spacemacs-light
                          )
@@ -278,7 +293,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers 'relative
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -329,6 +344,19 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
+  ;;;;; Programming settings
+
+  ;; C
+  (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
+
+  ;;;;; Latex and Markdown Settings
+
+  ;; Markdown
+  (add-hook 'markdown-mode-hook 'pandoc-mode)
+  (setq markdown-command "/usr/bin/pandoc")
+
+  ;; Latex
+  (setq-default TeX-master "main")
   (setq TeX-source-correlate-mode t)
   (setq TeX-source-correlate-start-server t)
   (setq TeX-source-correlate-method 'synctex)
@@ -344,27 +372,50 @@ you should place your code here."
    ;; ((spacemacs/system-is-mac) (setq TeX-view-program-selection '((output-pdf "Skim"))))
    ;; For linux, use Okular or perhaps Zathura.
    ((spacemacs/system-is-linux) (setq TeX-view-program-selection '((output-pdf "Zathura")))))
-  
 
+  ;; Getting org mode to play nice yasnippet
+  ;; (add-hook 'org-mode-hook
+  ;;           (lambda ()
+  ;;             (setq-local yas/trigger-key [tab])
+  ;;             (define-key yas/keymap [tab] 'yas/next-field-or-maybe-expand)))
+  ;; (use-package org-bullets
+  ;;   :hook (org-mode . org-bullets-mode))
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  (add-hook 'org-mode-hook 'turn-on-font-lock)
 
-  (use-package ewal
-    :init (setq ewal-use-built-in-always-p nil
-                ewal-use-built-in-on-failure-p t
-                ewal-built-in-palette "sexy-material"))
-  (use-package ewal-spacemacs-themes
-    :defer nil
-    :init (progn
-            (setq spacemacs-theme-underline-parens t
-                  my:rice:font (font-spec
-                                :family "Source Code Pro"
-                                :weight 'semi-bold
-                                :size 11.0))
-            (show-paren-mode +1)
-            (global-hl-line-mode)
-    :config (progn
-              (load-theme 'ewal-spacemacs-modern t)
-              (enable-theme 'ewal-spacemacs-modern))))
+  ;;;;; Theme Stuff
+
+  ;; ;; Trying Ewal
+  ;; (use-package ewal
+  ;;   :init (setq ewal-use-built-in-always-p nil
+  ;;               ewal-use-built-in-on-failure-p t
+  ;;               ewal-built-in-palette "sexy-material"))
+  ;; (use-package ewal-spacemacs-themes
+  ;;   :defer nil
+  ;;   :init (progn
+  ;;           (setq spacemacs-theme-underline-parens t
+  ;;                 my:rice:font (font-spec
+  ;;                               :family "Source Code Pro"
+  ;;                               :weight 'semi-bold
+  ;;                               :size 11.0))
+  ;;           (show-paren-mode +1)
+  ;;           (global-hl-line-mode)
+  ;;   :config (progn
+  ;;             (load-theme 'ewal-spacemacs-modern t)
+  ;;             (enable-theme 'ewal-spacemacs-modern))))
+
+  (use-package ewal-evil-cursors
+    :after (ewal-spacemacs-themes)
+    :config (ewal-evil-cursors-get-colors
+             :apply t :spaceline t))
+  (use-package spaceline
+    :after (ewal-evil-cursors winum)
+    :init (setq powerline-default-separator nil)
+    :config (spaceline-spacemacs-theme))
+  ;; Xresources (that is functional)
   (load-theme 'xresources t)
+
   ;; (use-package ewal-spacemacs-themes
   ;;   ;; :straight t
   ;;   :defer nil
@@ -472,10 +523,11 @@ you should place your code here."
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (yasnippet-classic-snippets yasnippet-snippets disaster company-c-headers cmake-mode clang-format ox-pandoc ht pandoc-mode pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+ '(standard-indent 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:family "Source Code Pro" :foundry "ADBO" :slant normal :weight normal :height 98 :width normal)))))
