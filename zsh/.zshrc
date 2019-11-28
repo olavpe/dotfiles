@@ -136,6 +136,9 @@ alias sourcez='source ~/.zshrc'
 alias puu='sudo pacman -Syu'
 alias pac='sudo pacman -Syu'
 
+# Filesystem scripts
+alias replaceSpace='sh ~/.config/desktopScripts/replaceSpaces.sh pwd'
+
 # Shortcut to often edited config files
 alias i3config='vim ~/.config/i3/config' 
 alias urxvtconfig='vim ~/.Xresources' 
@@ -192,6 +195,7 @@ export ERL_AFLAGS="-kerel shell_history enabled"
 export ZSH="/home/olav/.oh-my-zsh"
 export FZF_BASE
 export PATH=$PATH:/home/olav/.cargo/bin
+export PATH=$PATH:/home/olav/.config/emacsScripts/
 export PATH="/home/olav/.local/bin:$PATH"
 export PATH=$PATH:/opt/easyeda
 
