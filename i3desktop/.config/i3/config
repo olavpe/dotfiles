@@ -1,5 +1,3 @@
-#[i3 config file (v4)
-#
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 #
 # This config file uses keycodes (bindsym) and was written for the QWERTY
@@ -22,13 +20,16 @@ font pango:RobotoMono Nerd Font, 10
 
 set_from_resource         $fg       i3wm.color7
 set_from_resource         $bg       i3wm.color2
+#set         $fg       \#FFFFFF
+#set         $bg       \#5CF19E
 # class			border	background	text	indicator	child_border
-client.focused		        $bg	$bg		$fg	$bg		$bg
-client.focused_inactive 	$bg	$bg		$fg	$bg		$bg
-client.unfocused        	$bg	$bg		$fg	$bg		$bg
-client.urgent	          	$bg	$bg		$fg	$bg		$bg
-client.placeholder      	$bg	$bg		$fg	$bg		$bg
-client.background       	$bg
+client.focused           $bg $bg      $fg $bg          $bg
+client.focused_inactive  $bg $bg      $fg $bg          $bg
+client.unfocused         $bg $bg      $fg $bg          $bg
+client.urgent            $bg $bg      $fg $bg          $bg
+client.placeholder       $bg $bg      $fg $bg          $bg
+
+client.background        $bg
 
 # #---Setting Variables---# #
 
@@ -216,11 +217,18 @@ bindsym XF86TouchpadToggle      exec ~/.config/BigArchKeyboardScripts/toggleTouc
 # #---Letter Key Bindings---# #
 
 bindsym $mod+a                  focus parent
+bindsym $mod+b                  exec --no-startup-id opera
 bindsym $mod+c                  focus child
 # reload the configuration file
 bindsym $mod+Shift+c            reload
-bindsym $mod+d                  exec j4-dmenu-desktop
+bindsym $mod+d                  exec ~/.config/desktopScripts/j4-dmenu-launcher.sh
+#bindsym $mod+d                  exec j4-dmenu-desktop --dmenu='dmenu -i --nb "$fg" --nf "$bg" --sb "$bg" --sf "$fg"'
+#bindsym $mod+d                  exec j4-dmenu-desktop --dmenu="dmenu -i -nb '#FFFFFF' -nf '#5CF19E' -sb '#5CF19E' -sf '#FFFFFF'" #THIS WORKS!!
+
 #bindsym $mod+d                  exec j4-dmenu-desktop -nb "$fg" -nf "$bg" -sb "$bg" -sf "$fg"
+#bindsym $mod+d                  exec j4-dmenu-desktop -nb $fg -nf $bg -sb $bg -sf $fg
+#bindsym $mod+d                  exec j4-dmenu-desktop -nb #FFFFFF -nf #5CF19E -sb #5CF19E -sf #FFFFFF
+#bindsym $mod+d                  exec j4-dmenu-desktop -nb \#FFFFFF -nf \#5CF19E -sb \#5CF19E -sf \#FFFFFF
 #change container layout toggle split
 bindsym $mod+e                  layout toggle split
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
