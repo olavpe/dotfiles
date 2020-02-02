@@ -1,32 +1,32 @@
 set recolor "true"
 
-set completion-bg "#0c0f19"
-set completion-fg "#cbbcc8"
-set completion-group-bg "#0c0f19"
-set completion-group-fg "#DA906D"
-set completion-highlight-bg "#cbbcc8"
-set completion-highlight-fg "#0c0f19"
+set completion-bg "#121028"
+set completion-fg "#c4acb9"
+set completion-group-bg "#121028"
+set completion-group-fg "#CE705F"
+set completion-highlight-bg "#c4acb9"
+set completion-highlight-fg "#121028"
 
-set recolor-lightcolor "#0c0f19"
-set recolor-darkcolor "#cbbcc8"
-set default-bg "#0c0f19"
+set recolor-lightcolor "#121028"
+set recolor-darkcolor "#c4acb9"
+set default-bg "#121028"
 
-set inputbar-bg "#0c0f19"
-set inputbar-fg "#cbbcc8"
-set notification-bg "#0c0f19"
-set notification-fg "#cbbcc8"
-set notification-error-bg "#956E72"
-set notification-error-fg "#cbbcc8"
-set notification-warning-bg "#956E72"
-set notification-warning-fg "#cbbcc8"
-set statusbar-bg "#0c0f19"
-set statusbar-fg "#cbbcc8"
-set index-bg "#0c0f19"
-set index-fg "#cbbcc8"
-set index-active-bg "#cbbcc8"
-set index-active-fg "#0c0f19"
-set render-loading-bg "#0c0f19"
-set render-loading-fg "#cbbcc8"
+set inputbar-bg "#121028"
+set inputbar-fg "#c4acb9"
+set notification-bg "#121028"
+set notification-fg "#c4acb9"
+set notification-error-bg "#A55D6A"
+set notification-error-fg "#c4acb9"
+set notification-warning-bg "#A55D6A"
+set notification-warning-fg "#c4acb9"
+set statusbar-bg "#121028"
+set statusbar-fg "#c4acb9"
+set index-bg "#121028"
+set index-fg "#c4acb9"
+set index-active-bg "#c4acb9"
+set index-active-fg "#121028"
+set render-loading-bg "#121028"
+set render-loading-fg "#c4acb9"
 
 set smooth-scroll true
 set window-title-home-tilde true
@@ -37,7 +37,11 @@ set statusbar-h-padding 0
 set statusbar-v-padding 0
 set page-padding 2
 map R rotate
-map K zoom in
-map J zoom out
+map <C-k> zoom in
+map <C-j> zoom out
+map K navigate previous page
+map J navigate next page
 map i recolor
 map p print
+
+

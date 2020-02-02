@@ -198,6 +198,7 @@ export PATH=$PATH:/home/olav/.cargo/bin
 export PATH=$PATH:/home/olav/.config/emacsScripts/
 export PATH="/home/olav/.local/bin:$PATH"
 export PATH=$PATH:/opt/easyeda
+export PATH=$PATH:/opt/anaconda/bin
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
