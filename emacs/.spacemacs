@@ -20,8 +20,8 @@ values."
    ;; installation feature and you have to explicitly list a layer in the
    ;; variable `dotspacemacs-configuration-layers' to install it.
    ;; (default 'unused)
-   dotspacemacs-enable-lazy-installation 'all
-;;   dotspacemacs-enable-lazy-installation 'unused
+   ;; dotspacemacs-enable-lazy-installation 'all
+   dotspacemacs-enable-lazy-installation 'unused
    ;; If non-nil then Spacemacs will ask for confirmation before installing
    ;; a layer lazily. (default t)
    dotspacemacs-ask-for-lazy-installation t
@@ -52,6 +52,7 @@ values."
             latex-enable-magic t)
      pandoc
      python
+     ;; (python :variables python-backend 'lsp)
      ;; ipython-notebook
      org
      (shell :variables
@@ -158,7 +159,7 @@ values."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
                          ;; xresources
-                         ewal-spacemacs-modern
+                         ;; ewal-spacemacs-modern
                          ;; spacemacs-dark
                          ;;spacemacs-light
                          )
@@ -348,6 +349,8 @@ you should place your code here."
 
   ;; C
   (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
+  ;; Python
+  (add-hook 'python-mode-hook 'anaconda-mode)
 
   ;;;;; Latex and Markdown Settings
 
@@ -386,25 +389,6 @@ you should place your code here."
 
   ;;;;; Theme Stuff
 
-  ;; ;; Trying Ewal
-  ;; (use-package ewal
-  ;;   :init (setq ewal-use-built-in-always-p nil
-  ;;               ewal-use-built-in-on-failure-p t
-  ;;               ewal-built-in-palette "sexy-material"))
-  ;; (use-package ewal-spacemacs-themes
-  ;;   :defer nil
-  ;;   :init (progn
-  ;;           (setq spacemacs-theme-underline-parens t
-  ;;                 my:rice:font (font-spec
-  ;;                               :family "Source Code Pro"
-  ;;                               :weight 'semi-bold
-  ;;                               :size 11.0))
-  ;;           (show-paren-mode +1)
-  ;;           (global-hl-line-mode)
-  ;;   :config (progn
-  ;;             (load-theme 'ewal-spacemacs-modern t)
-  ;;             (enable-theme 'ewal-spacemacs-modern))))
-
   (use-package ewal-evil-cursors
     :after (ewal-spacemacs-themes)
     :config (ewal-evil-cursors-get-colors
@@ -413,8 +397,123 @@ you should place your code here."
     :after (ewal-evil-cursors winum)
     :init (setq powerline-default-separator nil)
     :config (spaceline-spacemacs-theme))
+
+  ;; ;; Trying Ewal
+  ;; (use-package ewal
+  ;;   :init (setq ewal-use-built-in-always-p nil
+  ;;               ewal-use-built-in-on-failure-p t
+  ;;               ewal-built-in-palette "sexy-material"))
+  ;; (use-package ewal-spacemacs-themes
+  ;;   ;; :defer nil
+  ;;   :init (progn
+  ;;           (setq spacemacs-theme-underline-parens t
+  ;;                 my:rice:font (font-spec
+  ;;                               :family "Sauce Code Pro Nerd Font"
+  ;;                               ;; :weight 'semi-bold
+  ;;                               :size 10.0))
+  ;;           )
+  ;;           (show-paren-mode +1)
+  ;;           (global-hl-line-mode)
+  ;;           (set-frame-font my:rice:font nil t)
+  ;;           (add-to-list 'default-frame-alist
+  ;;                        `(font . ,(font-xlfd-name my:rice:font)))
+  ;;   :config (progn
+  ;;             (load-theme 'ewal-spacemacs-modern t)
+  ;;             (enable-theme 'ewal-spacemacs-modern)))
+
   ;; Xresources (that is functional)
   (load-theme 'xresources t)
+
+  ;; Disabling highlighting for comments
+  (global-hl-line-mode -1)
+  (spacemacs/toggle-highlight-current-line-globally-off)
+  (set-default spacemacs-theme-comment-bg nil)
+
+  (defvar org-latex-fragment-last nil
+  "Holds last fragment/environment you were on.")
+
+  (defun org-latex-fragment-toggle ()
+    "Toggle a latex fragment image "
+    (and (eq 'org-mode major-mode)
+        (let* ((el (org-element-context))
+                (el-type (car el)))
+          (cond
+            ;; were on a fragment and now on a new fragment
+            ((and
+              ;; fragment we were on
+              org-latex-fragment-last
+              ;; and are on a fragment now
+              (or
+              (eq 'latex-fragment el-type)
+              (eq 'latex-environment el-type))
+              ;; but not on the last one this is a little tricky. as you edit the
+              ;; fragment, it is not equal to the last one. We use the begin
+              ;; property which is less likely to change for the comparison.
+              (not (= (org-element-property :begin el)
+                      (org-element-property :begin org-latex-fragment-last))))
+            ;; go back to last one and put image back
+            (save-excursion
+              (goto-char (org-element-property :begin org-latex-fragment-last))
+              (org-preview-latex-fragment))
+            ;; now remove current image
+            (goto-char (org-element-property :begin el))
+            (let ((ov (loop for ov in org-latex-fragment-image-overlays
+                            if
+                            (and
+                              (<= (overlay-start ov) (point))
+                              (>= (overlay-end ov) (point)))
+                            return ov)))
+              (when ov
+                (delete-overlay ov)))
+            ;; and save new fragment
+            (setq org-latex-fragment-last el))
+
+            ;; were on a fragment and now are not on a fragment
+            ((and
+              ;; not on a fragment now
+              (not (or
+                    (eq 'latex-fragment el-type)
+                    (eq 'latex-environment el-type)))
+              ;; but we were on one
+              org-latex-fragment-last)
+            ;; put image back on
+            (save-excursion
+              (goto-char (org-element-property :begin org-latex-fragment-last))
+              (org-preview-latex-fragment))
+            ;; unset last fragment
+            (setq org-latex-fragment-last nil))
+
+            ;; were not on a fragment, and now are
+            ((and
+              ;; we were not one one
+              (not org-latex-fragment-last)
+              ;; but now we are
+              (or
+              (eq 'latex-fragment el-type)
+              (eq 'latex-environment el-type)))
+            (goto-char (org-element-property :begin el))
+            ;; remove image
+            (let ((ov (loop for ov in org-latex-fragment-image-overlays
+                            if
+                            (and
+                              (<= (overlay-start ov) (point))
+                              (>= (overlay-end ov) (point)))
+                            return ov)))
+              (when ov
+                (delete-overlay ov)))
+            (setq org-latex-fragment-last el))))))
+
+
+  (add-hook 'post-command-hook 'org-latex-fragment-toggle)
+
+  ;; For autopairing in org-mode
+  (with-eval-after-load 'org
+    (modify-syntax-entry ?/ "(/" org-mode-syntax-table)
+    (modify-syntax-entry ?= "(=" org-mode-syntax-table)
+    (modify-syntax-entry ?\$ "($" org-mode-syntax-table)
+    (modify-syntax-entry ?\( "()" org-mode-syntax-table)
+    (modify-syntax-entry ?\[ "(]" org-mode-syntax-table)
+    (add-hook 'org-mode-hook 'electric-pair-mode))
 
   ;; (use-package ewal-spacemacs-themes
   ;;   ;; :straight t
@@ -531,3 +630,25 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Source Code Pro" :foundry "ADBO" :slant normal :weight normal :height 98 :width normal)))))
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(evil-want-Y-yank-to-eol nil)
+ '(package-selected-packages
+   (quote
+    (stickyfunc-enhance pippel pipenv lsp-python-ms importmagic epc ctable concurrent helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode counsel-gtags counsel swiper ivy blacken yasnippet-classic-snippets yasnippet-snippets disaster company-c-headers cmake-mode clang-format ox-pandoc ht pandoc-mode pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+ '(standard-indent 4))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "Source Code Pro" :foundry "ADBO" :slant normal :weight normal :height 98 :width normal)))))
+)
