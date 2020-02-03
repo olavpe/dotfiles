@@ -10,7 +10,9 @@ video_filetypes=(avi mpeg mp4 wmv m4v)
 
 
 # Finds the desired file
-file=$(fd -t file . /home/olav/ | dmenu -l 20 -p "Choose file:")
+#file=$(fd /home/olav/ /mnt -t file . | dmenu -l 20 -p "Choose file:")
+#file=$(fd -t file . /home/olav/ /mnt | dmenu -l 20 -p "Choose file:")
+file=$(rg --hidden --files --ignore-case /home/olav /mnt | dmenu -l 20 -i -p "Choose file:")
 # file=$(find ~/ | dmenu -l 10 -p "Choose file:")
 # echo $file
 extension="${file##*.}"
@@ -19,14 +21,17 @@ extension="${file##*.}"
 # Selecting which program to open the files with
 if [[ " ${zathura_filetypes[@]} " =~ " ${extension} " ]] then
     zathura "$file"
+#    ~/builds/Zathura-Pywal/genzathurarc
+#    ~/builds/Zathura-Pywal/zathura "$file"
 elif [[ " ${image_filetypes[@]} " =~ " ${extension} " ]] then
     feh $file
 elif [[ " ${libreoffice_filetypes[@]} " =~ " ${extension} " ]] then
      libreoffice $file
 elif [[ " ${video_filetypes[@]} " =~ " ${extension} " ]] then
-     vlc $file
+     mpv $file
 elif [[ " ${coding_filetypes[@]} " =~ " ${extension} " ]] then
      emacs $file
 else
     echo "Didn't match the extensions"
+#    emacs $file
 fi
