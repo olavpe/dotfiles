@@ -8,11 +8,14 @@ libreoffice_filetypes=(xlsx doc dot docx pptx ppt csv odt ods odp odg sxw stw sx
 coding_filetypes=(txt md tex cpp hpp c h r py ex erl)
 video_filetypes=(avi mpeg mp4 wmv m4v)
 
+# Import the colors
+. "${HOME}/.cache/wal/colors.sh"
 
 # Finds the desired file
 #file=$(fd /home/olav/ /mnt -t file . | dmenu -l 20 -p "Choose file:")
 #file=$(fd -t file . /home/olav/ /mnt | dmenu -l 20 -p "Choose file:")
-file=$(rg --hidden --files --ignore-case /home/olav /mnt | dmenu -l 20 -i -p "Choose file:")
+file=$(rg --hidden --files --ignore-case /home/olav /mnt | \
+dmenu -l 20 -i -nb $color0 -nf $color7 -sb $color0 -sf $color4 -p "Choose file:")
 # file=$(find ~/ | dmenu -l 10 -p "Choose file:")
 # echo $file
 extension="${file##*.}"
