@@ -20,8 +20,8 @@ values."
    ;; installation feature and you have to explicitly list a layer in the
    ;; variable `dotspacemacs-configuration-layers' to install it.
    ;; (default 'unused)
-   dotspacemacs-enable-lazy-installation 'all
-;;   dotspacemacs-enable-lazy-installation 'unused
+;;   dotspacemacs-enable-lazy-installation 'all
+   dotspacemacs-enable-lazy-installation 'unused
    ;; If non-nil then Spacemacs will ask for confirmation before installing
    ;; a layer lazily. (default t)
    dotspacemacs-ask-for-lazy-installation t
@@ -40,6 +40,9 @@ values."
      ;; ----------------------------------------------------------------
      helm
      auto-completion
+     ;; conda
+     (c-c++ :variables
+	    c-c++-enable-clang-support t)
      better-defaults
      emacs-lisp
      git
@@ -49,9 +52,9 @@ values."
             latex-enable-auto-fill t
             latex-enable-folding t
             latex-enable-magic t)
-     pdf-tools
-     python
-     ipython-notebook
+     pandoc
+     (python: variables python-backend 'anaconda)
+     ;; ipython-notebook
      org
      (shell :variables
             shell-default-height 30
@@ -66,11 +69,13 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
                                       ein
-                                      jupyter
+                                      ;; jupyter
                                       xresources-theme
-                                      ewal
+                                      ;; ewal
                                       ewal-spacemacs-themes
                                       ewal-evil-cursors autopair
+                                      ;; yasnippet-classic-snippets
+                                      yasnippet-snippets
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -100,6 +105,8 @@ values."
    ;; This variable has no effect if Emacs is launched with the parameter
    ;; `--insecure' which forces the value of this variable to nil.
    ;; (default t)
+
+
    dotspacemacs-elpa-https t
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    dotspacemacs-elpa-timeout 5
@@ -107,11 +114,22 @@ values."
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
    ;; whenever you start Emacs. (default nil)
+
+   ;; For Spacemacs Develop Branch
+   ;; If non-nil then Spacelpa repository is the primary source to install
+   ;; a locked version of packages. If nil then Spacemacs will install the
+   ;; latest version of packages from MELPA. (default nil)
+   ;;dotspacemacs-use-spacelpa t
+
+   ;; If non-nil then verify the signature for downloaded Spacelpa archives.
+   ;; (default t)
+   ;;dotspacemacs-verify-spacelpa-archives t
+
    dotspacemacs-check-for-update nil
    ;; If non-nil, a form that evaluates to a package directory. For example, to
    ;; use different package directories for different Emacs versions, set this
    ;; to `emacs-version'.
-   dotspacemacs-elpa-subdirectory nil
+   ;; dotspacemacs-elpa-subdirectory nil
    ;; One of `vim', `emacs' or `hybrid'.
    ;; `hybrid' is like `vim' except that `insert state' is replaced by the
    ;; `hybrid state' with `emacs' key bindings. The value can also be a list
@@ -143,8 +161,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(xresources
-                         ;; ewal
+   dotspacemacs-themes '(;; xresources
+                         ;; ewal-spacemacs-modern
                          ;; spacemacs-dark
                          ;;spacemacs-light
                          )
@@ -152,7 +170,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
+   dotspacemacs-default-font '("Sauce Code Pro Nerd Font"
                                :size 13
                                :weight normal
                                :width normal
@@ -279,7 +297,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers 'relative
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -320,6 +338,16 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+
+;;   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+;;
+;;   (setq configuration-layer-elpa-archives
+;;     '(("melpa" . "melpa.org/packages/")
+;;     ("org" . "orgmode.org/elpa/")
+;;     ("gnu" . "elpa.gnu.org/packages/")))
+
+  ;; Configuring for Anaconda
+    (setenv "WORKON_HOME" "/opt/anaconda3/envs")
   )
 
 (defun dotspacemacs/user-config ()
@@ -330,6 +358,23 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
+
+  ;;;;; Programming settings
+  ;; Setting the python environment to Anaconda
+  ;; (setq-default dotspacemacs-configuration-layers
+  ;;               '((conda :variables conda-anaconda-home "/opt/anaconda3/")))
+
+  ;; C
+  (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
+
+  ;;;;; Latex and Markdown Settings
+
+  ;; Markdown
+  (add-hook 'markdown-mode-hook 'pandoc-mode)
+  (setq markdown-command "/usr/bin/pandoc")
+
+  ;; Latex
+  (setq-default TeX-master "main")
   (setq TeX-source-correlate-mode t)
   (setq TeX-source-correlate-start-server t)
   (setq TeX-source-correlate-method 'synctex)
@@ -345,122 +390,52 @@ you should place your code here."
    ;; ((spacemacs/system-is-mac) (setq TeX-view-program-selection '((output-pdf "Skim"))))
    ;; For linux, use Okular or perhaps Zathura.
    ((spacemacs/system-is-linux) (setq TeX-view-program-selection '((output-pdf "Zathura")))))
-  
 
 
+
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  (add-hook 'org-mode-hook 'turn-on-font-lock)
+
+
+  (use-package ewal-evil-cursors
+    :after (ewal-spacemacs-themes)
+    :config (ewal-evil-cursors-get-colors
+             :apply t :spaceline t))
+  (use-package spaceline
+    :after (ewal-evil-cursors winum)
+    :init (setq powerline-default-separator nil)
+    :config (spaceline-spacemacs-theme))
+
+
+  ;; Testing!!!!!
   (use-package ewal
     :init (setq ewal-use-built-in-always-p nil
                 ewal-use-built-in-on-failure-p t
                 ewal-built-in-palette "sexy-material"))
   (use-package ewal-spacemacs-themes
-    :defer nil
     :init (progn
             (setq spacemacs-theme-underline-parens t
                   my:rice:font (font-spec
-                                :family "Source Code Pro"
-                                :weight 'semi-bold
-                                :size 11.0))
+                                :family "Sauce Code Pro Nerd Font"
+                                ;; :weight 'semi-bold
+                                :size 10.0))
+            )
             (show-paren-mode +1)
             (global-hl-line-mode)
+            (set-frame-font my:rice:font nil t)
+            (add-to-list  'default-frame-alist
+                          `(font . ,(font-xlfd-name my:rice:font))))
     :config (progn
               (load-theme 'ewal-spacemacs-modern t)
-              (enable-theme 'ewal-spacemacs-modern))))
-  (load-theme 'xresources t)
-  ;; (use-package ewal-spacemacs-themes
-  ;;   ;; :straight t
-  ;;   :defer nil
-  ;;   :init (setq ewal-force-tty-colors nil
-  ;;               ewal-force-tty-colors-daemon nil)
-  ;;   :config (when (ewal-load-wal-colors)
-  ;;             (load-theme 'ewal-spacemacs-modern t))
-  ;;   :hook (spacemacs-post-user-config
-  ;;          . (lambda () (enable-theme 'ewal-spacemacs-modern))))
-  ;; (use-package ewal-evil-cursors
-  ;;   :after (ewal-spacemacs-themes)
-  ;;   :config (ewal-evil-cursors-get-colors
-  ;;            :apply t :spaceline t))
-  ;; (add-to-list 'TeX-expand-list
-  ;;              '("%sn" (lambda () server-name)))
-  ;; (add-to-list 'TeX-view-program-list
-  ;;              '("Zathura"
-  ;;                ("zathura %o"
-  ;;                 (mode-io-correlate " --synctex-forward %n:0:%b -x \"emacsclient --socket-name=%sn --no-wait +%{line} %{input}\""))
-  ;;                "zathura"))
+              (enable-theme 'ewal-spacemacs-modern))
+  ;; Testing!!!!!
 
-  ;; This is for using the built in pdfviewer in emacs
-  ;; (setq-default TeX-master "main") ;; All master files called "main".
-  ;; (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-  ;;       TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-  ;;       TeX-source-correlate-start-server t)
 
-  ;; This is to use Zathura as the pdfviewer
-  ;; (setq TeX-source-correlate-mode t)        ; activate forward/reverse search
-  ;; (setq TeX-PDF-mode t)
-  ;; (add-to-list 'TeX-view-program-list '("zathura" zathura-forward-search))
-  ;; (setq TeX-view-program-selection (quote ((output-pdf "zathura") (output-dvi "xdvi"))))
 
-  ;; Suggested Zathura system
-;;   (defvar TeX-view-program-list-builtin
-;;   (cond
-;;    ((eq system-type 'windows-nt)
-;;     '(("Yap" ("yap -1" (mode-io-correlate " -s %n%b") " %o") "yap")
-;;       ("dviout" ("dviout -1 "
-;; 		 ((paper-a4 paper-portrait) "-y=A4 ")
-;; 		 ((paper-a4 paper-landscape) "-y=A4L ")
-;; 		 ((paper-a5 paper-portrait) "-y=A5 ")
-;; 		 ((paper-a5 paper-landscape) "-y=A5L ")
-;; 		 ((paper-b5 paper-portrait) "-y=E5 ")
-;; 		 ((paper-b5 paper-landscape) "-y=E5L ")
-;; 		 ((paper-b4jis paper-portrait) "-y=B4 ")
-;; 		 ((paper-b4jis paper-landscape) "-y=B4L ")
-;; 		 ((paper-b5jis paper-portrait) "-y=B5 ")
-;; 		 ((paper-b5jis paper-landscape) "-y=B5L ")
-;; 		 (paper-legal "-y=Legal ")
-;; 		 (paper-letter "-y=Letter ")
-;; 		 (paper-executive "-y=Executive ")
-;; 		 "%d" (mode-io-correlate " \"# %n '%b'\"")) "dviout")
-;;       ("SumatraPDF"
-;;        ("SumatraPDF -reuse-instance"
-;; 	(mode-io-correlate " -forward-search \"%b\" %n") " %o")
-;;        "SumatraPDF")
-;;       ("dvips and start" "dvips %d -o && start \"\" %f" "dvips")
-;;       ("start" "start \"\" %o")))
-;;    ((eq system-type 'darwin)
-;;     '(("Preview.app" "open -a Preview.app %o" "open")
-;;       ("Skim" "open -a Skim.app %o" "open")
-;;       ("displayline" "displayline %n %o %b" "displayline")
-;;       ("open" "open %o" "open")))
-;;    (t
-;;     `(("dvi2tty" ("dvi2tty -q -w 132 %o"))
-;;       ("xdvi" ("%(o?)xdvi"
-;; 	       (mode-io-correlate " -sourceposition \"%n %b\" -editor \"%cS\"")
-;; 	       ((paper-a4 paper-portrait) " -paper a4")
-;; 	       ((paper-a4 paper-landscape) " -paper a4r")
-;; 	       ((paper-a5 paper-portrait) " -paper a5")
-;; 	       ((paper-a5 paper-landscape) " -paper a5r")
-;; 	       (paper-b5 " -paper b5")
-;; 	       (paper-letter " -paper us")
-;; 	       (paper-legal " -paper legal")
-;; 	       (paper-executive " -paper 7.25x10.5in")
-;; 	       " %d") "%(o?)xdvi")
-;;       ("dvips and gv" "%(o?)dvips %d -o && gv %f" ,(list "%(o?)dvips" "gv"))
-;;       ("gv" "gv %o" "gv")
-;;       ("xpdf" ("xpdf -remote %s -raise %o" (mode-io-correlate " %(outpage)")) "xpdf")
-;;       ("Evince" ,(TeX-view-program-select-evince "gnome" "evince") "evince")
-;;       ("Atril" ,(TeX-view-program-select-evince "mate" "atril") "atril")
-;;       ("Okular" ("okular --unique %o" (mode-io-correlate "#src:%n%a")) "okular")
-;;       ("xdg-open" "xdg-open %o" "xdg-open")
-;;       ("PDF Tools" TeX-pdf-tools-sync-view)
-;;       ("Zathura"
-;;        ("zathura %o"
-;; 	(mode-io-correlate
-;; 	 " --synctex-forward %n:0:%b -x \"emacsclient +%{line} %{input}\""))
-;;        "zathura"))))
-;;   "Alist of built-in viewer specifications.
-;; This variable should not be changed by the user who can use
-;; `TeX-view-program-list' to add new viewers or overwrite the
-;; definition of built-in ones.  The latter variable also contains a
-;; description of the data format.")
+  ;; Xresources (that is functional)
+  ;; (load-theme 'xresources t)
+
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -482,3 +457,26 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
+ '(evil-want-Y-yank-to-eol nil)
+ '(package-selected-packages
+   (quote
+    (stickyfunc-enhance pippel pipenv lsp-python-ms importmagic epc ctable concurrent helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode counsel-gtags counsel swiper ivy blacken yaml-mode zmq skewer-mode polymode deferred websocket js2-mode simple-httpd pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+)
