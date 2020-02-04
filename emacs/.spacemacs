@@ -32,6 +32,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     python
      yaml
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -107,9 +108,9 @@ values."
    ;; (default t)
 
 
-   dotspacemacs-elpa-https t
+   dotspacemacs-elpa-https nil
    ;; Maximum allowed time in seconds to contact an ELPA repository.
-   dotspacemacs-elpa-timeout 5
+   dotspacemacs-elpa-timeout 30
    ;; If non nil then spacemacs will check for updates at startup
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
@@ -129,7 +130,7 @@ values."
    ;; If non-nil, a form that evaluates to a package directory. For example, to
    ;; use different package directories for different Emacs versions, set this
    ;; to `emacs-version'.
-   ;; dotspacemacs-elpa-subdirectory nil
+   dotspacemacs-elpa-subdirectory nil
    ;; One of `vim', `emacs' or `hybrid'.
    ;; `hybrid' is like `vim' except that `insert state' is replaced by the
    ;; `hybrid state' with `emacs' key bindings. The value can also be a list
@@ -338,6 +339,8 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+     (setq package-check-signature nil)
+     (setq spacemacs-theme-comment-bg nil)
 
 ;;   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 ;;
@@ -347,7 +350,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 ;;     ("gnu" . "elpa.gnu.org/packages/")))
 
   ;; Configuring for Anaconda
-    (setenv "WORKON_HOME" "/opt/anaconda3/envs")
+   ;; (setenv "WORKON_HOME" "/opt/anaconda3/envs")
   )
 
 (defun dotspacemacs/user-config ()
@@ -398,43 +401,46 @@ you should place your code here."
   (add-hook 'org-mode-hook 'turn-on-font-lock)
 
 
-  (use-package ewal-evil-cursors
-    :after (ewal-spacemacs-themes)
-    :config (ewal-evil-cursors-get-colors
-             :apply t :spaceline t))
-  (use-package spaceline
-    :after (ewal-evil-cursors winum)
-    :init (setq powerline-default-separator nil)
-    :config (spaceline-spacemacs-theme))
-
-
-  ;; Testing!!!!!
-  (use-package ewal
-    :init (setq ewal-use-built-in-always-p nil
-                ewal-use-built-in-on-failure-p t
-                ewal-built-in-palette "sexy-material"))
-  (use-package ewal-spacemacs-themes
-    :init (progn
-            (setq spacemacs-theme-underline-parens t
-                  my:rice:font (font-spec
-                                :family "Sauce Code Pro Nerd Font"
-                                ;; :weight 'semi-bold
-                                :size 10.0))
-            )
-            (show-paren-mode +1)
-            (global-hl-line-mode)
-            (set-frame-font my:rice:font nil t)
-            (add-to-list  'default-frame-alist
-                          `(font . ,(font-xlfd-name my:rice:font))))
-    :config (progn
-              (load-theme 'ewal-spacemacs-modern t)
-              (enable-theme 'ewal-spacemacs-modern))
+;;  (use-package ewal-evil-cursors
+;;    :after (ewal-spacemacs-themes)
+;;    :config (ewal-evil-cursors-get-colors
+;;             :apply t :spaceline t))
+;;  (use-package spaceline
+;;    :after (ewal-evil-cursors winum)
+;;    :init (setq powerline-default-separator nil)
+;;    :config (spaceline-spacemacs-theme))
+;;
+;;
+;;  ;; Testing!!!!!
+;;  (use-package ewal
+;;    :init (setq ewal-use-built-in-always-p nil
+;;                ewal-use-built-in-on-failure-p t
+;;                ewal-built-in-palette "sexy-material"))
+;;  (use-package ewal-spacemacs-themes
+;;    :init (progn
+;;            (setq spacemacs-theme-underline-parens t
+;;                  my:rice:font (font-spec
+;;                                :family "Sauce Code Pro Nerd Font"
+;;                                ;; :weight 'semi-bold
+;;                                :size 10.0))
+;;            )
+;;            (show-paren-mode +1)
+;;            (global-hl-line-mode)
+;;            (set-frame-font my:rice:font nil t)
+;;            (add-to-list  'default-frame-alist
+;;                          `(font . ,(font-xlfd-name my:rice:font))))
+;;    :config (progn
+;;              (load-theme 'ewal-spacemacs-modern t)
+;;              (enable-theme 'ewal-spacemacs-modern))
   ;; Testing!!!!!
 
 
 
   ;; Xresources (that is functional)
-  ;; (load-theme 'xresources t)
+  (load-theme 'xresources t)
+  ;; Disabling highlighting for comments
+  ;; (global-hl-line-mode -1)
+  ;; (spacemacs/toggle-highlight-current-line-globally-off)
 
 )
 
@@ -450,7 +456,7 @@ you should place your code here."
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (yaml-mode zmq skewer-mode polymode deferred websocket js2-mode simple-httpd pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (yasnippet-snippets pandoc-mode ox-pandoc ht kubernetes anaphora disaster company-c-headers cmake-mode clang-format yaml-mode zmq skewer-mode polymode deferred websocket js2-mode simple-httpd pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
