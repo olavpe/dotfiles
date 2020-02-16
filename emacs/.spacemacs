@@ -31,7 +31,7 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(octave
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -43,6 +43,8 @@ values."
             c-c++-enable-clang-support t)
      better-defaults
      emacs-lisp
+     +lang
+     ;; (extra-langs :variables matlab-mode)
      git
      markdown
      (latex :variables
@@ -73,6 +75,7 @@ values."
                                       ;; ewal
                                       ewal-spacemacs-themes
                                       ewal-evil-cursors autopair
+                                      matlab-mode
                                       yasnippet-classic-snippets
                                       yasnippet-snippets
                                       )
@@ -335,6 +338,7 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+  (setq spacemacs-theme-comment-bg nil)
   )
 
 (defun dotspacemacs/user-config ()
@@ -351,6 +355,15 @@ you should place your code here."
   (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
   ;; Python
   (add-hook 'python-mode-hook 'anaconda-mode)
+
+  ;; Matlab
+  (defun init-matlab ()
+    "Initializes my configuration for matlab mode."
+    (interactive)
+    (setq matlab-indent-function "")
+    (setq matlab-shell-command ""))
+
+  (add-hook 'matlab-mode-hook 'init-matlab)
 
   ;;;;; Latex and Markdown Settings
 
@@ -398,7 +411,7 @@ you should place your code here."
     :init (setq powerline-default-separator nil)
     :config (spaceline-spacemacs-theme))
 
-  ;; ;; Trying Ewal
+  ;; Trying Ewal
   ;; (use-package ewal
   ;;   :init (setq ewal-use-built-in-always-p nil
   ;;               ewal-use-built-in-on-failure-p t
@@ -427,7 +440,6 @@ you should place your code here."
   ;; Disabling highlighting for comments
   (global-hl-line-mode -1)
   (spacemacs/toggle-highlight-current-line-globally-off)
-  (set-default spacemacs-theme-comment-bg nil)
 
   (defvar org-latex-fragment-last nil
   "Holds last fragment/environment you were on.")
@@ -643,7 +655,7 @@ This function is called at the very end of Spacemacs initialization."
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (stickyfunc-enhance pippel pipenv lsp-python-ms importmagic epc ctable concurrent helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode counsel-gtags counsel swiper ivy blacken yasnippet-classic-snippets yasnippet-snippets disaster company-c-headers cmake-mode clang-format ox-pandoc ht pandoc-mode pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+    (helm-gtags ggtags counsel-gtags counsel swiper ivy yasnippet-classic-snippets yasnippet-snippets disaster company-c-headers cmake-mode clang-format ox-pandoc ht pandoc-mode pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
  '(standard-indent 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
