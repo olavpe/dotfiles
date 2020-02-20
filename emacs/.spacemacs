@@ -395,9 +395,15 @@ you should place your code here."
    ((spacemacs/system-is-linux) (setq TeX-view-program-selection '((output-pdf "Zathura")))))
 
 
+  ;;;;  Org mode additions
 
+  ;; Fixing text formatting settings
   (require 'org-bullets)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  (add-hook 'org-mode-hook '(lambda () (setq fill-column 80)))
+
+  ;; Turning on auto newline when writing in org-mode
+  (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'turn-on-font-lock)
 
 
