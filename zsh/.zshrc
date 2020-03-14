@@ -135,6 +135,7 @@ alias e='exa -CF'
 alias sourcez='source ~/.zshrc'
 alias puu='sudo pacman -Syu'
 alias pac='sudo pacman -Syu'
+alias ranger='TERM=xterm ranger'
 
 # Filesystem scripts
 alias replaceSpace='sh ~/.config/desktopScripts/replaceSpaces.sh pwd'
@@ -199,6 +200,7 @@ export PATH=$PATH:/home/olav/.config/emacsScripts/
 export PATH="/home/olav/.local/bin:$PATH"
 export PATH=$PATH:/opt/easyeda
 export PATH=$PATH:/opt/anaconda/bin
+export TERMCMD=urxvt
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
