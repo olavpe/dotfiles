@@ -217,6 +217,8 @@ bindsym $mod+Shift+Next         move container to workspace next
 bindsym $mod+n    [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
 bindsym $mod+m    [instance="math"] scratchpad show; [instance="math"] move position center
 bindsym $mod+o    exec --no-startup-id ~/.config/desktopScripts/openFileDmenu.sh
+bindsym $mod+q    exec --no-startup-id compton-trans -c +5
+bindsym $mod+z    exec --no-startup-id compton-trans -c -5
 
 
 #######################
