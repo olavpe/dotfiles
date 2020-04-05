@@ -43,6 +43,7 @@ values."
             c-c++-enable-clang-support t)
      better-defaults
      emacs-lisp
+     ess
      +lang
      ;; (extra-langs :variables matlab-mode)
      git
@@ -398,6 +399,10 @@ you should place your code here."
   ;;   :hook (org-mode . org-bullets-mode))
   (require 'org-bullets)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+  ;; Turning on automatic newline
+  (add-hook 'org-mode-hook '(lambda () (setq fill-column 80)))
+  (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'turn-on-font-lock)
 
   ;;;;; Theme Stuff
