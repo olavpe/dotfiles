@@ -75,7 +75,7 @@ values."
                                       ;; jupyter
                                       xresources-theme
                                       ;; ewal
-                                      ewal-spacemacs-themes
+                                      ;; ewal-spacemacs-themes
                                       ewal-evil-cursors autopair
                                       ;; yasnippet-classic-snippets
                                       yasnippet-snippets
@@ -453,7 +453,8 @@ you should place your code here."
 
 
   ;; Xresources (that is functional)
-  (load-theme 'xresources t)
+  ;; (load-theme 'xresources t)
+  (add-hook 'after-make-frame-functions (lambda (frame) load-theme 'xresources t))
   ;;Disabling highlighting for comments
   ;; (global-hl-line-mode -1)
   ;; (spacemacs/toggle-highlight-current-line-globally-off)
