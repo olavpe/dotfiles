@@ -12,13 +12,16 @@ filetype plugin indent on
 
 call plug#begin()
 
-    Plug 'scrooloose/nerdcommenter'
+    Plug 'christoomey/vim-system-copy'
+    Plug 'godlygeek/tabular'
+    Plug 'jiangmiao/auto-pairs'
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
-    "Plug 'vim-airline/vim-airline'
+    Plug 'tpope/vim-commentary'
+    "Plug 'scrooloose/nerdcommenter'
+    Plug 'terryma/vim-multiple-cursors'
     Plug 'valloric/youcompleteme'
-    Plug 'jiangmiao/auto-pairs'
-    Plug 'christoomey/vim-system-copy'
+    "Plug 'vim-airline/vim-airline'
 
 call plug#end()
 
@@ -37,11 +40,13 @@ set pastetoggle=<F2>
 set formatoptions=tcqrn1
 "set tabstop=2
 "set shiftwidth=2
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set softtabstop=2
 set expandtab
 set noshiftround
+set autoindent
+set smartindent
 
 " Display 5 lines above/below the cursor when scrolling with a mouse.
 set scrolloff=5
