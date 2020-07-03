@@ -7,6 +7,7 @@ zathura_filetypes=(pdf)
 libreoffice_filetypes=(xlsx doc dot docx pptx ppt csv odt ods odp odg sxw stw sxc stc sxi sti sxd std sxm rtf xml pub)
 coding_filetypes=(txt md tex cpp hpp c h r py ex erl)
 video_filetypes=(avi mpeg mp4 wmv m4v)
+audio_filetypes=(mp3 wav ogg flac aiff au)
 
 # Import the colors
 . "${HOME}/.cache/wal/colors.sh"
@@ -32,6 +33,8 @@ elif [[ " ${libreoffice_filetypes[@]} " =~ " ${extension} " ]] then
      libreoffice $file
 elif [[ " ${video_filetypes[@]} " =~ " ${extension} " ]] then
      mpv $file
+elif [[ " ${audio_filetypes[@]} " =~ " ${extension} "  ]] then
+       mpv $file
 elif [[ " ${coding_filetypes[@]} " =~ " ${extension} " ]] then
      emacs $file
 else
