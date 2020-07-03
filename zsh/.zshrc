@@ -11,7 +11,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 POWERLEVEL9K_MODE="nerdfont-complete"
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status vcs root_indicator background_jobs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status vcs root_indicator background_jobs anaconda)
 # POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 # POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="\ufb0c"
 # POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="\ufb0c"
@@ -160,7 +160,6 @@ plugins=(
          copyfile
          docker
          extract
-         fzf
          git
          git-extras
          #git-flow
@@ -168,13 +167,12 @@ plugins=(
          mix
          repo
          vscode
-	 vi-mode
-         web-search
-         z)
+         vi-mode
+         fzf #has to be after vi-mode
+         # web-search
+         z
+       )
 
-# For fzf to work
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
 
 # User configuration
 
@@ -235,3 +233,9 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# For fzf to work
+# source /usr/share/fzf/key-bindings.zsh
+# source /usr/share/fzf/completion.zsh
+source $FZF_BASE/key-bindings.zsh
+source $FZF_BASE/completion.zsh
+# [ -f ~/.fzf.zsh  ] && source ~/.fzf.zsh
