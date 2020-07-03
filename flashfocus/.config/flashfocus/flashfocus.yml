@@ -54,8 +54,8 @@ flash-lone-windows: 'always'
 # rules:
 #   - window-class: Opera
 #     default-opacity: 0.95
- #   - window-class: firefox
- #    default-opacity: 1
+#   - window-class: firefox
+#     default-opacity: 1
 #
 #
 # I also would prefer that firefox windows are not flashed on focus:
