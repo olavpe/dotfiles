@@ -1,6 +1,5 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
-#
-# This config file uses keycodes (bindsym) and was written for the QWERTY
+# # This config file uses keycodes (bindsym) and was written for the QWERTY
 # layout.
 #
 # To get a config file with the same key positions, but for your current
@@ -264,13 +263,21 @@ exec --no-startup-id           nm-applet
 exec_always --no-startup-id    ~/.config/polybar/launch.sh
 exec_always --no-startup-id    flashfocus
 exec_always --no-startup-id    /usr/lib/geoclue-2.0/demos/agent
-exec_always                    "setxkbmap -option 'grp:alt_shift_toggle' -layout us,no,gr"
+exec_always                    "setxkbmap -option 'grp:alt_shift_toggle' -layout us,no"
 exec --no-startup-id           $term -name math -geometry 120x90 -e R -q
 exec --no-startup-id           $term -name dropdown -geometry 120x90
 #exec_always                    feh --bg-fill /home/olav/Pictures/Wallpapers/BlueStars.png    # Getting constant wallpaper
 #exec --no-startup-id           "mv /home/olav/Pictures/Wallpapers/CloudySpace.jpg /usr/share/lightdm-webkit/themes/litarvan/images/background.jpg"
 exec --no-startup-id           wal -i /home/olav/Pictures/Wallpapers/OrangeLakeSun.png
 exec --no-startup-id           picom --blur-background 
+
+## Corona Workflow
+# exec --no-startup-id i3-msg 'workspace $workspace1; exec opera'
+# exec --no-startup-id i3-msg 'workspace $workspace9; exec discord-canary'
+# exec --no-startup-id i3-msg 'workspace $workspace9; exec caprine'
+# exec --no-startup-id i3-msg 'workspace $workspace10; exec pavucontrol'
+# exec --no-startup-id i3-msg 'workspace $workspace10; exec $term -e bluetoothctl'
+
 
 
 
