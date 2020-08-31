@@ -143,7 +143,7 @@ alias replaceSpace='sh ~/.config/desktopScripts/replaceSpaces.sh pwd'
 # Shortcut to often edited config files
 alias i3config='vim ~/.config/i3/config' 
 alias urxvtconfig='vim ~/.Xresources' 
-alias comptonconfig='vim ~/.config/compton/compton.conf' 
+alias picomconfig='vim ~/.config/picom/picom.conf' 
 alias polybarconfig='vim ~/.config/polybar/config' 
 alias zshconfig="vim ~/.zshrc"
 alias ohmyzsh="vim ~/.oh-my-zsh"
