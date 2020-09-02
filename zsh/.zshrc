@@ -12,6 +12,8 @@ POWERLEVEL9K_MODE="nerdfont-complete"
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status vcs root_indicator background_jobs anaconda)
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_last
 # POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 # POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="\ufb0c"
 # POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="\ufb0c"
@@ -154,9 +156,9 @@ alias vimconfig="vim .vimrc"
 export ZSH="/home/olav/.oh-my-zsh"
 
 plugins=(
+         colorize
          colored-man-pages
          sudo
-         colorize
          copyfile
          docker
          extract
