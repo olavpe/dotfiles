@@ -119,6 +119,11 @@ POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON=$'\uF01B '
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+# Variables for Chroma
+# ZSH_COLORIZE_TOOL=pygmentize
+# ZSH_COLORIZE_CHROMA_FORMATTER=terminal256
+ZSH_COLORIZE_STYLE="colorful"
+
 export FZF_BASE=/usr/share/fzf
 
 # Which plugins would you like to load?
@@ -189,6 +194,14 @@ plugins=(
 # else
 #   export EDITOR='mvim'
 # fi
+
+# Use vim keys for settings navigating options
+# Use vim keys in tab complete menu:
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -v '^?' backward-delete-char
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
