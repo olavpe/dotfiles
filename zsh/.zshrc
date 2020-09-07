@@ -195,13 +195,6 @@ plugins=(
 #   export EDITOR='mvim'
 # fi
 
-# Use vim keys for settings navigating options
-# Use vim keys in tab complete menu:
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey -v '^?' backward-delete-char
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -228,6 +221,13 @@ source $ZSH/oh-my-zsh.sh
 (cat ~/.cache/wal/sequences &) 
 source ~/.cache/wal/colors-tty.sh
 
+# Use vim keys for settings navigating options
+# Use vim keys in tab complete menu:
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -v '^?' backward-delete-char
 
 if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
 	exec startx
