@@ -261,7 +261,6 @@ exec --no-startup-id           xss-lock --transfer-sleep-lock -- i3lock --nofork
 # nm-applet is a desktop GUI for NetworkManager.
 exec --no-startup-id           nm-applet
 exec_always --no-startup-id    ~/.config/polybar/launch.sh
-exec_always --no-startup-id    flashfocus
 exec_always --no-startup-id    /usr/lib/geoclue-2.0/demos/agent
 exec_always                    "setxkbmap -option 'grp:alt_shift_toggle' -layout us,no"
 exec --no-startup-id           $term -name math -geometry 120x90 -e R -q
@@ -269,7 +268,8 @@ exec --no-startup-id           $term -name dropdown -geometry 120x90
 #exec_always                    feh --bg-fill /home/olav/Pictures/Wallpapers/BlueStars.png    # Getting constant wallpaper
 #exec --no-startup-id           "mv /home/olav/Pictures/Wallpapers/CloudySpace.jpg /usr/share/lightdm-webkit/themes/litarvan/images/background.jpg"
 exec --no-startup-id           wal -i /home/olav/Pictures/Wallpapers/OrangeLakeSun.png
-exec --no-startup-id           picom --blur-background 
+exec --no-startup-id           picom --blur-background
+exec_always --no-startup-id    /opt/anaconda/bin/flashfocus
 
 ## Corona Workflow
 # exec --no-startup-id i3-msg 'workspace $workspace1; exec opera'
