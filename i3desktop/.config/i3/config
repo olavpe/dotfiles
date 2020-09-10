@@ -245,6 +245,7 @@ bindsym $mod+z    exec --no-startup-id compton-trans -c -5
 #######################
 
 hide_edge_borders both
+border_radius 15
 gaps inner 10
 gaps outer 10
 
@@ -270,7 +271,7 @@ gaps outer 10
 ## Keyboard configurations
 exec_always --no-startup-id /home/olav/.config/polybar/launch.sh
 exec_always "setxkbmap -option 'grp:alt_shift_toggle' -layout us,no"
-exec_always --no-startup-id flashfocus
+exec_always --no-startup-id /opt/anaconda3/bin/flashfocus
 
 ## Startup programs
 #exec --no-startup-id i3-msg 'workspace $workspace1; exec opera'
