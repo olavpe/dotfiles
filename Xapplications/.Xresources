@@ -316,6 +316,12 @@ URxvt.keysym.M-u: perl:keyboard-select:activate
 !Resize-font:
 URxvt.resize-font.smaller: C-j
 URxvt.resize-font.larger: C-k
+
+! Settings for the clipboard configuration
+URxvt.clipboard.autocopy: true
+URxvt.keysym.M-c: perl:clipboard:copy
+URxvt.keysym.M-v: perl:clipboard:paste
+
 ! Perl code to be evaluated when all extensions have been registered. See the urxvtperl(3) manpage.
 ! URxvt.perl-eval: string
 
