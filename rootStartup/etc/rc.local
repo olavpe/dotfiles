@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+# exec 1>/tmp/rc.local.log 2>&1  # send stdout and stderr from rc.local to a log file
+# set -x                         # tell sh to display commands before execution
+/home/olav/.config/desktopScripts/preproject-bib-autosync.sh
+
+exit 0 
