@@ -51,11 +51,19 @@ flash-lone-windows: 'always'
 # Say I'd like to set all 'termite' windows to 80% opacity but leave other
 # windows at full opacity:
 #
-# rules:
-#   - window-class: Opera
-#     default-opacity: 0.95
-#   - window-class: firefox
-#     default-opacity: 1
+rules:
+  - window-class: firefox
+    default-opacity: 1
+  - window-class: Google-chrome
+    default-opacity: 1
+  - window-class: matplotlib
+    default-opacity: 1
+  - window-class: mpv
+    default-opacity: 1
+  - window-class: teams-for-linux
+    default-opacity: 1
+  # - window-class: Opera
+  #   default-opacity: 0.95
 #
 #
 # I also would prefer that firefox windows are not flashed on focus:
