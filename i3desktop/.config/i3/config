@@ -267,9 +267,13 @@ exec --no-startup-id           $term -name math -geometry 120x90 -e R -q
 exec --no-startup-id           $term -name dropdown -geometry 120x90
 #exec_always                    feh --bg-fill /home/olav/Pictures/Wallpapers/BlueStars.png    # Getting constant wallpaper
 #exec --no-startup-id           "mv /home/olav/Pictures/Wallpapers/CloudySpace.jpg /usr/share/lightdm-webkit/themes/litarvan/images/background.jpg"
+# Graphics and Desktop Environment
 exec --no-startup-id           wal -i /home/olav/Pictures/Wallpapers/OrangeLakeSun.png
 exec --no-startup-id           picom --blur-background
 exec_always --no-startup-id    /opt/anaconda/bin/flashfocus
+# Desktop settings
+exec --no-startup-id           nordvpn connect
+# exec --no-startup-id           ~/.config/desktopScripts/preproject-bib-autosync.sh
 
 ## Corona Workflow
 # exec --no-startup-id i3-msg 'workspace $workspace1; exec opera'
