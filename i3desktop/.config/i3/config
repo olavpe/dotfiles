@@ -118,6 +118,7 @@ mode "resize" {
 hide_edge_borders   both
 gaps                inner      10
 gaps                outer      10
+# border_radius 3
 
 ####################
 #
@@ -271,6 +272,8 @@ exec --no-startup-id           $term -name dropdown -geometry 120x90
 exec --no-startup-id           wal -i /home/olav/Pictures/Wallpapers/OrangeLakeSun.png
 exec --no-startup-id           picom --blur-background
 exec_always --no-startup-id    /opt/anaconda/bin/flashfocus
+exec --no-startup-id           blueman-applet
+
 # Desktop settings
 exec --no-startup-id           nordvpn connect
 # exec --no-startup-id           ~/.config/desktopScripts/preproject-bib-autosync.sh
