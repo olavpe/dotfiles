@@ -62,6 +62,12 @@ rules:
     default-opacity: 1
   - window-class: teams-for-linux
     default-opacity: 1
+  - window-class: zoom
+    default-opacity: 1
+  - window-class: Skype
+    default-opacity: 1
+  - window-class: Spotify
+    default-opacity: 1
   # - window-class: Opera
   #   default-opacity: 0.95
 #
