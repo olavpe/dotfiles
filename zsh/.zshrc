@@ -146,6 +146,8 @@ alias ranger='TERM=xterm ranger'
 
 # Filesystem scripts
 alias replaceSpace='sh ~/.config/desktopScripts/replaceSpaces.sh pwd'
+alias mendeleySync='sh ~/.config/desktopScripts/preproject-bib-autosync.sh'
+alias vpnNTNU='sh ~/.config/desktopScripts/vpnNTNU.sh'
 
 # Shortcut to often edited config files
 alias i3config='vim ~/.config/i3/config' 
