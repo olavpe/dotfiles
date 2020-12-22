@@ -11,6 +11,7 @@
 IN=$(xrandr | grep "LVDS" | grep " connected" | sed -e "s/\([A-Z0-9]\+\) connected.*/\1/")
 EXT=$(xrandr | grep "DP" | grep " connected" | sed -e "s/\([A-Z0-9]\+\) connected.*/\1/")
 HDMI=$(xrandr | grep "HDMI" | grep " connected" | sed -e "s/\([A-Z0-9]\+\) connected.*/\1/")
+VGA=$(xrandr | grep "VGA" | grep " connected" | sed -e "s/\([A-Z0-9]\+\) connected.*/\1/")
 
 if (xrandr | grep "$HDMI connected"); then
     echo HDMI is connected, but disconnecting it

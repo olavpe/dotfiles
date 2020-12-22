@@ -50,6 +50,10 @@ set    $workspace7         "7"
 set    $workspace8         "8"
 set    $workspace9         "9"
 set    $workspace10        "10: "
+# Monitor ID variables
+set    $BENQ               DP-1
+set    $TV                 HDMI-1
+set    $VGA                VGA-0
 
 set    $term               i3-sensible-terminal
 #set    $refresh_i3status   killall -SIGUSR1 i3status       Use pactl to adjust volume in PulseAudio.
@@ -88,6 +92,19 @@ for_window [instance="math"] floating enable
 for_window [instance="math"] resize set 1350 1000
 for_window [instance="math"] move scratchpad
 for_window [instance="math"] border pixel 5
+
+# #---Workspace Locations on Multiple Monitors ---# #
+workspace $workspace1 output $BENQ
+workspace $workspace2 output $BENQ
+workspace $workspace3 output $BENQ
+workspace $workspace4 output $BENQ
+workspace $workspace5 output $BENQ
+
+workspace $workspace6 output $VGA $HDMI
+workspace $workspace7 output $VGA $HDMI
+workspace $workspace8 output $VGA $HDMI
+workspace $workspace9 output $VGA $HDMI
+workspace $workspace10 output $VGA $HDMI
 
 # #---Modes---# #
 
