@@ -283,13 +283,18 @@ exec_always --no-startup-id    /usr/lib/geoclue-2.0/demos/agent
 exec_always                    "setxkbmap -option 'grp:alt_shift_toggle' -layout us,no"
 exec --no-startup-id           $term -name math -geometry 120x90 -e R -q
 exec --no-startup-id           $term -name dropdown -geometry 120x90
-#exec_always                    feh --bg-fill /home/olav/Pictures/Wallpapers/BlueStars.png    # Getting constant wallpaper
 #exec --no-startup-id           "mv /home/olav/Pictures/Wallpapers/CloudySpace.jpg /usr/share/lightdm-webkit/themes/litarvan/images/background.jpg"
+
 # Graphics and Desktop Environment
-exec --no-startup-id           wal -i /home/olav/Pictures/Wallpapers/OrangeLakeSun.png
+# exec --no-startup-id           wal -i /home/olav/Pictures/Wallpapers/OrangeLakeSun.png
+# exec --no-startup-id           wal -i /home/olav/Pictures/Wallpapers/HouseLakePainting.png
+exec --no-startup-id           feh --bg-fill /home/olav/Pictures/Wallpapers/HouseLakePainting.png
+exec --no-startup-id           wal --theme "dkeg-kit"
 exec --no-startup-id           picom --blur-background
 exec_always --no-startup-id    /opt/anaconda/bin/flashfocus
 exec --no-startup-id           blueman-applet
+exec --no-startup-id           dropbox start
+exec --no-startup-id           xset -dpms s off
 
 # Desktop settings
 exec --no-startup-id           nordvpn connect
