@@ -31,7 +31,9 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(javascript
+   '(csv
+     bm
+     javascript
      yaml
      octave
      ;; ----------------------------------------------------------------
@@ -44,9 +46,10 @@ values."
      (c-c++ :variables
             c-c++-enable-clang-support t)
      better-defaults
+     conda
      emacs-lisp
      ess
-     +lang
+     ;; +lang
      ;; (extra-langs :variables matlab-mode)
      git
      markdown
@@ -57,12 +60,15 @@ values."
             latex-enable-magic t)
      pandoc
      python
+     pdf
      ;; (python :variables python-backend 'lsp)
      ;; ipython-notebook
      org
      (shell :variables
+            shell-default-shell 'shell
             shell-default-height 30
             shell-default-position 'bottom)
+     (spacemacs-spaceline :location local)
      spell-checking
      syntax-checking
      ;; version-control
@@ -75,9 +81,12 @@ values."
                                       ein
                                       jupyter
                                       xresources-theme
+                                      ;; org-bullets
+                                      org-pdftools
                                       ;; ewal
                                       ewal-spacemacs-themes
-                                      ewal-evil-cursors autopair
+                                      ewal-evil-cursors
+                                      autopair
                                       matlab-mode
                                       yasnippet-classic-snippets
                                       yasnippet-snippets
@@ -165,7 +174,7 @@ values."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
                          ;; xresources
-                         ;; ewal-spacemacs-modern
+                         ewal-spacemacs-modern
                          ;; spacemacs-dark
                          ;;spacemacs-light
                          )
@@ -219,7 +228,7 @@ values."
    dotspacemacs-display-default-layout nil
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts nil
+   dotspacemacs-auto-resume-layouts t
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
@@ -342,6 +351,7 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   (setq spacemacs-theme-comment-bg nil)
+  (setenv "WORKON_HOME" "/home/olav/.conda/envs")
   )
 
 (defun dotspacemacs/user-config ()
@@ -358,6 +368,8 @@ you should place your code here."
   (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
   ;; Python
   (add-hook 'python-mode-hook 'anaconda-mode)
+  (setq-default dotspacemacs-configuration-layers
+                '((conda :variables conda-anaconda-home "/home/olav/.conda/envs")))
 
   ;; Matlab
   (defun init-matlab ()
@@ -368,11 +380,17 @@ you should place your code here."
 
   (add-hook 'matlab-mode-hook 'init-matlab)
 
-  ;;;;; Latex and Markdown Settings
+  ;;;;; ------- PDF settings-------- ;;;;;
 
-  ;; Markdown
+  ;;;;; ------- Latex and Markdown Settings -------- ;;;;;
+
+  ;;; --- Markdown
   (add-hook 'markdown-mode-hook 'pandoc-mode)
   (setq markdown-command "/usr/bin/pandoc")
+  ;; Turning on automatic newline
+  (add-hook 'markdown-mode-hook '(lambda () (setq fill-column 80)))
+  (add-hook 'markdown-mode-hook 'auto-fill-mode)
+  (add-hook 'markdown-mode-hook 'turn-on-font-lock)
 
   ;; Latex
   (setq-default TeX-master "main")
@@ -380,6 +398,8 @@ you should place your code here."
   (setq TeX-source-correlate-start-server t)
   (setq TeX-source-correlate-method 'synctex)
   (setq TeX-PDF-mode t)
+  (setq reftex-cite-format 'natbib)
+  (setq reftex-index-phrases-case-fold-search t)
 
   ;; To get the build files to be created in separate folder
   (add-hook 'LaTeX-mode-hook (lambda ()
@@ -389,17 +409,17 @@ you should place your code here."
                                   :help "Run pdflatex with output in /tmp")
                                 TeX-command-list)))
 
-  (setq TeX-view-program-list
-        '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
-          ;; ("Skim" "displayline -b -g %n %o %b")
-          ("Zathura"
-           ("zathura %o"
-            (mode-io-correlate
-             " --synctex-forward %n:0:%b -x \"emacsclient +%{line} %{input}\"")))))
-  (cond
-   ;; ((spacemacs/system-is-mac) (setq TeX-view-program-selection '((output-pdf "Skim"))))
-   ;; For linux, use Okular or perhaps Zathura.
-   ((spacemacs/system-is-linux) (setq TeX-view-program-selection '((output-pdf "Zathura")))))
+  ;; (setq TeX-view-program-list
+  ;;       '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
+  ;;         ;; ("Skim" "displayline -b -g %n %o %b")
+  ;;         ("Zathura"
+  ;;          ("zathura %o"
+  ;;           (mode-io-correlate
+  ;;            " --synctex-forward %n:0:%b -x \"emacsclient +%{line} %{input}\"")))))
+  ;; (cond
+  ;;  ;; ((spacemacs/system-is-mac) (setq TeX-view-program-selection '((output-pdf "Skim"))))
+  ;;  ;; For linux, use Okular or perhaps Zathura.
+  ;;  ((spacemacs/system-is-linux) (setq TeX-view-program-selection '((output-pdf "Zathura")))))
 
   ;; Function that builds pdf when saving latex file
   (defun run-latex ()
@@ -417,14 +437,73 @@ you should place your code here."
   ;;             (setq-local yas/trigger-key [tab])
   ;;             (define-key yas/keymap [tab] 'yas/next-field-or-maybe-expand)))
   ;; (use-package org-bullets
-  ;;   :hook (org-mode . org-bullets-mode))
-  (require 'org-bullets)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    ;; :hook (org-mode . org-bullets-mode))
+  (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESS(p)" "WAIT(w)" "|" "DONE(d)" "CANCEL(c)")))
+  ;; (use-package org-bullets
+  ;;   :hook (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
   ;; Turning on automatic newline
   (add-hook 'org-mode-hook '(lambda () (setq fill-column 80)))
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'turn-on-font-lock)
+  (setq org-ellipsis "⤵")
+  (add-hook 'org-mode-hook 'org-superstar-mode)
+  (setq org-hide-leading-stars nil)
+  (setq org-superstar-leading-bullet ?\s)
+
+  ;; Function to change the status of a TODO to DONE when checkboxes are full
+  (defun my/org-checkbox-todo ()
+    "Switch header TODO state to DONE when all checkboxes are ticked, to TODO otherwise"
+    (let ((todo-state (org-get-todo-state)) beg end)
+      (unless (not todo-state)
+        (save-excursion
+          (org-back-to-heading t)
+          (setq beg (point))
+          (end-of-line)
+          (setq end (point))
+          (goto-char beg)
+          (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
+                                 end t)
+              (if (match-end 1)
+                  (if (equal (match-string 1) "100%")
+                      (unless (string-equal todo-state "DONE")
+                        (org-todo 'done))
+                    (unless (string-equal todo-state "TODO")
+                      (org-todo 'todo)))
+                (if (and (> (match-end 2) (match-beginning 2))
+                         (equal (match-string 2) (match-string 3)))
+                    (unless (string-equal todo-state "DONE")
+                      (org-todo 'done))
+                  (unless (string-equal todo-state "TODO")
+                    (org-todo 'todo)))))))))
+
+  (add-hook 'org-checkbox-statistics-hook 'my/org-checkbox-todo)
+  ;; (use-package org-pdftools
+  ;;   :ensure nil
+  ;;   :quelpa ((org-pdftools
+  ;;             :fetcher git
+  ;;             :url "https://github.com/fuxialexander/org-pdftools.git"
+  ;;             :upgrade nil)))
+
+  ;; (use-package org-pdftools
+  ;;   :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
+  ;;   ;; :config (setq org-pdftools-root-dir "~/qnet/ref-pdfs/")
+  ;;   (with-eval-after-load 'org
+  ;;     (org-link-set-parameters "pdftools"
+  ;;                              :follow #'org-pdftools-open
+  ;;                              :complete #'org-pdftools-complete-link
+  ;;                              :store #'org-pdftools-store-link
+  ;;                              :export #'org-pdftools-export)
+  ;;     (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
+
+  (use-package org-pdftools
+    :hook (org-mode . org-pdftools-setup-link))
+
+  (use-package org-noter-pdftools
+    :after org-noter
+    :config
+    (with-eval-after-load 'pdf-annot
+      (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
 
   ;;;;; Theme Stuff
 
@@ -461,7 +540,7 @@ you should place your code here."
   ;;             (enable-theme 'ewal-spacemacs-modern)))
 
   ;; Xresources (that is functional)
-  (load-theme 'xresources t)
+  ;; (load-theme 'xresources t)
 
   ;; Disabling highlighting for comments
   (global-hl-line-mode -1)
@@ -546,8 +625,8 @@ you should place your code here."
 
   ;; For autopairing in org-mode
   (with-eval-after-load 'org
-    (modify-syntax-entry ?/ "(/" org-mode-syntax-table)
-    (modify-syntax-entry ?= "(=" org-mode-syntax-table)
+    ;; (modify-syntax-entry ?/ "(/" org-mode-syntax-table)
+    ;; (modify-syntax-entry ?= "(=" org-mode-syntax-table)
     (modify-syntax-entry ?\$ "($" org-mode-syntax-table)
     (modify-syntax-entry ?\( "()" org-mode-syntax-table)
     (modify-syntax-entry ?\[ "(]" org-mode-syntax-table)
@@ -575,10 +654,10 @@ you should place your code here."
   ;;                "zathura"))
 
   ;; This is for using the built in pdfviewer in emacs
-  ;; (setq-default TeX-master "main") ;; All master files called "main".
-  ;; (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-  ;;       TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-  ;;       TeX-source-correlate-start-server t)
+  (setq-default TeX-master "main") ;; All master files called "main".
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+        TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+        TeX-source-correlate-start-server t)
 
   ;; This is to use Zathura as the pdfviewer
   ;; (setq TeX-source-correlate-mode t)        ; activate forward/reverse search
@@ -681,8 +760,9 @@ This function is called at the very end of Spacemacs initialization."
  '(LaTeX-command-style
    '(("" "%(PDF)%(latex) %(file-line-error) %(extraopts) -output-directory=tmp %S%(PDFout) ")))
  '(evil-want-Y-yank-to-eol nil)
+ '(org-agenda-files '("/home/olav/Dropbox/project/notes.org"))
  '(package-selected-packages
-   '(web-beautify tern prettier-js nodejs-repl livid-mode js2-refactor multiple-cursors js-doc import-js grizzl impatient-mode helm-gtags ggtags dap-mode posframe lsp-treemacs bui lsp-mode counsel-gtags counsel swiper ivy add-node-modules-path yasnippet-classic-snippets yasnippet-snippets disaster company-c-headers cmake-mode clang-format ox-pandoc ht pandoc-mode pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))
+   '(org-pdftools csv-mode yasnippet-classic-snippets yasnippet-snippets disaster company-c-headers cmake-mode clang-format ox-pandoc ht pandoc-mode pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))
  '(standard-indent 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
