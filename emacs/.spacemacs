@@ -20,7 +20,7 @@ values."
    ;; installation feature and you have to explicitly list a layer in the
    ;; variable `dotspacemacs-configuration-layers' to install it.
    ;; (default 'unused)
-;;   dotspacemacs-enable-lazy-installation 'all
+   ;; dotspacemacs-enable-lazy-installation 'all
    dotspacemacs-enable-lazy-installation 'unused
    ;; If non-nil then Spacemacs will ask for confirmation before installing
    ;; a layer lazily. (default t)
@@ -31,10 +31,11 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
-     octave
-     python
+   '(csv
+     bm
+     javascript
      yaml
+     octave
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -42,26 +43,34 @@ values."
      ;; ----------------------------------------------------------------
      helm
      auto-completion
-     ;; conda
      (c-c++ :variables
-	    c-c++-enable-clang-support t)
+            c-c++-enable-clang-support t)
      better-defaults
+     (conda :variables
+            conda-anaconda-home "/home/olav/.conda/envs")
      emacs-lisp
+     ess
+     ;; +lang
+     ;; (extra-langs :variables matlab-mode)
      git
      markdown
-     extra-langs
      (latex :variables
             latex-build-command "LaTeX"
             latex-enable-auto-fill t
             latex-enable-folding t
             latex-enable-magic t)
      pandoc
-     (python: variables python-backend 'anaconda)
+     python
+     pdf
+     ;; (python :variables python-backend 'lsp)
      ;; ipython-notebook
-     org
+     (org :variables
+          org-enable-roam-support t)
      (shell :variables
+            shell-default-shell 'shell
             shell-default-height 30
             shell-default-position 'bottom)
+     (spacemacs-spaceline :location local)
      spell-checking
      syntax-checking
      ;; version-control
@@ -72,12 +81,17 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
                                       ein
-                                      ;; jupyter
+                                      jupyter
                                       xresources-theme
+                                      ;; org-bullets
+                                      org-pdftools
+                                      org-noter-pdftools
                                       ;; ewal
-                                      ;; ewal-spacemacs-themes
-                                      ewal-evil-cursors autopair
-                                      ;; yasnippet-classic-snippets
+                                      ewal-spacemacs-themes
+                                      ewal-evil-cursors
+                                      autopair
+                                      matlab-mode
+                                      yasnippet-classic-snippets
                                       yasnippet-snippets
                                       )
    ;; A list of packages that cannot be updated.
@@ -108,25 +122,23 @@ values."
    ;; This variable has no effect if Emacs is launched with the parameter
    ;; `--insecure' which forces the value of this variable to nil.
    ;; (default t)
-
-
-   dotspacemacs-elpa-https nil
+   ;; dotspacemacs-elpa-https t
+   dotspacemacs-elpa-https t
    ;; Maximum allowed time in seconds to contact an ELPA repository.
-   dotspacemacs-elpa-timeout 30
+   dotspacemacs-elpa-timeout 5
    ;; If non nil then spacemacs will check for updates at startup
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
    ;; whenever you start Emacs. (default nil)
 
-   ;; For Spacemacs Develop Branch
    ;; If non-nil then Spacelpa repository is the primary source to install
    ;; a locked version of packages. If nil then Spacemacs will install the
    ;; latest version of packages from MELPA. (default nil)
-   ;;dotspacemacs-use-spacelpa t
+   dotspacemacs-use-spacelpa t
 
    ;; If non-nil then verify the signature for downloaded Spacelpa archives.
    ;; (default t)
-   ;;dotspacemacs-verify-spacelpa-archives t
+   dotspacemacs-verify-spacelpa-archives t
 
    dotspacemacs-check-for-update nil
    ;; If non-nil, a form that evaluates to a package directory. For example, to
@@ -164,8 +176,9 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(;; xresources
-                         ;; ewal-spacemacs-modern
+   dotspacemacs-themes '(
+                         ;; xresources
+                         ewal-spacemacs-modern
                          ;; spacemacs-dark
                          ;;spacemacs-light
                          )
@@ -173,11 +186,11 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Sauce Code Pro Nerd Font"
-                               :size 13
+   dotspacemacs-default-font '("Source Code Pro"
+                               :size 18
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 2)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -219,7 +232,7 @@ values."
    dotspacemacs-display-default-layout nil
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts nil
+   dotspacemacs-auto-resume-layouts t
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
@@ -341,18 +354,13 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-     (setq package-check-signature nil)
-     (setq spacemacs-theme-comment-bg nil)
-
-;;   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-;;
-;;   (setq configuration-layer-elpa-archives
-;;     '(("melpa" . "melpa.org/packages/")
-;;     ("org" . "orgmode.org/elpa/")
-;;     ("gnu" . "elpa.gnu.org/packages/")))
-
-  ;; Configuring for Anaconda
-   ;; (setenv "WORKON_HOME" "/opt/anaconda3/envs")
+;;  (setq spacemacs-theme-comment-bg nil)
+;;  (setenv "WORKON_HOME" "/home/olav/.conda/envs")
+  ;; dotspacemacs-default-font '("SauceCode Pro Nerd Mono"
+  ;;                             :size 18
+  ;;                             :weight normal
+  ;;                             :width normal
+                              ;; :powerline-offset 2)
   )
 
 (defun dotspacemacs/user-config ()
@@ -363,102 +371,387 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-
   ;;;;; Programming settings
-  ;; Setting the python environment to Anaconda
-  ;; (setq-default dotspacemacs-configuration-layers
-  ;;               '((conda :variables conda-anaconda-home "/opt/anaconda3/")))
 
   ;; C
   (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
+  ;; Python
+  (add-hook 'python-mode-hook 'anaconda-mode)
+  (setq-default dotspacemacs-configuration-layers '(
+    )
+  )
 
-  ;;;;; Latex and Markdown Settings
+  ;; Matlab
+  (defun init-matlab ()
+    "Initializes my configuration for matlab mode."
+    (interactive)
+    (setq matlab-indent-function "")
+    (setq matlab-shell-command ""))
 
-  ;; Markdown
+  (add-hook 'matlab-mode-hook 'init-matlab)
+
+  ;;;;; ------- PDF settings-------- ;;;;;
+
+  ;;;;; ------- Latex and Markdown Settings -------- ;;;;;
+
+  ;;; --- Markdown
   (add-hook 'markdown-mode-hook 'pandoc-mode)
   (setq markdown-command "/usr/bin/pandoc")
+  ;; Turning on automatic newline
+  (add-hook 'markdown-mode-hook '(lambda () (setq fill-column 80)))
+  (add-hook 'markdown-mode-hook 'auto-fill-mode)
+  (add-hook 'markdown-mode-hook 'turn-on-font-lock)
 
   ;; Latex
   (setq-default TeX-master "main")
+  (setq TeX-source-correlate-method 'synctex)
   (setq TeX-source-correlate-mode t)
   (setq TeX-source-correlate-start-server t)
-  (setq TeX-source-correlate-method 'synctex)
+  (setq latex-enable-folding t)
+  (setq latex-enable-magic t)
+  (setq TeX-PDF-mode t)
+  (setq reftex-cite-format 'natbib)
+  (setq reftex-index-phrases-case-fold-search t)
+  (add-hook 'LaTeX-mode-hook 'outline-minor-mode)
 
-  (setq TeX-view-program-list
-        '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
-          ;; ("Skim" "displayline -b -g %n %o %b")
-          ("Zathura"
-           ("zathura %o"
-            (mode-io-correlate
-             " --synctex-forward %n:0:%b -x \"emacsclient +%{line} %{input}\"")))))
-  (cond
-   ;; ((spacemacs/system-is-mac) (setq TeX-view-program-selection '((output-pdf "Skim"))))
-   ;; For linux, use Okular or perhaps Zathura.
-   ((spacemacs/system-is-linux) (setq TeX-view-program-selection '((output-pdf "Zathura")))))
+  ;; To get the build files to be created in separate folder
+  ;; (add-hook 'LaTeX-mode-hook (lambda ()
+  ;;                              (push
+  ;;                               '("Latex_outdir" "%`pdflatex --output-directory=/tmp %(mode)%' %t"
+  ;;                                 TeX-run-TeX nil (latex-mode doctex-mode)
+  ;;                                 :help "Run pdflatex with output in /tmp")
+                                ;; TeX-command-list)))
 
+  (add-hook 'LaTeX-mode-hook (lambda ()
+                               (push 
+                                '("Make" "latexmk -outdir=/tmp %t" TeX-run-TeX nil t
+                                  :help "Make pdf output using latexmk.")
+                                TeX-command-list)))
+  ;; (setq TeX-view-program-list
+  ;;       '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
+  ;;         ;; ("Skim" "displayline -b -g %n %o %b")
+  ;;         ("Zathura"
+  ;;          ("zathura %o"
+  ;;           (mode-io-correlate
+  ;;            " --synctex-forward %n:0:%b -x \"emacsclient +%{line} %{input}\"")))))
+  ;; (cond
+  ;;  ;; ((spacemacs/system-is-mac) (setq TeX-view-program-selection '((output-pdf "Skim"))))
+  ;;  ;; For linux, use Okular or perhaps Zathura.
+  ;;  ((spacemacs/system-is-linux) (setq TeX-view-program-selection '((output-pdf "Zathura")))))
 
-  ;;;;  Org mode additions
+  ;; Function that builds pdf when saving latex file
+  (defun run-latex ()
+    (interactive)
+    (let ((process (TeX-active-process))) (if process (delete-process process)))
+    (let ((TeX-save-query nil)) (TeX-save-document ""))
+    (TeX-command-menu "latex/build"))
+  ;; (add-hook 'LaTeX-mode-hook (lambda () (local-set-key (kbd ":w") #'run-latex)))
 
-  ;; Fixing text formatting settings
-  (require 'org-bullets)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  ;; ORG-MODE
+
+  ;; Getting org mode to play nice yasnippet
+  ;; (add-hook 'org-mode-hook
+  ;;           (lambda ()
+  ;;             (setq-local yas/trigger-key [tab])
+  ;;             (define-key yas/keymap [tab] 'yas/next-field-or-maybe-expand)))
+  ;; (use-package org-bullets
+    ;; :hook (org-mode . org-bullets-mode))
+  (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESS(p)" "WAIT(w)" "|" "DONE(d)" "CANCEL(c)")))
+  ;; (use-package org-bullets
+  ;;   :hook (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+  ;; Turning on automatic newline
   (add-hook 'org-mode-hook '(lambda () (setq fill-column 80)))
-
-  ;; Turning on auto newline when writing in org-mode
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'turn-on-font-lock)
+  (setq org-ellipsis "⤵")
+  (add-hook 'org-mode-hook 'org-superstar-mode)
+  (setq org-hide-leading-stars nil)
+  (setq org-superstar-leading-bullet ?\s)
+
+  ;; Function to change the status of a TODO to DONE when checkboxes are full
+  (defun my/org-checkbox-todo ()
+    "Switch header TODO state to DONE when all checkboxes are ticked, to TODO otherwise"
+    (let ((todo-state (org-get-todo-state)) beg end)
+      (unless (not todo-state)
+        (save-excursion
+          (org-back-to-heading t)
+          (setq beg (point))
+          (end-of-line)
+          (setq end (point))
+          (goto-char beg)
+          (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]"
+                                 end t)
+              (if (match-end 1)
+                  (if (equal (match-string 1) "100%")
+                      (unless (string-equal todo-state "DONE")
+                        (org-todo 'done))
+                    (unless (string-equal todo-state "TODO")
+                      (org-todo 'todo)))
+                (if (and (> (match-end 2) (match-beginning 2))
+                         (equal (match-string 2) (match-string 3)))
+                    (unless (string-equal todo-state "DONE")
+                      (org-todo 'done))
+                  (unless (string-equal todo-state "TODO")
+                    (org-todo 'todo)))))))))
+
+  (add-hook 'org-checkbox-statistics-hook 'my/org-checkbox-todo)
+  ;; (use-package org-pdftools
+  ;;   :ensure nil
+  ;;   :quelpa ((org-pdftools
+  ;;             :fetcher git
+  ;;             :url "https://github.com/fuxialexander/org-pdftools.git"
+  ;;             :upgrade nil)))
+
+  ;; (use-package org-pdftools
+  ;;   :straight (org-pdftools :type git :host github :repo "fuxialexander/org-pdftools")
+  ;;   ;; :config (setq org-pdftools-root-dir "~/qnet/ref-pdfs/")
+  ;;   (with-eval-after-load 'org
+  ;;     (org-link-set-parameters "pdftools"
+  ;;                              :follow #'org-pdftools-open
+  ;;                              :complete #'org-pdftools-complete-link
+  ;;                              :store #'org-pdftools-store-link
+  ;;                              :export #'org-pdftools-export)
+  ;;     (add-hook 'org-store-link-functions 'org-pdftools-store-link)))
+
+  (use-package org-pdftools
+    :hook (org-mode . org-pdftools-setup-link))
+
+  (use-package org-noter
+    :config
+    (setq org-noter-always-create-frame nil
+          org-noter-insert-note-no-questions t
+          org-noter-separate-notes-from-heading t
+          org-noter-auto-save-last-location t))
+
+  (use-package org-noter-pdftools
+    :after org-noter
+    :config
+    (with-eval-after-load 'pdf-annot
+      (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
+
+  ;;;;; Theme Stuff
+
+  (use-package ewal-evil-cursors
+    :after (ewal-spacemacs-themes)
+    :config (ewal-evil-cursors-get-colors
+             :apply t :spaceline t))
+  (use-package spaceline
+    :after (ewal-evil-cursors winum)
+    :init (setq powerline-default-separator nil)
+    :config (spaceline-spacemacs-theme))
+
+  ;; Trying Ewal
+  ;; (use-package ewal
+  ;;   :init (setq ewal-use-built-in-always-p nil
+  ;;               ewal-use-built-in-on-failure-p t
+  ;;               ewal-built-in-palette "sexy-material"))
+  ;; (use-package ewal-spacemacs-themes
+  ;;   ;; :defer nil
+  ;;   :init (progn
+  ;;           (setq spacemacs-theme-underline-parens t
+  ;;                 my:rice:font (font-spec
+  ;;                               :family "Sauce Code Pro Nerd Font"
+  ;;                               ;; :weight 'semi-bold
+  ;;                               :size 10.0))
+  ;;           )
+  ;;           (show-paren-mode +1)
+  ;;           (global-hl-line-mode)
+  ;;           (set-frame-font my:rice:font nil t)
+  ;;           (add-to-list 'default-frame-alist
+  ;;                        `(font . ,(font-xlfd-name my:rice:font)))
+  ;;   :config (progn
+  ;;             (load-theme 'ewal-spacemacs-modern t)
+  ;;             (enable-theme 'ewal-spacemacs-modern)))
+
+  ;; Xresources (that is functional)
+  ;; (load-theme 'xresources t)
+
+  ;; Disabling highlighting for comments
+  (global-hl-line-mode -1)
+  (spacemacs/toggle-highlight-current-line-globally-off)
+
+  (defvar org-latex-fragment-last nil
+  "Holds last fragment/environment you were on.")
+
+  (defun org-latex-fragment-toggle ()
+    "Toggle a latex fragment image "
+    (and (eq 'org-mode major-mode)
+        (let* ((el (org-element-context))
+                (el-type (car el)))
+          (cond
+            ;; were on a fragment and now on a new fragment
+            ((and
+              ;; fragment we were on
+              org-latex-fragment-last
+              ;; and are on a fragment now
+              (or
+              (eq 'latex-fragment el-type)
+              (eq 'latex-environment el-type))
+              ;; but not on the last one this is a little tricky. as you edit the
+              ;; fragment, it is not equal to the last one. We use the begin
+              ;; property which is less likely to change for the comparison.
+              (not (= (org-element-property :begin el)
+                      (org-element-property :begin org-latex-fragment-last))))
+            ;; go back to last one and put image back
+            (save-excursion
+              (goto-char (org-element-property :begin org-latex-fragment-last))
+              (org-preview-latex-fragment))
+            ;; now remove current image
+            (goto-char (org-element-property :begin el))
+            (let ((ov (loop for ov in org-latex-fragment-image-overlays
+                            if
+                            (and
+                              (<= (overlay-start ov) (point))
+                              (>= (overlay-end ov) (point)))
+                            return ov)))
+              (when ov
+                (delete-overlay ov)))
+            ;; and save new fragment
+            (setq org-latex-fragment-last el))
+
+            ;; were on a fragment and now are not on a fragment
+            ((and
+              ;; not on a fragment now
+              (not (or
+                    (eq 'latex-fragment el-type)
+                    (eq 'latex-environment el-type)))
+              ;; but we were on one
+              org-latex-fragment-last)
+            ;; put image back on
+            (save-excursion
+              (goto-char (org-element-property :begin org-latex-fragment-last))
+              (org-preview-latex-fragment))
+            ;; unset last fragment
+            (setq org-latex-fragment-last nil))
+
+            ;; were not on a fragment, and now are
+            ((and
+              ;; we were not one one
+              (not org-latex-fragment-last)
+              ;; but now we are
+              (or
+              (eq 'latex-fragment el-type)
+              (eq 'latex-environment el-type)))
+            (goto-char (org-element-property :begin el))
+            ;; remove image
+            (let ((ov (loop for ov in org-latex-fragment-image-overlays
+                            if
+                            (and
+                              (<= (overlay-start ov) (point))
+                              (>= (overlay-end ov) (point)))
+                            return ov)))
+              (when ov
+                (delete-overlay ov)))
+            (setq org-latex-fragment-last el))))))
+
+
+  (add-hook 'post-command-hook 'org-latex-fragment-toggle)
 
   ;; For autopairing in org-mode
   (with-eval-after-load 'org
-    (modify-syntax-entry ?/ "(/" org-mode-syntax-table)
-    (modify-syntax-entry ?= "(=" org-mode-syntax-table)
+    ;; (modify-syntax-entry ?/ "(/" org-mode-syntax-table)
+    ;; (modify-syntax-entry ?= "(=" org-mode-syntax-table)
     (modify-syntax-entry ?\$ "($" org-mode-syntax-table)
     (modify-syntax-entry ?\( "()" org-mode-syntax-table)
     (modify-syntax-entry ?\[ "(]" org-mode-syntax-table)
     (add-hook 'org-mode-hook 'electric-pair-mode))
 
-;;  (use-package ewal-evil-cursors
-;;    :after (ewal-spacemacs-themes)
-;;    :config (ewal-evil-cursors-get-colors
-;;             :apply t :spaceline t))
-;;  (use-package spaceline
-;;    :after (ewal-evil-cursors winum)
-;;    :init (setq powerline-default-separator nil)
-;;    :config (spaceline-spacemacs-theme))
-;;
-;;
-;;  ;; Testing!!!!!
-;;  (use-package ewal
-;;    :init (setq ewal-use-built-in-always-p nil
-;;                ewal-use-built-in-on-failure-p t
-;;                ewal-built-in-palette "sexy-material"))
-;;  (use-package ewal-spacemacs-themes
-;;    :init (progn
-;;            (setq spacemacs-theme-underline-parens t
-;;                  my:rice:font (font-spec
-;;                                :family "Sauce Code Pro Nerd Font"
-;;                                ;; :weight 'semi-bold
-;;                                :size 10.0))
-;;            )
-;;            (show-paren-mode +1)
-;;            (global-hl-line-mode)
-;;            (set-frame-font my:rice:font nil t)
-;;            (add-to-list  'default-frame-alist
-;;                          `(font . ,(font-xlfd-name my:rice:font))))
-;;    :config (progn
-;;              (load-theme 'ewal-spacemacs-modern t)
-;;              (enable-theme 'ewal-spacemacs-modern))
-  ;; Testing!!!!!
+  ;; (use-package ewal-spacemacs-themes
+  ;;   ;; :straight t
+  ;;   :defer nil
+  ;;   :init (setq ewal-force-tty-colors nil
+  ;;               ewal-force-tty-colors-daemon nil)
+  ;;   :config (when (ewal-load-wal-colors)
+  ;;             (load-theme 'ewal-spacemacs-modern t))
+  ;;   :hook (spacemacs-post-user-config
+  ;;          . (lambda () (enable-theme 'ewal-spacemacs-modern))))
+  ;; (use-package ewal-evil-cursors
+  ;;   :after (ewal-spacemacs-themes)
+  ;;   :config (ewal-evil-cursors-get-colors
+  ;;            :apply t :spaceline t))
+  ;; (add-to-list 'TeX-expand-list
+  ;;              '("%sn" (lambda () server-name)))
+  ;; (add-to-list 'TeX-view-program-list
+  ;;              '("Zathura"
+  ;;                ("zathura %o"
+  ;;                 (mode-io-correlate " --synctex-forward %n:0:%b -x \"emacsclient --socket-name=%sn --no-wait +%{line} %{input}\""))
+  ;;                "zathura"))
 
+  ;; This is for using the built in pdfviewer in emacs
+  (setq-default TeX-master "main") ;; All master files called "main".
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+        TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+        TeX-source-correlate-start-server t)
 
+  ;; This is to use Zathura as the pdfviewer
+  ;; (setq TeX-source-correlate-mode t)        ; activate forward/reverse search
+  ;; (setq TeX-PDF-mode t)
+  ;; (add-to-list 'TeX-view-program-list '("zathura" zathura-forward-search))
+  ;; (setq TeX-view-program-selection (quote ((output-pdf "zathura") (output-dvi "xdvi"))))
 
-  ;; Xresources (that is functional)
-  ;; (load-theme 'xresources t)
-  (add-hook 'after-make-frame-functions (lambda (frame) load-theme 'xresources t))
-  ;;Disabling highlighting for comments
-  ;; (global-hl-line-mode -1)
-  ;; (spacemacs/toggle-highlight-current-line-globally-off)
-
+  ;; Suggested Zathura system
+;;   (defvar TeX-view-program-list-builtin
+;;   (cond
+;;    ((eq system-type 'windows-nt)
+;;     '(("Yap" ("yap -1" (mode-io-correlate " -s %n%b") " %o") "yap")
+;;       ("dviout" ("dviout -1 "
+;; 		 ((paper-a4 paper-portrait) "-y=A4 ")
+;; 		 ((paper-a4 paper-landscape) "-y=A4L ")
+;; 		 ((paper-a5 paper-portrait) "-y=A5 ")
+;; 		 ((paper-a5 paper-landscape) "-y=A5L ")
+;; 		 ((paper-b5 paper-portrait) "-y=E5 ")
+;; 		 ((paper-b5 paper-landscape) "-y=E5L ")
+;; 		 ((paper-b4jis paper-portrait) "-y=B4 ")
+;; 		 ((paper-b4jis paper-landscape) "-y=B4L ")
+;; 		 ((paper-b5jis paper-portrait) "-y=B5 ")
+;; 		 ((paper-b5jis paper-landscape) "-y=B5L ")
+;; 		 (paper-legal "-y=Legal ")
+;; 		 (paper-letter "-y=Letter ")
+;; 		 (paper-executive "-y=Executive ")
+;; 		 "%d" (mode-io-correlate " \"# %n '%b'\"")) "dviout")
+;;       ("SumatraPDF"
+;;        ("SumatraPDF -reuse-instance"
+;; 	(mode-io-correlate " -forward-search \"%b\" %n") " %o")
+;;        "SumatraPDF")
+;;       ("dvips and start" "dvips %d -o && start \"\" %f" "dvips")
+;;       ("start" "start \"\" %o")))
+;;    ((eq system-type 'darwin)
+;;     '(("Preview.app" "open -a Preview.app %o" "open")
+;;       ("Skim" "open -a Skim.app %o" "open")
+;;       ("displayline" "displayline %n %o %b" "displayline")
+;;       ("open" "open %o" "open")))
+;;    (t
+;;     `(("dvi2tty" ("dvi2tty -q -w 132 %o"))
+;;       ("xdvi" ("%(o?)xdvi"
+;; 	       (mode-io-correlate " -sourceposition \"%n %b\" -editor \"%cS\"")
+;; 	       ((paper-a4 paper-portrait) " -paper a4")
+;; 	       ((paper-a4 paper-landscape) " -paper a4r")
+;; 	       ((paper-a5 paper-portrait) " -paper a5")
+;; 	       ((paper-a5 paper-landscape) " -paper a5r")
+;; 	       (paper-b5 " -paper b5")
+;; 	       (paper-letter " -paper us")
+;; 	       (paper-legal " -paper legal")
+;; 	       (paper-executive " -paper 7.25x10.5in")
+;; 	       " %d") "%(o?)xdvi")
+;;       ("dvips and gv" "%(o?)dvips %d -o && gv %f" ,(list "%(o?)dvips" "gv"))
+;;       ("gv" "gv %o" "gv")
+;;       ("xpdf" ("xpdf -remote %s -raise %o" (mode-io-correlate " %(outpage)")) "xpdf")
+;;       ("Evince" ,(TeX-view-program-select-evince "gnome" "evince") "evince")
+;;       ("Atril" ,(TeX-view-program-select-evince "mate" "atril") "atril")
+;;       ("Okular" ("okular --unique %o" (mode-io-correlate "#src:%n%a")) "okular")
+;;       ("xdg-open" "xdg-open %o" "xdg-open")
+;;       ("PDF Tools" TeX-pdf-tools-sync-view)
+;;       ("Zathura"
+;;        ("zathura %o"
+;; 	(mode-io-correlate
+;; 	 " --synctex-forward %n:0:%b -x \"emacsclient +%{line} %{input}\""))
+;;        "zathura"))))
+;;   "Alist of built-in viewer specifications.
+;; This variable should not be changed by the user who can use
+;; `TeX-view-program-list' to add new viewers or overwrite the
+;; definition of built-in ones.  The latter variable also contains a
+;; description of the data format.")
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -468,18 +761,17 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (thrift stan-mode scad-mode qml-mode matlab-mode julia-mode arduino-mode yasnippet-snippets pandoc-mode ox-pandoc ht kubernetes anaphora disaster company-c-headers cmake-mode clang-format yaml-mode zmq skewer-mode polymode deferred websocket js2-mode simple-httpd pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (yaml-mode web-beautify org-pdftools org-noter livid-mode skewer-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc ess-smart-equals ess-R-data-view ctable csv-mode coffee-mode yasnippet-classic-snippets yasnippet-snippets disaster company-c-headers cmake-mode clang-format ox-pandoc ht pandoc-mode pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+ '(standard-indent 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:family "Source Code Pro" :foundry "ADBO" :slant normal :weight normal :height 98 :width normal)))))
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
@@ -490,16 +782,17 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
+ '(LaTeX-command-style
+   '(("" "%(PDF)%(latex) %(file-line-error) %(extraopts) -output-directory=tmp %S%(PDFout) ")))
  '(evil-want-Y-yank-to-eol nil)
+ '(org-agenda-files '("/home/olav/Dropbox/project/notes.org"))
  '(package-selected-packages
-   (quote
-    (stickyfunc-enhance pippel pipenv lsp-python-ms importmagic epc ctable concurrent helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode counsel-gtags counsel swiper ivy blacken yaml-mode zmq skewer-mode polymode deferred websocket js2-mode simple-httpd pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+   '(org-pdftools csv-mode yasnippet-classic-snippets yasnippet-snippets disaster company-c-headers cmake-mode clang-format ox-pandoc ht pandoc-mode pdf-tools tablist xterm-color unfill shell-pop org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term htmlize gnuplot flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck eshell-z eshell-prompt-extras esh-help auto-dictionary company-auctex auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic ein jupyter xresources-theme ewal-spacemacs-modern-theme autopair ess spacemacs-theme smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy ewal-spacemacs-theme evil-magit magit transient git-commit with-editor company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete ewal-evil-cursors ewal-spacemacs-themes ewal ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))
+ '(standard-indent 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:family "Source Code Pro" :foundry "ADBO" :slant normal :weight normal :height 98 :width normal)))))
 )
