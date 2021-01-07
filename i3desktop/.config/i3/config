@@ -265,8 +265,6 @@ gaps outer 10
 #}
 
 
-# Getting constant wallpaper
-#exec_always feh --bg-fill /home/olav/Pictures/StalenhagLampLook.jpg
 
 ## Keyboard configurations
 exec_always --no-startup-id /home/olav/.config/polybar/launch.sh
@@ -275,8 +273,12 @@ exec_always --no-startup-id /opt/anaconda3/bin/flashfocus
 
 ## Startup programs
 #exec --no-startup-id i3-msg 'workspace $workspace1; exec opera'
-exec --no-startup-id wal -i /home/olav/Pictures/StalenhagOfficeLate.jpg
+# Getting constant wallpaper
+exec --no-startup-id feh --bg-fill /home/olav/Pictures/StalenhagOfficeLate.jpg
+#exec --no-startup-id wal -i /home/olav/Pictures/StalenhagOfficeLate.jpg
+exec --no-startup-id wal --theme "dkeg-kit"
 exec --no-startup-id           $term -name math -geometry 120x90 -e python -q
 exec --no-startup-id           $term -name dropdown -geometry 120x90
 #exec --no-startup-id ~/.config/polybar/launch.sh
 exec --no-startup-id compton --config ~/.config/compton/compton.conf
+exec --no-startup-id nordvpn connect
