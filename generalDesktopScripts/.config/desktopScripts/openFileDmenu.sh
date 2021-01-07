@@ -15,7 +15,7 @@ audio_filetypes=(mp3 wav ogg flac aiff au)
 # Finds the desired file
 #file=$(fd /home/olav/ /mnt -t file . | dmenu -l 20 -p "Choose file:")
 #file=$(fd -t file . /home/olav/ /mnt | dmenu -l 20 -p "Choose file:")
-file=$(rg --hidden --files --ignore-case /home/olav /mnt | \
+file=$(rg --hidden --files --ignore-case /home/olav | \
 dmenu -l 20 -i -nb $color0 -nf $color7 -sb $color0 -sf $color4 -p "Choose file:")
 # file=$(find ~/ | dmenu -l 10 -p "Choose file:")
 # echo $file
