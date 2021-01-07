@@ -129,6 +129,7 @@ alias upgrade='sudo apt-get upgrade'
 
 # Filesystem scripts
 alias replaceSpace='~/.config/desktopScripts/replaceSpaces.sh'
+alias mendeleySync='sh ~/.config/desktopScripts/preproject-bib-autosync.sh'
 
 # Shortcut to often edited config files
 alias i3config='vim ~/.config/i3/config'
