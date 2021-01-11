@@ -44,47 +44,48 @@ function besides modifying the variable values.
    there are different options for how this should be done
 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-        dotspacemacs-configuration-layers
-        '(csv
-          bm
-          javascript
-          yaml
-          octave
-          helm
-          auto-completion
-          (c-c++ :variables
-                 c-c++-enable-clang-support t)
-          better-defaults
-          conda
-          (conda :variables
-                 conda-anaconda-home "/home/olav/.conda/envs")
-          emacs-lisp
-          ess
-          ;; +lang
-          ;; (extra-langs :variables matlab-mode)
-          git
-          markdown
-          (latex :variables
-                 latex-build-command "LaTeX"
-                 latex-enable-auto-fill t
-                 latex-enable-folding t
-                 latex-enable-magic t)
-          pandoc
-          python
-          pdf
-          ;; (python :variables python-backend 'lsp)
-          ;; ipython-notebook
-          (org :variables
-              org-enable-roam-support t)
-          (shell :variables
-                 shell-default-shell 'shell
-                 shell-default-height 30
-                 shell-default-position 'bottom)
-          (spacemacs-spaceline :location local)
-          spell-checking
-          syntax-checking
-          ;; version-control
-          )
+    dotspacemacs-configuration-layers
+    '(csv
+      bm
+      bibtex
+      javascript
+      yaml
+      octave
+      helm
+      auto-completion
+      (c-c++ :variables
+             c-c++-enable-clang-support t)
+      better-defaults
+      conda
+      (conda :variables
+             conda-anaconda-home "/home/olav/.conda/envs")
+      emacs-lisp
+      ess
+      ;; +lang
+      ;; (extra-langs :variables matlab-mode)
+      git
+      markdown
+      (latex :variables
+             latex-build-command "LaTeX"
+             latex-enable-auto-fill t
+             latex-enable-folding t
+             latex-enable-magic t)
+      pandoc
+      python
+      pdf
+      ;; (python :variables python-backend 'lsp)
+      ;; ipython-notebook
+      (org :variables
+          org-enable-roam-support t)
+      (shell :variables
+             shell-default-shell 'shell
+             shell-default-height 30
+             shell-default-position 'bottom)
+      (spacemacs-spaceline :location local)
+      spell-checking
+      syntax-checking
+      ;; version-control
+      )
  #+END_SRC
 
 ** Additional packages to install
@@ -99,8 +100,10 @@ a layer. You can also put the configuration in `dotspacemacs/user-config'.
                                       jupyter
                                       xresources-theme
                                       ;; org-bullets
+                                      ;; (org-roam :location (recipe :fetcher github :repo "jethrokuan/org-roam"))
                                       org-pdftools
                                       org-noter-pdftools
+                                      org-roam-bibtex
                                       ;; ewal
                                       ewal-spacemacs-themes
                                       ewal-evil-cursors
@@ -127,7 +130,7 @@ a layer. You can also put the configuration in `dotspacemacs/user-config'.
       dotspacemacs-excluded-packages '()
       dotspacemacs-install-packages 'used-only))
  #+END_SRC
-
+ 
 * Spacemacs Init 
 ** Start and several functions
 Initialization function. This function is called at the very startup of
@@ -407,6 +410,34 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
  (defun dotspacemacs/user-config ()
   #+END_SRC
   
+** Folders and Locations  
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+    ;; Regular Org
+    (setq
+     org_roam_dir "~/Insync/olavpe/org-roam"
+     mendeley_bib_files
+     '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
+     "~/Documents/BibTex/Olav_Pedersen_Thesis2020.bib")
+     org-directory org_roam_dir
+     org-default-notes-file (concat org_roam_dir "/inbox.org")
+     )
+    ;; Org-Roam
+    (setq
+     org-roam-directory org_roam_dir
+     deft-directory org_roam_dir
+     org-roam-db-location (concat org_roam_dir "/db/org-roam.db"))
+    ;; Bibtex
+    (setq
+     bibtex-completion-notes-path org_roam_dir
+     bibtex-completion-bibliography mendeley_bib_files
+     bibtex-completion-library-path '("~/Dropbox/MendeleyDocs/"))
+    ;; Org-ref
+    (setq
+     org-ref-notes-directory org_roam_dir
+     org-ref-default-bibliography (list mendeley_bib_files)
+     org-ref-bibliography-notes (concat org_roam_dir "/bibnotes.org"))
+#+END_SRC
+ 
 ** Programming Languages
 ***  C 
     Simply sets the correct comment style as "//"
@@ -531,25 +562,6 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
       (setq org-superstar-leading-bullet ?\s)
     #+END_SRC
     
-*** pdf-tools and noter
-    #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-      (use-package org-pdftools
-        :hook (org-mode . org-pdftools-setup-link))
-
-      (use-package org-noter
-        :config
-        (setq org-noter-always-create-frame nil
-              org-noter-insert-note-no-questions t
-              org-noter-separate-notes-from-heading t
-              org-noter-auto-save-last-location t))
-
-      (use-package org-noter-pdftools
-        :after org-noter
-        :config
-        (with-eval-after-load 'pdf-annot
-          (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
-    #+END_SRC
-   
 *** Checklist completion changes TODO to DONE 
     
      Switch header TODO state to DONE when all checkboxes are ticked, to TODO
@@ -662,6 +674,135 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
       (add-hook 'post-command-hook 'org-latex-fragment-toggle)
  #+END_SRC
 
+*** Org-pdftools and Org-noter
+    Using different packages
+    #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+      (use-package org-pdftools
+        :hook (org-mode . org-pdftools-setup-link))
+
+      (use-package org-noter
+        :after (:any org pdf-view)
+        :config
+        (setq org-noter-always-create-frame nil
+              org-noter-insert-note-no-questions t
+              org-noter-separate-notes-from-heading t
+              org-noter-hide-other nil
+              ;; Everything is relative to the main notes file
+              ;; org-noter-notes-search-path (list org_notes)
+              org-noter-auto-save-last-location t))
+
+      (use-package org-noter-pdftools
+        :after org-noter
+        :config
+        (with-eval-after-load 'pdf-annot
+          (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
+    #+END_SRC
+    
+*** Org-Roam
+   This sets the org roam directory and starts org-roam on startup.
+ #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+   (add-hook 'after-init-hook 'org-roam-mode)
+ #+END_SRC
+ 
+*** Org-Ref
+    This section was copied from Ian Jones, as much of the settings above, but
+this section was originally found at: https://rgoswami.me/posts/org-note-workflow/#org-ref 
+ - ~org-ref-get-pdf-filename-function~ will use helm-bibtex settings to find the pdf
+ - ~org-ref-notes-function~, currently this will expect one file per pdf and to
+   use ~org-roam~ rather than ref or bibtex systems.
+   
+ #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+   (use-package org-ref
+       :config
+       (setq
+        org-ref-completion-library 'org-ref-ivy-cite
+        org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
+        org-ref-note-title-format "* TODO %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
+        org-ref-notes-function 'orb-edit-notes
+       ))
+    #+END_SRC
+
+**** Cheatsheet for using org-ref fields 
+
+     These are format specifiers for org-ref. The are *not* the same as the keys
+     in the .bib files.
+     
+#+BEGIN_EXAMPLE
+In the format, the following percent escapes will be expanded.
+%l The BibTeX label of the citation.
+%a List of author names, see also \`reftex-cite-punctuation&rsquo;.
+%2a Like %a, but abbreviate more than 2 authors like Jones et al.
+%A First author name only.
+%e Works like %a, but on list of editor names. (%2e and %E work as well)
+It is also possible to access all other BibTeX database fields:
+%b booktitle %c chapter %d edition %h howpublished
+%i institution %j journal %k key %m month
+%n number %o organization %p pages %P first page
+%r address %s school %u publisher %t title
+%v volume %y year
+%B booktitle, abbreviated %T title, abbreviated
+%U url
+%D doi
+%S series %N note
+%f pdf filename
+%F absolute pdf filename
+Usually, only %l is needed. The other stuff is mainly for the echo area
+display, and for (setq reftex-comment-citations t).
+%< as a special operator kills punctuation and space around it after the
+string has been formatted.
+A pair of square brackets indicates an optional argument, and RefTeX
+will prompt for the values of these arguments.
+#+END_EXAMPLE
+    
+*** Org-Roam-Bibtex
+   This sets the org roam directory and starts org-roam on startup.
+ 
+ #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+      (use-package org-roam-bibtex
+        :after org-roam
+        :hook (org-roam-mode . org-roam-bibtex-mode))
+
+      (setq orb-preformat-keywords
+          '("citekey" "title" "url" "author-or-editor" "keywords" "file"))
+#+end_src
+
+#   The code is a snippet is a template for orb
+#  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+#      (setq orb-templates
+#            '(("r" "ref" plain (function org-roam-capture--get-point)
+#               ""
+#               :file-name "${slug}"
+#               :head "#+TITLE: ${=key=}: ${title}\n#+ROAM_KEY: ${ref}
+#    - tags ::
+#    - keywords :: ${keywords}
+#    \n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :URL: ${url}\n  :AUTHOR: ${author-or-editor}\n  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n  :NOTER_PAGE: \n  :END:\n\n"
+#               :unnarrowed t))))
+# #+end_src
+
+ This is an org-roam-bibtex template taken from
+ https://www.philipperambert.com/Installing-Org-Roam-Bibtex-In-Spacemacs 
+ 
+ #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+   (setq orb-templates
+       '(("r" "ref" plain (function org-roam-capture--get-point)
+           ""
+           :file-name "${citekey}"
+           :head "#+TITLE: ${citekey}: ${title}\n#+ROAM_KEY: ${ref}
+
+   - tags ::
+   - keywords :: ${keywords}
+
+    ,* ${title}
+    :PROPERTIES:
+    :Custom_ID: ${citekey}
+    :URL: ${url}
+    :AUTHOR: ${author-or-editor}
+    :NOTER_DOCUMENT: ${file}
+    :NOTER_PAGE:
+    :END:")))
+
+ #+END_SRC
+
 *** Autopairing
 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
@@ -675,6 +816,29 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
         (add-hook 'org-mode-hook 'electric-pair-mode))
  #+END_SRC
  
+ 
+** Bibtex Settings  
+ #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+   (setq
+    bibtex-completion-pdf-field "file"
+    bibtex-completion-notes-template-multiple-files
+    (concat
+     "#+TITLE: ${title}\n"
+     "#+ROAM_KEY: cite:${=key=}\n"
+     "* TODO Notes\n"
+     ":PROPERTIES:\n"
+     ":Custom_ID: ${=key=}\n"
+     ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
+     ":AUTHOR: ${author-abbrev}\n"
+     ":JOURNAL: ${journaltitle}\n"
+     ":DATE: ${date}\n"
+     ":YEAR: ${year}\n"
+     ":DOI: ${doi}\n"
+     ":URL: ${url}\n"
+     ":END:\n\n"
+     ))
+ #+END_SRC
+   
 ** Theme Stuff
 ***  Setting cursor and spaceline theme
    
@@ -711,3 +875,4 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
 # Local Variables:
 # eval: (add-hook 'after-save-hook (lambda ()(org-babel-tangle)) nil t)
 # End:
+
