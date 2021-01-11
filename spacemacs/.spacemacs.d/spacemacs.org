@@ -104,6 +104,7 @@ a layer. You can also put the configuration in `dotspacemacs/user-config'.
                                       org-pdftools
                                       org-noter-pdftools
                                       org-roam-bibtex
+                                      org-roam-server
                                       ;; ewal
                                       ewal-spacemacs-themes
                                       ewal-evil-cursors
@@ -412,30 +413,32 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   
 ** Folders and Locations  
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-    ;; Regular Org
-    (setq
-     org_roam_dir "~/Insync/olavpe/org-roam"
-     mendeley_bib_files
-     '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
-     "~/Documents/BibTex/Olav_Pedersen_Thesis2020.bib")
-     org-directory org_roam_dir
-     org-default-notes-file (concat org_roam_dir "/inbox.org")
-     )
-    ;; Org-Roam
-    (setq
-     org-roam-directory org_roam_dir
-     deft-directory org_roam_dir
-     org-roam-db-location (concat org_roam_dir "/db/org-roam.db"))
-    ;; Bibtex
-    (setq
-     bibtex-completion-notes-path org_roam_dir
-     bibtex-completion-bibliography mendeley_bib_files
-     bibtex-completion-library-path '("~/Dropbox/MendeleyDocs/"))
-    ;; Org-ref
-    (setq
-     org-ref-notes-directory org_roam_dir
-     org-ref-default-bibliography (list mendeley_bib_files)
-     org-ref-bibliography-notes (concat org_roam_dir "/bibnotes.org"))
+  ;; Regular Org
+  (setq
+   org_roam_dir "~/Insync/olavpe/org-roam"
+   mendeley_bib_files
+   '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
+   "~/Documents/BibTex/Olav_Pedersen_Thesis2020.bib")
+   org-directory org_roam_dir
+   org-default-notes-file (concat org_roam_dir "/inbox.org")
+   )
+  ;; Org-Roam
+  (setq
+   org-roam-directory org_roam_dir
+   deft-directory org_roam_dir
+   org-roam-db-location (concat org_roam_dir "/db/org-roam.db"))
+  ;; Bibtex
+  (setq
+   bibtex-completion-notes-path org_roam_dir
+   bibtex-completion-bibliography mendeley_bib_files
+   bibtex-completion-library-path '("~/Dropbox/MendeleyDocs/"))
+  ;; Org-ref
+  (setq
+   org-ref-notes-directory org_roam_dir
+   org-ref-default-bibliography 
+   '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
+   "~/Documents/BibTex/Olav_Pedersen_Thesis2020.bib")
+   org-ref-bibliography-notes (concat org_roam_dir "/bibnotes.org"))
 #+END_SRC
  
 ** Programming Languages
@@ -684,11 +687,11 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
         :after (:any org pdf-view)
         :config
         (setq org-noter-always-create-frame nil
+              org-noter-notes-window-location 'other-frame
+              org-noter-hide-other nil
               org-noter-insert-note-no-questions t
               org-noter-separate-notes-from-heading t
-              org-noter-hide-other nil
-              ;; Everything is relative to the main notes file
-              ;; org-noter-notes-search-path (list org_notes)
+              org-noter-notes-search-path (list org_roam_dir)
               org-noter-auto-save-last-location t))
 
       (use-package org-noter-pdftools
@@ -700,8 +703,30 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
     
 *** Org-Roam
    This sets the org roam directory and starts org-roam on startup.
+   If you want to add more good org-roam config information checkout the
+   following link: https://rgoswami.me/posts/org-note-workflow/#org-noter 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
    (add-hook 'after-init-hook 'org-roam-mode)
+ #+END_SRC
+ 
+*** Org-Roam-Server
+   These are the settings for setting up org-roam-server in order to visualize
+   all the work being done in org-roam
+ #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+(use-package org-roam-server
+  :ensure t
+  :config
+  (setq org-roam-server-host "127.0.0.1"
+        org-roam-server-port 8080
+        org-roam-server-authenticate nil
+        org-roam-server-export-inline-images t
+        org-roam-server-serve-files nil
+        org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
+        org-roam-server-network-poll t
+        org-roam-server-network-arrows nil
+        org-roam-server-network-label-truncate t
+        org-roam-server-network-label-truncate-length 60
+        org-roam-server-network-label-wrap-length 20))
  #+END_SRC
  
 *** Org-Ref
@@ -718,6 +743,7 @@ this section was originally found at: https://rgoswami.me/posts/org-note-workflo
         org-ref-completion-library 'org-ref-ivy-cite
         org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
         org-ref-note-title-format "* TODO %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
+        org-ref-notes-directory "~/Insync/olavpe/org-roam/"
         org-ref-notes-function 'orb-edit-notes
        ))
     #+END_SRC
@@ -783,6 +809,11 @@ will prompt for the values of these arguments.
  https://www.philipperambert.com/Installing-Org-Roam-Bibtex-In-Spacemacs 
  
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+(setq orb-preformat-keywords
+      '("citekey" "title" "url" "author-or-editor" "keywords" "file")
+      orb-process-file-keyword t
+      orb-file-field-extensions '("pdf"))
+
    (setq orb-templates
        '(("r" "ref" plain (function org-roam-capture--get-point)
            ""
