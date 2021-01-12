@@ -33,6 +33,4 @@ else
     # For home office at Lysaker
     xrandr --output LVDS-0 --off --output VGA-0 --primary --auto \ 
     --output HDMI-0 --auto --right-of VGA-0
-    # test
-
 fi
