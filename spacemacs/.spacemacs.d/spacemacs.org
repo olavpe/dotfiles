@@ -101,6 +101,7 @@ a layer. You can also put the configuration in `dotspacemacs/user-config'.
                                       xresources-theme
                                       ;; org-bullets
                                       ;; (org-roam :location (recipe :fetcher github :repo "jethrokuan/org-roam"))
+                                      sqlite3
                                       org-pdftools
                                       org-noter-pdftools
                                       org-roam-bibtex
@@ -436,7 +437,7 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
    org-roam-directory org_roam_dir
    org-roam-index-file (concat org_roam_dir "/index.org")
    deft-directory org_roam_dir
-   org-roam-db-location (concat org_roam_dir "/db/org-roam.db"))
+   org-roam-db-location (concat org_roam_dir "/org-roam.db"))
   ;; Bibtex
   (setq
    bibtex-completion-notes-path org_roam_dir
@@ -736,6 +737,7 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
    following link: https://rgoswami.me/posts/org-note-workflow/#org-noter 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
    (add-hook 'after-init-hook 'org-roam-mode)
+   (setq org-link-file-path-type 'adaptive)
  #+END_SRC
  
 *** Org-Roam-Server
