@@ -413,6 +413,13 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
  (defun dotspacemacs/user-config ()
   #+END_SRC
   
+** Keybindings
+   Non-specific keybindings are defined below
+  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  ;; Getting org-roam to open this file
+  (spacemacs/set-leader-keys "feo" (lambda () (interactive) (find-file "~/.spacemacs.d/spacemacs.org")))
+  #+END_SRC
+
 ** Folders and Locations  
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ;; Regular Org
@@ -562,8 +569,9 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
      (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESS(p)" "WAIT(w)" "|" "DONE(d)" "CANCEL(c)")))
     #+END_SRC
     
-*** Turning on automatic newline
+*** Turning on automatic newline and line wrapping
     #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+      (setq org-startup-truncated nil)
       (add-hook 'org-mode-hook '(lambda () (setq fill-column 80)))
       (add-hook 'org-mode-hook 'auto-fill-mode)
       (add-hook 'org-mode-hook 'turn-on-font-lock)
