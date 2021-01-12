@@ -219,10 +219,10 @@ user code in there besides modifying the variable values.
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 18
+                               :size 13
                                :weight normal
                                :width normal
-                               :powerline-scale 2)
+                               :powerline-scale 1.1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -389,7 +389,9 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
 (defun dotspacemacs/user-init ()
 ;;  (setq spacemacs-theme-comment-bg nil)
- (setenv "WORKON_HOME" "/opt/anaconda3/envs")
+  ;; (setenv "WORKON_HOME" "/opt/anaconda3/envs")
+  (setq spacemacs-theme-comment-bg nil)
+  (setenv "WORKON_HOME" "/home/olav/.conda/envs")
   ;; dotspacemacs-default-font '("SauceCode Pro Nerd Mono"
   ;;                             :size 18
   ;;                             :weight normal
@@ -400,7 +402,7 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
  
 * User Config
 
-** Starting user-config  
+** Starting user-config
    Configuration function for user code. This function is called at the very end
    of Spacemacs initialization after layers configuration. This is the place
    where most of your configurations should be done. Unless it is explicitly
@@ -443,7 +445,7 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
 #+END_SRC
  
 ** Programming Languages
-***  C 
+*** C 
     Simply sets the correct comment style as "//"
   #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
    (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
@@ -467,9 +469,7 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
     (add-hook 'matlab-mode-hook 'init-matlab)
    #+END_SRC
    
-  
 ** Magit Settings 
-  
 *** Evil-Magit 
     This option is set to ensure that the keybindings 'j' and 'k' can be used
      for navigating up and down. If the following option is activated it enables
@@ -868,7 +868,6 @@ will prompt for the values of these arguments.
         (add-hook 'org-mode-hook 'electric-pair-mode))
  #+END_SRC
  
- 
 ** Bibtex Settings  
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
    (setq
@@ -914,8 +913,8 @@ will prompt for the values of these arguments.
 *** Disabling highlight for comments
 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-      (global-hl-line-mode -1)
-      (spacemacs/toggle-highlight-current-line-globally-off)
+   (global-hl-line-mode -1)
+   (spacemacs/toggle-highlight-current-line-globally-off)
  #+END_SRC
 
 ** Finishing user-config
@@ -923,6 +922,7 @@ will prompt for the values of these arguments.
 )
  #+END_SRC
 
+ 
 * Local Variables
 # Local Variables:
 # eval: (add-hook 'after-save-hook (lambda ()(org-babel-tangle)) nil t)
