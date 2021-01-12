@@ -26,8 +26,12 @@ else
     # For BenQ screen without using laptop
     # xrandr --output LVDS-0 --off --output DP-1 --primary --mode 3440x1440
     # For BenQ screen and extra montifor without using laptop
-    xrandr --output LVDS-0 --off --output DP-1 --primary --mode 3440x1440 --output VGA-0 --auto --left-of DP-1
+    # xrandr --output LVDS-0 --off --output DP-1 --primary --mode 3440x1440 --output VGA-0 --auto --left-of DP-1
     # For Prediktor office monitor (using both laptop and external)
     # xrandr --output LVDS-0 --primary --auto --right-of DP-1 --auto
     # xrandr --output DP-1 --primary --auto --right-of LVDS-0 --auto
+    # For home office at Lysaker
+    xrandr --output LVDS-0 --off --output VGA-0 --primary --auto \ 
+    --output HDMI-0 --auto --left-of VGA-0
+
 fi
