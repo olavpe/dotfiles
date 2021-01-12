@@ -425,6 +425,7 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   ;; Org-Roam
   (setq
    org-roam-directory org_roam_dir
+   org-roam-index-file (concat org_roam_dir "/index.org")
    deft-directory org_roam_dir
    org-roam-db-location (concat org_roam_dir "/db/org-roam.db"))
   ;; Bibtex
@@ -466,6 +467,17 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
     (add-hook 'matlab-mode-hook 'init-matlab)
    #+END_SRC
    
+  
+** Magit Settings 
+  
+*** Evil-Magit 
+    This option is set to ensure that the keybindings 'j' and 'k' can be used
+     for navigating up and down. If the following option is activated it enables
+     a visual mode for magit, but overrides more natural vim bindings 'j' and 'k'.
+   #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+    ;; (setq evil-magit-use-y-for-yank nil)
+  #+END_SRC
+  
 ** Writing Settings  
 *** Markdown settings 
 **** Pandoc Settings 
@@ -597,6 +609,15 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
    (add-hook 'org-checkbox-statistics-hook 'my/org-checkbox-todo)
     #+END_SRC
     
+*** Org-babel
+    This is to enable compilation for different source code block environments
+ #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+    (org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (R . t)))
+#+END_SRC   
+ 
 *** Toggles LaTeX fragment 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
       (defvar org-latex-fragment-last nil
