@@ -18,11 +18,11 @@ if (xrandr | grep "$HDMI connected"); then
     xrandr --output HDMI-0 --off
 fi
 
-if (xrandr | grep "$EXT disconnected"); then
-    echo External monitor is disconnected\n\r
+if (xrandr | grep "$EXT disconnected" | grep "$HDMI disconnected" | grep "$VGA disconnected"); then
+    echo No external monitor is connected\n\r
     xrandr --output LVDS-0 --auto
 else
-    echo External monitor detected\n\r
+    echo External monitors detected\n\r
     # For BenQ screen without using laptop
     # xrandr --output LVDS-0 --off --output DP-1 --primary --mode 3440x1440
     # For BenQ screen and extra montifor without using laptop
@@ -31,6 +31,5 @@ else
     # xrandr --output LVDS-0 --primary --auto --right-of DP-1 --auto
     # xrandr --output DP-1 --primary --auto --right-of LVDS-0 --auto
     # For home office at Lysaker
-    xrandr --output LVDS-0 --off --output VGA-0 --primary --auto \ 
-    --output HDMI-0 --auto --right-of VGA-0
+    xrandr --output LVDS-0 --off --output VGA-0 --primary --auto --output HDMI-0 --auto --right-of VGA-0
 fi
