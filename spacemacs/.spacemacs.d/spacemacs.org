@@ -879,6 +879,20 @@ will prompt for the values of these arguments.
  #+END_SRC
  
 ** Bibtex Settings  
+   These are the following custom settings to make ~helm-bibtex~ easier to work
+   together with ~natbib~. Especially when working on the masters. The default
+   is set to "cite".
+ #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (setq bibtex-completion-cite-default-command "citep")
+ #+END_SRC
+ 
+   Since I rarely ever use optional pre- or post-arguments the following
+   disables the default prompting. 
+ #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (setq bibtex-completion-cite-prompt-for-optional-arguments nil)
+ #+END_SRC
+ 
+    This defines the custom template that bibtex uses. 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
    (setq
     bibtex-completion-pdf-field "file"
@@ -931,7 +945,7 @@ will prompt for the values of these arguments.
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
 )
  #+END_SRC
-
+ 
  
 * Local Variables
 # Local Variables:
