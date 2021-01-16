@@ -428,9 +428,13 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
    org_roam_dir "~/Insync/olavpe/org-roam"
    mendeley_bib_files
    '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
-   "~/Documents/BibTex/Olav_Pedersen_Thesis2020.bib")
+   "~/Documents/BibTex/Olav_Pedersen_Thesis2021.bib")
    org-directory org_roam_dir
    org-default-notes-file (concat org_roam_dir "/inbox.org")
+   )
+  ;; Org-Agenda
+  (setq
+   org-agenda-files '("~/Insync/olavpe/org-agenda")
    )
   ;; Org-Roam
   (setq
@@ -448,7 +452,7 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
    org-ref-notes-directory org_roam_dir
    org-ref-default-bibliography 
    '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
-   "~/Documents/BibTex/Olav_Pedersen_Thesis2020.bib")
+     "~/Documents/BibTex/Olav_Pedersen_Thesis2021.bib")
    org-ref-bibliography-notes (concat org_roam_dir "/bibnotes.org"))
 #+END_SRC
  
