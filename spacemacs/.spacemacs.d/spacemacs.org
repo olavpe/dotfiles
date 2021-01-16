@@ -568,7 +568,61 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   #+END_SRC
  
 ** Org Settings 
-   
+  
+*** Org-Capture
+**** Org Function for refiling
+  Prompt for a location in an org file and jump to it. This is for promping for
+  refile targets when doing captures.  
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+(defun org-get-target-headline (&optional prompt)
+    (let* ((target (save-excursion
+                     (org-refile-get-location prompt nil t)))
+           (file (nth 1 target))
+           (pos (nth 3 target))
+           )
+    (with-current-buffer (find-file-noselect file)
+        (goto-char pos)
+        (org-end-of-subtree)
+        (org-return)
+    )))
+#+END_SRC
+
+**** Org Capture Templates 
+     mc- A Capture which is related to a coding project in the masters
+     mr- Masters, general reference
+     ms- masters coding snippet
+    
+     msc- A Capture which is related to a coding project in the masters
+     msr- Masters, thesis writing
+     msg- Masters, general reference
+     mss- masters coding snippet
+    
+     #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (setq org-capture-templates
+        '(
+          ("m" "Master Project")
+          ("mL" "Schedule a task with link" entry
+          (file+function "../org-agenda/masters.org" org-get-target-headline)
+           ;; "%^{Select Context|SkyTrack Code|Thesis Writing|Masters General}")
+           "* TODO %^{Task} \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
+          ("mS"  "Scheduled task with link with snippet" entry 
+          (file+function "../org-agenda/masters.org" org-get-target-headline)
+           ;; "%^{Select Context|SkyTrack Code|Thesis Writing|Masters General}")
+           "* TODO %^{Task} \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")))
+          ;; ("msc"  "Scheduled task link to code in SkyTrack" entry 
+          ;; (file+headline "masters.org" "SkyTrack Code")
+          ;;  "* TODO %^{Task} \n %U \n SCHEDULED: %^t \n %a \n %?")
+          ;; ("mst"  "Scheduled task link for Thesis" entry 
+          ;; (file+headline "masters.org" "Thesis Writing")
+          ;;  "* TODO %^{Task} \n %U \n SCHEDULED: %^t \n %a \n %?")
+          ;; ("msg"  "Scheduled task link for Master's General" entry 
+          ;; (file+headline "masters.org" "Master's General")
+          ;;  "* TODO %^{Task} \n %U \n SCHEDULED: %^t \n %a \n %?")
+          ;; ("mss"  "Scheduled task link for Master's General" entry 
+          ;; (file+headline "masters.org" "Master's General")
+          ;;  "* TODO %^{Task} \n %U \n SCHEDULED: %^t \n %a \n %?")
+     #+END_SRC
+
 *** Defining the keywords agenda terms
     #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
      (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESS(p)" "WAIT(w)" "|" "DONE(d)" "CANCEL(c)")))
