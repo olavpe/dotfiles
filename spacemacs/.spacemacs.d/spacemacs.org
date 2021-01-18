@@ -101,6 +101,7 @@ a layer. You can also put the configuration in `dotspacemacs/user-config'.
                                       xresources-theme
                                       ;; org-bullets
                                       ;; (org-roam :location (recipe :fetcher github :repo "jethrokuan/org-roam"))
+                                      sqlite3
                                       org-pdftools
                                       org-noter-pdftools
                                       org-roam-bibtex
@@ -219,10 +220,10 @@ user code in there besides modifying the variable values.
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 18
+                               :size 13
                                :weight normal
                                :width normal
-                               :powerline-scale 2)
+                               :powerline-scale 1.1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -400,7 +401,7 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
  
 * User Config
 
-** Starting user-config  
+** Starting user-config
    Configuration function for user code. This function is called at the very end
    of Spacemacs initialization after layers configuration. This is the place
    where most of your configurations should be done. Unless it is explicitly
@@ -411,6 +412,13 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
  (defun dotspacemacs/user-config ()
   #+END_SRC
   
+** Keybindings
+   Non-specific keybindings are defined below
+  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  ;; Getting org-roam to open this file
+  (spacemacs/set-leader-keys "feo" (lambda () (interactive) (find-file "~/.spacemacs.d/spacemacs.org")))
+  #+END_SRC
+
 ** Folders and Locations  
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ;; Regular Org
@@ -418,16 +426,20 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
    org_roam_dir "~/Insync/olavpe/org-roam"
    mendeley_bib_files
    '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
-   "~/Documents/BibTex/Olav_Pedersen_Thesis2020.bib")
+   "~/Documents/BibTex/Olav_Pedersen_Thesis2021.bib")
    org-directory org_roam_dir
    org-default-notes-file (concat org_roam_dir "/inbox.org")
+   )
+  ;; Org-Agenda
+  (setq
+   org-agenda-files '("~/Insync/olavpe/org-agenda")
    )
   ;; Org-Roam
   (setq
    org-roam-directory org_roam_dir
    org-roam-index-file (concat org_roam_dir "/index.org")
    deft-directory org_roam_dir
-   org-roam-db-location (concat org_roam_dir "/db/org-roam.db"))
+   org-roam-db-location (concat org_roam_dir "/org-roam.db"))
   ;; Bibtex
   (setq
    bibtex-completion-notes-path org_roam_dir
@@ -438,12 +450,12 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
    org-ref-notes-directory org_roam_dir
    org-ref-default-bibliography 
    '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
-   "~/Documents/BibTex/Olav_Pedersen_Thesis2020.bib")
+     "~/Documents/BibTex/Olav_Pedersen_Thesis2021.bib")
    org-ref-bibliography-notes (concat org_roam_dir "/bibnotes.org"))
 #+END_SRC
  
 ** Programming Languages
-***  C 
+*** C 
     Simply sets the correct comment style as "//"
   #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
    (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
@@ -467,9 +479,7 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
     (add-hook 'matlab-mode-hook 'init-matlab)
    #+END_SRC
    
-  
 ** Magit Settings 
-  
 *** Evil-Magit 
     This option is set to ensure that the keybindings 'j' and 'k' can be used
      for navigating up and down. If the following option is activated it enables
@@ -556,14 +566,69 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   #+END_SRC
  
 ** Org Settings 
-   
+  
+*** Org-Capture
+**** Org Function for refiling
+  Prompt for a location in an org file and jump to it. This is for promping for
+  refile targets when doing captures.  
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+(defun org-get-target-headline (&optional prompt)
+    (let* ((target (save-excursion
+                     (org-refile-get-location prompt nil t)))
+           (file (nth 1 target))
+           (pos (nth 3 target))
+           )
+    (with-current-buffer (find-file-noselect file)
+        (goto-char pos)
+        (org-end-of-subtree)
+        (org-return)
+    )))
+#+END_SRC
+
+**** Org Capture Templates 
+     mc- A Capture which is related to a coding project in the masters
+     mr- Masters, general reference
+     ms- masters coding snippet
+    
+     msc- A Capture which is related to a coding project in the masters
+     msr- Masters, thesis writing
+     msg- Masters, general reference
+     mss- masters coding snippet
+    
+     #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (setq org-capture-templates
+        '(
+          ("m" "Master Project")
+          ("mL" "Schedule a task with link" entry
+          (file+function "../org-agenda/masters.org" org-get-target-headline)
+           ;; "%^{Select Context|SkyTrack Code|Thesis Writing|Masters General}")
+           "* TODO %^{Task} \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
+          ("mS"  "Scheduled task with link with snippet" entry 
+          (file+function "../org-agenda/masters.org" org-get-target-headline)
+           ;; "%^{Select Context|SkyTrack Code|Thesis Writing|Masters General}")
+           "* TODO %^{Task} \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")))
+          ;; ("msc"  "Scheduled task link to code in SkyTrack" entry 
+          ;; (file+headline "masters.org" "SkyTrack Code")
+          ;;  "* TODO %^{Task} \n %U \n SCHEDULED: %^t \n %a \n %?")
+          ;; ("mst"  "Scheduled task link for Thesis" entry 
+          ;; (file+headline "masters.org" "Thesis Writing")
+          ;;  "* TODO %^{Task} \n %U \n SCHEDULED: %^t \n %a \n %?")
+          ;; ("msg"  "Scheduled task link for Master's General" entry 
+          ;; (file+headline "masters.org" "Master's General")
+          ;;  "* TODO %^{Task} \n %U \n SCHEDULED: %^t \n %a \n %?")
+          ;; ("mss"  "Scheduled task link for Master's General" entry 
+          ;; (file+headline "masters.org" "Master's General")
+          ;;  "* TODO %^{Task} \n %U \n SCHEDULED: %^t \n %a \n %?")
+     #+END_SRC
+
 *** Defining the keywords agenda terms
     #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
      (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESS(p)" "WAIT(w)" "|" "DONE(d)" "CANCEL(c)")))
     #+END_SRC
     
-*** Turning on automatic newline
+*** Turning on automatic newline and line wrapping
     #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+      (setq org-startup-truncated nil)
       (add-hook 'org-mode-hook '(lambda () (setq fill-column 80)))
       (add-hook 'org-mode-hook 'auto-fill-mode)
       (add-hook 'org-mode-hook 'turn-on-font-lock)
@@ -728,6 +793,7 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
    following link: https://rgoswami.me/posts/org-note-workflow/#org-noter 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
    (add-hook 'after-init-hook 'org-roam-mode)
+   (setq org-link-file-path-type 'adaptive)
  #+END_SRC
  
 *** Org-Roam-Server
@@ -868,8 +934,21 @@ will prompt for the values of these arguments.
         (add-hook 'org-mode-hook 'electric-pair-mode))
  #+END_SRC
  
- 
 ** Bibtex Settings  
+   These are the following custom settings to make ~helm-bibtex~ easier to work
+   together with ~natbib~. Especially when working on the masters. The default
+   is set to "cite".
+ #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (setq bibtex-completion-cite-default-command "citep")
+ #+END_SRC
+ 
+   Since I rarely ever use optional pre- or post-arguments the following
+   disables the default prompting. 
+ #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (setq bibtex-completion-cite-prompt-for-optional-arguments nil)
+ #+END_SRC
+ 
+    This defines the custom template that bibtex uses. 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
    (setq
     bibtex-completion-pdf-field "file"
@@ -914,15 +993,16 @@ will prompt for the values of these arguments.
 *** Disabling highlight for comments
 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-      (global-hl-line-mode -1)
-      (spacemacs/toggle-highlight-current-line-globally-off)
+   (global-hl-line-mode -1)
+   (spacemacs/toggle-highlight-current-line-globally-off)
  #+END_SRC
 
 ** Finishing user-config
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
 )
  #+END_SRC
-
+ 
+ 
 * Local Variables
 # Local Variables:
 # eval: (add-hook 'after-save-hook (lambda ()(org-babel-tangle)) nil t)
