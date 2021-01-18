@@ -471,6 +471,16 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
    org-ref-bibliography-notes (concat org_roam_dir "/bibnotes.org"))
 #+END_SRC
  
+** Magit Settings 
+  
+*** Evil-Magit 
+    This option is set to ensure that the keybindings 'j' and 'k' can be used
+     for navigating up and down. If the following option is activated it enables
+     a visual mode for magit, but overrides more natural vim bindings 'j' and 'k'.
+   #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+    ;; (setq evil-magit-use-y-for-yank nil)
+  #+END_SRC
+  
 ** Programming Languages
 *** C 
     Simply sets the correct comment style as "//"
@@ -496,15 +506,6 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
     (add-hook 'matlab-mode-hook 'init-matlab)
    #+END_SRC
    
-** Magit Settings 
-*** Evil-Magit 
-    This option is set to ensure that the keybindings 'j' and 'k' can be used
-     for navigating up and down. If the following option is activated it enables
-     a visual mode for magit, but overrides more natural vim bindings 'j' and 'k'.
-   #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-    ;; (setq evil-magit-use-y-for-yank nil)
-  #+END_SRC
-  
 ** Writing Settings  
 *** Markdown settings 
 **** Pandoc Settings 
