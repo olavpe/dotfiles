@@ -1022,7 +1022,13 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
 
 *** Defining the keywords agenda terms
     #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-     (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESS(p)" "WAIT(w)" "|" "DONE(d)" "CANCEL(c)")))
+     (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESS(p)" "WAITING(w)" "|" "DONE(d)" "CANCEL(c)")))
+     (setq org-todo-keyword-faces '(
+          ("TODO" . (:foreground "#dabe72" :weight bold))
+          ("PROGRESS" . (:foreground "#5e7e9b" :weight bold))
+          ("WAITING" . (:foreground "#bf6c68" :weight bold))
+          ("DONE" . (:foreground "#aabf7f" :weight bold))
+          ("CANCEL" . (:foreground "#5a7273" :weight bold))))
     #+END_SRC
     
 *** Turning on automatic newline and line wrapping
@@ -1306,8 +1312,8 @@ will prompt for the values of these arguments.
            :file-name "${citekey}"
            :head "#+TITLE: ${citekey}: ${title}\n#+ROAM_KEY: ${ref}
 
-   - tags ::
-   - keywords :: ${keywords}
+ - tags ::
+ - keywords :: ${keywords}
 
     ,* ${title}
     :PROPERTIES:
@@ -1317,7 +1323,6 @@ will prompt for the values of these arguments.
     :NOTER_DOCUMENT: ${file}
     :NOTER_PAGE:
     :END:")))
-
  #+END_SRC
 
 *** Autopairing
