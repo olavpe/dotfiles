@@ -454,7 +454,7 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   (with-eval-after-load 'org (setq
    org-agenda-files '("/home/olav/Insync/olavpe/org-agenda/life.org"
                       "/home/olav/Insync/olavpe/org-agenda/masters.org"
-                      "/home/olav/Insync/olavpe/org-agenda/hobby_projects.org")
+                      "/home/olav/Insync/olavpe/org-agenda/hobbies.org")
    ))
   ;; Org-Roam
   (setq
@@ -915,31 +915,104 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   ("ld" "Deadline Tasks")
   ("ldt" "Schedule a task" entry
   (file+olp+datetree "../org-agenda/life.org")
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
+   "* TODO %? \t%^g \n CREATED: %U \n DEADLINE: %^t")
   ("ldi" "Schedule a task with info" entry
   (file+olp+datetree "../org-agenda/life.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %?")
   ("ldl" "Schedule a task with link" entry
   (file+olp+datetree "../org-agenda/life.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %a \n %?")
   ("ldc"  "Scheduled task with link and snippet" entry 
   (file+olp+datetree "../org-agenda/life.org")
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+   "* TODO %^{Task} \t%^g \n CREATED:%U\n DEADLINE:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 
   ;; Deadline and Schedule Prompted 
   ("lb" "Deadline and Schedule tasks")
   ("lbt" "Schedule a task" entry
   (file+olp+datetree "../org-agenda/life.org")
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
+   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t")
   ("lbi" "Schedule a task with info" entry
   (file+olp+datetree "../org-agenda/life.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %?")
   ("lbl" "Schedule a task with link" entry
   (file+olp+datetree "../org-agenda/life.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %a \n %?")
   ("lbs"  "Scheduled task with link and snippet" entry 
   (file+olp+datetree "../org-agenda/life.org")
+  "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n DEADLINE: %^t \n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+#+END_SRC
+
+**** Hobbies Templates
+     The life tasks are organized by ~datetime~ since there are not special
+     categories associated with these tasks (at the moment). However, the use of
+     priorities, as I have used in Kanban style organizer. 
+
+     These priorities are: 
+       - "important"
+       - "chill"
+       - "soon"
+       - "later"
+
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  ("h" "Hobbies")
+
+  ;; No Date Prompts
+  ("hr" "Regular Prompts")
+  ("hrt" "Create task" entry
+  (file+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %? \t%^g \n CREATED: %U")
+  ("hri" "Create task with info" entry
+  (fihe+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n %?")
+  ("hrl" "Create task with link" entry
+  (file+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %^{Task} \t%^g\n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
+  ("hrc"  "Create task with link and snippet" entry 
+  (file+olp+datetree "../org-agenda/hobbies.org")
    "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+
+  ("hs" "Schedule Tasks")
+  ("hst" "Schedule a task" entry
+  (file+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
+  ("hsi" "Schedule a task with info" entry
+  (file+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
+  ("hsl" "Schedule a task with link" entry
+  (file+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
+  ("hsc"  "Scheduled task with link and snippet" entry 
+  (file+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+
+  ("hd" "Deadline Tasks")
+  ("hdt" "Schedule a task" entry
+  (file+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %? \t%^g \n CREATED: %U \n DEADLINE: %^t")
+  ("hdi" "Schedule a task with info" entry
+  (file+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %?")
+  ("hdl" "Schedule a task with link" entry
+  (file+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %a \n %?")
+  ("hdc"  "Scheduled task with link and snippet" entry 
+  (file+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %^{Task} \t%^g \n CREATED:%U\n DEADLINE:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+
+  ;; Deadline and Schedule Prompted 
+  ("hb" "Deadline and Schedule tasks")
+  ("hbt" "Schedule a task" entry
+  (file+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t")
+  ("hbi" "Schedule a task with info" entry
+  (file+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %?")
+  ("hbl" "Schedule a task with link" entry
+  (file+olp+datetree "../org-agenda/hobbies.org")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %a \n %?")
+  ("hbs"  "Scheduled task with link and snippet" entry 
+  (file+olp+datetree "../org-agenda/hobbies.org")
+  "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n DEADLINE: %^t \n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 #+END_SRC
 
 **** Finishing template function
