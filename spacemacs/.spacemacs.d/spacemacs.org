@@ -44,48 +44,49 @@ function besides modifying the variable values.
    there are different options for how this should be done
 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-    dotspacemacs-configuration-layers
-    '(csv
-      bm
-      bibtex
-      javascript
-      yaml
-      octave
-      helm
-      auto-completion
-      (c-c++ :variables
-             c-c++-enable-clang-support t)
-      better-defaults
-      conda
-      (conda :variables
-             conda-anaconda-home "/home/olav/.conda/envs")
-      emacs-lisp
-      ess
-      ;; +lang
-      ;; (extra-langs :variables matlab-mode)
-      git
-      markdown
-      (latex :variables
-             latex-build-command "LaTeX"
-             latex-enable-auto-fill t
-             latex-enable-folding t
-             latex-enable-magic t)
-      pandoc
-      python
-      pdf
-      ;; (python :variables python-backend 'lsp)
-      ;; ipython-notebook
-      (org :variables
-          org-enable-roam-support t)
-      (shell :variables
-             shell-default-shell 'shell
-             shell-default-height 30
-             shell-default-position 'bottom)
-      (spacemacs-spaceline :location local)
-      spell-checking
-      syntax-checking
-      ;; version-control
-      )
+   dotspacemacs-configuration-layers
+   '(csv
+     bm
+     bibtex
+     colors
+     javascript
+     yaml
+     octave
+     helm
+     auto-completion
+     (c-c++ :variables
+            c-c++-enable-clang-support t)
+     better-defaults
+     conda
+     (conda :variables
+            conda-anaconda-home "/home/olav/.conda/envs")
+     emacs-lisp
+     ess
+     ;; +lang
+     ;; (extra-langs :variables matlab-mode)
+     git
+     markdown
+     (latex :variables
+            latex-build-command "LaTeX"
+            latex-enable-auto-fill t
+            latex-enable-folding t
+            latex-enable-magic t)
+     pandoc
+     python
+     pdf
+     ;; (python :variables python-backend 'lsp)
+     ;; ipython-notebook
+     (org :variables
+         org-enable-roam-support t)
+     (shell :variables
+            shell-default-shell 'shell
+            shell-default-height 30
+            shell-default-position 'bottom)
+     (spacemacs-spaceline :location local)
+     spell-checking
+     syntax-checking
+     ;; version-control
+     )
  #+END_SRC
 
 ** Additional packages to install
