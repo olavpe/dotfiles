@@ -676,31 +676,31 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   ("md" "Deadline Tasks")
   ("mdt" "Schedule a task" entry
   (file+olp+datetree "../org-agenda/masters.org")
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
+   "* TODO %? \t%^g \n CREATED: %U \n DEADLINE: %^t")
   ("mdi" "Schedule a task with info" entry
   (file+olp+datetree "../org-agenda/masters.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %?")
   ("mdl" "Schedule a task with link" entry
   (file+olp+datetree "../org-agenda/masters.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %a \n %?")
   ("mdc"  "Scheduled task with link and snippet" entry 
   (file+olp+datetree "../org-agenda/masters.org")
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+   "* TODO %^{Task} \t%^g \n CREATED:%U\n DEADLINE:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 
   ;; Deadline and Schedule Prompted 
   ("mb" "Deadline and Schedule tasks")
   ("mbt" "Schedule a task" entry
   (file+olp+datetree "../org-agenda/masters.org")
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
+   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t")
   ("mbi" "Schedule a task with info" entry
   (file+olp+datetree "../org-agenda/masters.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %?")
   ("mbl" "Schedule a task with link" entry
   (file+olp+datetree "../org-agenda/masters.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %a \n %?")
   ("mbs"  "Scheduled task with link and snippet" entry 
   (file+olp+datetree "../org-agenda/masters.org")
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n DEADLINE: %^t \n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 #+END_SRC
 
 **** SkyTrack Project Templates
@@ -759,31 +759,31 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   ("sd" "Deadline Tasks")
   ("sdt" "Schedule a task" entry
   (file+olp+datetree "../org-agenda/skytrack.org")
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
+   "* TODO %? \t%^g \n CREATED: %U \n DEADLINE: %^t")
   ("sdi" "Schedule a task with info" entry
   (file+olp+datetree "../org-agenda/skytrack.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %?")
   ("sdl" "Schedule a task with link" entry
   (file+olp+datetree "../org-agenda/skytrack.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %a \n %?")
   ("sdc"  "Scheduled task with link and snippet" entry 
   (file+olp+datetree "../org-agenda/skytrack.org")
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+   "* TODO %^{Task} \t%^g \n CREATED:%U\n DEADLINE:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 
   ;; Deadline and Schedule Prompted 
   ("sb" "Deadline and Schedule tasks")
   ("sbt" "Schedule a task" entry
   (file+olp+datetree "../org-agenda/skytrack.org")
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
+   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t DEADLINE: %^t \n")
   ("sbi" "Schedule a task with info" entry
   (file+olp+datetree "../org-agenda/skytrack.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %?")
   ("sbl" "Schedule a task with link" entry
   (file+olp+datetree "../org-agenda/skytrack.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %a \n %?")
   ("sbs"  "Scheduled task with link and snippet" entry 
   (file+olp+datetree "../org-agenda/skytrack.org")
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n DEADLINE: %^t \n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 #+END_SRC
 
 **** Thesis Project Templates
@@ -842,31 +842,31 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   ("td" "Deadline Tasks")
   ("tdt" "Schedule a task" entry
   (file+olp+datetree "../org-agenda/thesis.org")
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
+   "* TODO %? \t%^g \n CREATED: %U \n DEADLINE: %^t")
   ("tdi" "Schedule a task with info" entry
   (file+olp+datetree "../org-agenda/thesis.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %?")
   ("tdl" "Schedule a task with link" entry
   (file+olp+datetree "../org-agenda/thesis.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %a \n %?")
   ("tdc"  "Scheduled task with link and snippet" entry 
   (file+olp+datetree "../org-agenda/thesis.org")
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+   "* TODO %^{Task} \t%^g \n CREATED:%U\n DEADLINE:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 
   ;; Deadline and Schedule Prompted 
   ("tb" "Deadline and Schedule tasks")
   ("tbt" "Schedule a task" entry
   (file+olp+datetree "../org-agenda/thesis.org")
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
+   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t")
   ("tbi" "Schedule a task with info" entry
   (file+olp+datetree "../org-agenda/thesis.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %?")
   ("tbl" "Schedule a task with link" entry
   (file+olp+datetree "../org-agenda/thesis.org")
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %a \n %?")
   ("tbs"  "Scheduled task with link and snippet" entry 
   (file+olp+datetree "../org-agenda/thesis.org")
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n DEADLINE: %^t \n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 #+END_SRC
 
 **** Life Templates
