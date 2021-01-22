@@ -643,9 +643,12 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ("m" "Masters General")
+  ("mm" "Meeting Notes" entry
+  (file+olp+datetree "../org-agenda/masters.org")
+   "* Meeting - %? \t :meeting: \n CREATED: %U")
 
   ;; No Date Prompts
-  ("mr" "Regular Prompts")
+  ("mr" "Regular Tasks")
   ("mrt" "Create task" entry
   (file+olp+datetree "../org-agenda/masters.org")
    "* TODO %? \t%^g \n CREATED: %U")
