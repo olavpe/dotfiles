@@ -1204,7 +1204,7 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
         :after (:any org pdf-view)
         :config
         (setq org-noter-always-create-frame nil
-              org-noter-notes-window-location 'other-frame
+              ;; org-noter-notes-window-location 'other-frame
               org-noter-hide-other nil
               org-noter-insert-note-no-questions t
               org-noter-separate-notes-from-heading t
