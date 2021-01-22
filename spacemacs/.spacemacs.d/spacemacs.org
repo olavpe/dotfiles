@@ -1247,6 +1247,12 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
         org-roam-server-network-label-wrap-length 20))
  #+END_SRC
  
+   This function opens up a browser to the location of the org-roam-server. 
+ #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+   (defun open-roam-server-pages () (interactive) (browse-url "http://127.0.0.1:8080")
+   (funcall 'org-roam-server-mode))
+ #+END_SRC
+ 
 *** Org-Ref
     This section was copied from Ian Jones, as much of the settings above, but
 this section was originally found at: https://rgoswami.me/posts/org-note-workflow/#org-ref 
@@ -1433,6 +1439,10 @@ will prompt for the values of these arguments.
     ;; Getting org-roam to open this file
     (spacemacs/set-leader-keys "feo" (lambda () (interactive) (find-file "~/.spacemacs.d/spacemacs.org")))
     (spacemacs/set-leader-keys "hh" 'describe-thing-in-popup)
+    (spacemacs/set-leader-keys "aors" 'org-roam-server-mode)
+    (spacemacs/set-leader-keys-for-major-mode 'org-mode "rs" 'org-roam-server-mode)
+    (spacemacs/set-leader-keys "aorw" 'open-roam-server-pages)
+    (spacemacs/set-leader-keys-for-major-mode 'org-mode "rw" 'open-roam-server-pages)
   #+END_SRC
 
 ** Finishing user-config
