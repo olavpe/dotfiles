@@ -1018,6 +1018,29 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n DEADLINE: %^t \n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 #+END_SRC
 
+**** Recommendations Templates
+     
+     This recommendations is sorted by headings defined below. If a need arises
+     for another category just create a new version of the following template!
+
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  ("r" "Recommendations")
+
+  ;; No Date Prompts
+  ("rf" "Food" entry
+  (file+headline "../org-agenda/recommendations.org" "Food")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n %?")
+  ("rm" "Movies" entry
+  (file+headline "../org-agenda/recommendations.org" "Movies")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n %?")
+  ("rb" "Books" entry
+  (file+headline "../org-agenda/recommendations.org" "Books")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n %?")
+  ("rs" "Shows" entry
+  (file+headline "../org-agenda/recommendations.org" "Shows")
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n %?")
+#+END_SRC
+
 **** Finishing template function
   #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ))
