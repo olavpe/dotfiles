@@ -603,7 +603,17 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   #+END_SRC
  
 ** Org Settings 
-  
+*** Starting with-eval-after-load 
+    
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (with-eval-after-load 'org
+#+END_SRC
+ 
+*** ox-beamer
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (setq org-beamer-frame-level 2)
+#+END_SRC
+ 
 *** Org-Capture
 **** Org Function for refiling
     Prompt for a location in an org file and jump to it. This is for prompting
