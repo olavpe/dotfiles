@@ -439,11 +439,25 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
                 :margin t)))
    #+END_SRC
 
+** Search and Helm Settings 
+   
+   This is to turn on follow mode for helm commands. On very large projects or
+   files, this could cause Emacs to crash, but it is supposed to be a very nice function.
+   
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (setq helm-follow-mode-persistent t) 
+#+END_SRC
+   
 ** Folders and Locations  
+   
+   Note: org_agenda_dir is set as relative to org-directory in order to play
+   nicely with org-capture.
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ;; Regular Org
   (setq
    org_roam_dir "~/Insync/olavpe/org-roam"
+   org_agenda_dir "../../../Dropbox/org-agenda/"
+   test_string (concat org_agenda_dir "masters.org")
    mendeley_bib_files
    '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
    "~/Documents/BibTex/Olav_Pedersen_Thesis2021.bib")
