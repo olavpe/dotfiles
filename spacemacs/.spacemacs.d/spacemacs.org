@@ -1074,7 +1074,18 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   ))
   #+END_SRC
 
-*** Defining the keywords agenda terms
+*** Org-Agenda
+    This sets the time it takes for to show warnings on deadlines for org-agenda
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (setq org-deadline-warnings-days 7)
+  (setq org-agenda-span (quote fortnight))
+  ;; (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+  ;; (setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
+  ;; (setq org-agenda-todo-ignore-deadlines (quote all))
+  ;; (setq org-agenda-todo-ignore-scheduled (quote all))
+#+END_SRC
+    
+*** Defining the keywords agenda terms and colors
     #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
      (setq org-todo-keywords '((sequence "TODO(t)" "PROGRESS(p)" "WAITING(w)" "|" "DONE(d)" "CANCEL(c)")))
      (setq org-todo-keyword-faces '(
@@ -1083,6 +1094,29 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
           ("WAITING" . (:foreground "#bf6c68" :weight bold))
           ("DONE" . (:foreground "#aabf7f" :weight bold))
           ("CANCEL" . (:foreground "#5a7273" :weight bold))))
+    #+END_SRC
+    
+*** Setting the color of tags
+    #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+     (setq org-tags-faces '(
+           ("important" . (:foreground "#d65f2f"))
+           ("soon" . (:foreground "#bf6c68"))
+     ))
+    #+END_SRC
+    
+*** Colors for Deadlines in Agenda 
+    
+    This is [[www.reddit.com/r/emacs/comments/5cfij7/orgmode_custom_deadline_color/][explains]] the details of how this function works, but for the most
+    part this variable sets the face for deadline tasks. The values from 0 to 1
+    determine how close the deadline is. ~1~ is the most intense deadline
+    warning, and ~0~ is the lowest deadline setting. The setting that dictates
+    which color to show is set in ~org-deadline-warning-days~.
+    
+    #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+     (setq org-agenda-deadline-faces '(
+           (1.0 . (:foreground "#bf6c68"))
+           (0.5 . (:foreground "#d65f2f"))
+           (0.0 . (:foreground "#dabe72"))))
     #+END_SRC
     
 *** Turning on automatic newline and line wrapping
@@ -1435,7 +1469,7 @@ will prompt for the values of these arguments.
  #+END_SRC
    
 ** Theme Stuff
-***  Setting cursor and spaceline theme
+*** Setting cursor and spaceline theme
    
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
       (use-package ewal-evil-cursors
