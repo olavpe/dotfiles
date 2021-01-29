@@ -1475,25 +1475,29 @@ will prompt for the values of these arguments.
  #+END_SRC
  
     This defines the custom template that bibtex uses. 
+    [[org-roam.discourse.group/t/need-help-getting-noter-pdfs-and-org-roam-bibtex-to-work/794/12][Appearently]] in this blog post they say that this part is redundant if
+    ~org-roam-bibtex-mode~ is activate.
+    
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
    (setq
     bibtex-completion-pdf-field "file"
-    bibtex-completion-notes-template-multiple-files
-    (concat
-     "#+TITLE: ${title}\n"
-     "#+ROAM_KEY: cite:${=key=}\n"
-     "* TODO Notes\n"
-     ":PROPERTIES:\n"
-     ":Custom_ID: ${=key=}\n"
-     ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
-     ":AUTHOR: ${author-abbrev}\n"
-     ":JOURNAL: ${journaltitle}\n"
-     ":DATE: ${date}\n"
-     ":YEAR: ${year}\n"
-     ":DOI: ${doi}\n"
-     ":URL: ${url}\n"
-     ":END:\n\n"
-     ))
+    ;; bibtex-completion-notes-template-multiple-files
+    ;; (concat
+    ;;  "#+TITLE: ${title}\n"
+    ;;  "#+ROAM_KEY: cite:${=key=}\n"
+    ;;  "* TODO Notes\n"
+    ;;  ":PROPERTIES:\n"
+    ;;  ":Custom_ID: ${=key=}\n"
+    ;;  ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
+    ;;  ":AUTHOR: ${author-abbrev}\n"
+    ;;  ":JOURNAL: ${journaltitle}\n"
+    ;;  ":DATE: ${date}\n"
+    ;;  ":YEAR: ${year}\n"
+    ;;  ":DOI: ${doi}\n"
+    ;;  ":URL: ${url}\n"
+    ;;  ":END:\n\n"
+    ;;  )
+    )
  #+END_SRC
    
 ** Theme Stuff
