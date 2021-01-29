@@ -507,13 +507,18 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
    bibtex-completion-notes-path org_roam_dir
    bibtex-completion-bibliography mendeley_bib_files
    bibtex-completion-library-path '("~/Dropbox/MendeleyDocs/"))
+   ;; bibtex-completion-notes-path (concat org_roam_dir "/bibnotes.org"))
   ;; Org-ref
   (setq
    org-ref-notes-directory org_roam_dir
    org-ref-default-bibliography 
    '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
      "~/Documents/BibTex/Olav_Pedersen_Thesis2021.bib")
-   org-ref-bibliography-notes (concat org_roam_dir "/bibnotes.org"))
+   org-ref-bibliography-notes (concat org_roam_dir "/bibnotes.org")
+   ;; org-ref-default-bibliography mendeley_bib_files
+   ;; org-ref-pdf-directory "~/Dropbox/MendeleyDocs/"
+   ;; org-ref-pdf-directory
+   )
 #+END_SRC
  
 ** Magit Settings 
@@ -1316,9 +1321,6 @@ will prompt for the values of these arguments.
       (use-package org-roam-bibtex
         :after org-roam
         :hook (org-roam-mode . org-roam-bibtex-mode))
-
-      (setq orb-preformat-keywords
-          '("citekey" "title" "url" "author-or-editor" "keywords" "file"))
 #+end_src
 
 #   The code is a snippet is a template for orb
@@ -1337,30 +1339,38 @@ will prompt for the values of these arguments.
  This is an org-roam-bibtex template taken from
  https://www.philipperambert.com/Installing-Org-Roam-Bibtex-In-Spacemacs 
  
- #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+ Have tried the two different options below to properly format the files below.
+:NOTER_DOCUMENT: ${file}
+:NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")
+
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
 (setq orb-preformat-keywords
-      '("citekey" "title" "url" "author-or-editor" "keywords" "file")
+       '("citekey" "title" "url" "author-or-editor" "keywords" "file")
+      ;; '(("citekey" . "=key=") "title" "url" "author-or-editor" "keywords" "file")
       orb-process-file-keyword t
+      orb-process-file-field t
       orb-file-field-extensions '("pdf"))
 
    (setq orb-templates
        '(("r" "ref" plain (function org-roam-capture--get-point)
-           ""
-           :file-name "${citekey}"
-           :head "#+TITLE: ${citekey}: ${title}\n#+ROAM_KEY: ${ref}
+""
+:file-name "${citekey}"
+:head "#+TITLE: ${citekey}: ${title}\n#+ROAM_KEY: ${ref}
 
  - tags ::
  - keywords :: ${keywords}
 
-    ,* ${title}
-    :PROPERTIES:
-    :Custom_ID: ${citekey}
-    :URL: ${url}
-    :AUTHOR: ${author-or-editor}
-    :NOTER_DOCUMENT: ${file}
-    :NOTER_PAGE:
-    :END:")))
- #+END_SRC
+,* ${title}
+:PROPERTIES:
+:Custom_ID: ${citekey}
+:URL: ${url}
+:AUTHOR: ${author-or-editor}
+:NOTER_DOCUMENT: ${file}
+:NOTER_PAGE:
+:END:")))
+
+#+END_SRC
+
 
 *** Autopairing
 
