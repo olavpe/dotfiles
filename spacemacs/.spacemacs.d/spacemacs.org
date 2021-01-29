@@ -645,6 +645,14 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   (setq org-beamer-frame-level 2)
 #+END_SRC
  
+*** Org Default Apps
+    
+    This is used in order to get org-ref and org-pdftools to use pdf-tools to
+    open up a pdf link in an org file.
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (add-to-list 'org-file-apps '("\\.pdf\\'" . emacs))
+#+END_SRC
+
 *** Org-Capture
 **** Org Function for refiling
     Prompt for a location in an org file and jump to it. This is for prompting
@@ -1274,10 +1282,10 @@ this section was originally found at: https://rgoswami.me/posts/org-note-workflo
    (use-package org-ref
        :config
        (setq
+        org-ref-open-pdf-filename 'org-pdftools-open
         org-ref-completion-library 'org-ref-ivy-cite
         org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
         org-ref-note-title-format "* TODO %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
-        org-ref-notes-directory "~/Insync/olavpe/org-roam/"
         org-ref-notes-function 'orb-edit-notes
        ))
     #+END_SRC
