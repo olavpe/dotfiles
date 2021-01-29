@@ -422,7 +422,7 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
    This function was found at [[http://blog.jenkster.com/2013/12/popup-help-in-emacs-lisp.html][this site]]. This code is actually fairly simple, so
    Then we just call ~popup-tip~ to display it. This function does not function
    completely as expect yet as it show th results in a split window.
-   #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (defun describe-thing-in-popup ()
    (interactive)
    (let* ((thing (symbol-at-point))
@@ -437,8 +437,31 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
                 :height 30
                 :scroll-bar t
                 :margin t)))
-   #+END_SRC
+#+END_SRC
 
+*** Opening Spacemacs.org
+    Function to open this literate ~spacemacs.org~ configuration file. This
+    could be done in the one liner, but then the name did not in the minibuffer
+    when using keybindings
+    
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (defun open-org-config-file ()
+     (interactive)
+     (find-file "~/.spacemacs.d/spacemacs.org"))
+#+END_SRC
+   
+*** Opening BigArch.org for system note taking
+    Function to open this literate ~BigArch.org~ configuration file. This file
+    is intended to help me keep notes on system things that I will likely forget
+    I have done. This function could be one liner, but then the name did not in
+    the mini-buffer when using keybindings. 
+    
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (defun open-system-notes-file ()
+     (interactive)
+     (find-file "~/Insync/olavpe/BigArch.org"))
+#+END_SRC
+   
 ** Search and Helm Settings 
    
    This is to turn on follow mode for helm commands. On very large projects or
@@ -1504,7 +1527,10 @@ will prompt for the values of these arguments.
    Non-specific keybindings are defined below
   #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
     ;; Getting org-roam to open this file
-    (spacemacs/set-leader-keys "feo" (lambda () (interactive) (find-file "~/.spacemacs.d/spacemacs.org")))
+    (spacemacs/set-leader-keys "feo" 'open-org-config-file)
+    (spacemacs/set-leader-keys "fen" 'open-system-notes-file)
+    ;; (spacemacs/set-leader-keys "feo" (lambda () (interactive) (find-file "~/.spacemacs.d/spacemacs.org")))
+    ;; (spacemacs/set-leader-keys "fen" (lambda () (interactive) (find-file "~/Insync/olavpe/BigArch.org")))
     (spacemacs/set-leader-keys "hh" 'describe-thing-in-popup)
     (spacemacs/set-leader-keys "aors" 'org-roam-server-mode)
     (spacemacs/set-leader-keys-for-major-mode 'org-mode "rs" 'org-roam-server-mode)
