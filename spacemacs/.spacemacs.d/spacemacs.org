@@ -220,8 +220,8 @@ user code in there besides modifying the variable values.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
+   dotspacemacs-default-font '("SauceCodePro Nerd Font"
+                               :size 15
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -389,17 +389,18 @@ mostly useful for variables that need to be set before packages are loaded. If
 you are unsure, you should try in setting them in `dotspacemacs/user-config' first. 
 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-(defun dotspacemacs/user-init ()
-;;  (setq spacemacs-theme-comment-bg nil)
-  ;; (setenv "WORKON_HOME" "/opt/anaconda3/envs")
-  (setq spacemacs-theme-comment-bg nil)
-  (setenv "WORKON_HOME" "/home/olav/.conda/envs")
-  ;; dotspacemacs-default-font '("SauceCode Pro Nerd Mono"
-  ;;                             :size 18
-  ;;                             :weight normal
-  ;;                             :width normal
-                              ;; :powerline-offset 2)
-  )
+   (defun dotspacemacs/user-init ()
+   ;;  (setq spacemacs-theme-comment-bg nil)
+     ;; (setenv "WORKON_HOME" "/opt/anaconda3/envs")
+     (setq spacemacs-theme-comment-bg nil)
+     (setenv "WORKON_HOME" "/home/olav/.conda/envs")
+             ;; '("/home/olav/.conda/envs" "/home/olav/perception-router-digitaltwin/perception-router-digitaltwin/"))
+     ;; dotspacemacs-default-font '("SauceCode Pro Nerd Mono"
+     ;;                             :size 18
+     ;;                             :weight normal
+     ;;                             :width normal
+     ;;                             :powerline-offset 2)
+     )
  #+END_SRC
  
 * User Config
