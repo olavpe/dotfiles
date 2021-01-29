@@ -479,8 +479,8 @@ you are unsure, you should try in setting them in `dotspacemacs/user-config' fir
   ;; Regular Org
   (setq
    org_roam_dir "~/Insync/olavpe/org-roam"
-   org_agenda_dir "../../../Dropbox/org-agenda/"
-   test_string (concat org_agenda_dir "masters.org")
+   ;; org_agenda_dir "../../Dropbox/org-agenda/"
+   org_agenda_dir "/home/olav/Dropbox/org-agenda/"
    mendeley_bib_files
    '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
    "~/Documents/BibTex/Olav_Pedersen_Thesis2021.bib")
