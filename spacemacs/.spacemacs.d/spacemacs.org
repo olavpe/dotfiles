@@ -671,13 +671,24 @@
 
 **** General Info about the org-capture templates
      
+      <<general-captures-description>>
+     There are primarily only 4 different templates defined here. They are
+     hidden behind different categories based on time prompts. This is a work in
+     progress, and I simply want to figure out if this is a good method of
+     working or not. At this moment all of the tasks just create TODO tasks
+     These templates store ~org-capture~ templates under 3 main categories.
+     
+     All the files, besides ~recommendations~, are organized by ~datetime~ since
+     there are not special categories associated with these tasks (at the
+     moment). However, the use of tags, as I have used in Kanban style
+     organizer. These are added such that kaban style can be used later if
+     desired. 
+     
      All of the options for organizing these things are organized via:
        - "important"
        - "chill"
        - "soon"
        - "later"
-     
-     These are added such that kaban style can be used later if desired.
      
      *The four categories of tasks are:*
        - "r" Regular Prompts: No time prompts for schedule or deadline
@@ -691,26 +702,6 @@
        - "s" Create a task with a link, info, and code snippet based on kill ring
 
 **** Masters General Project Templates
-     
-      <<masters-captures-description>>
-     There are primarily only 4 different templates defined here. They are
-     hidden behind different categories based on time prompts. This is a work in
-     progress, and I simply want to figure out if this is a good method of
-     working or not. At this moment all of the tasks just create TODO tasks
-     These templates store ~org-capture~ templates under 3 main categories.
-     
-     *The main functions are:*
-       - "t" Create a simple task (with no frills besides created timestamp)
-       - "i" Create a task with and write some additional notes
-       - "l" Create a task with a link and info to a file location
-       - "s" Create a task with a link, info, and code snippet based on kill ring
-
-     *The four categories of tasks are:*
-       - "r" Regular Prompts: No time prompts for schedule or deadline
-       - "s" Schedule tasks: For task you want to schedule, but do not have a deadline
-       - "d" Deadline tasks: For task with a Deadline you haven't scheduled
-       - "b" Both time prompts tasks: when you want to schedule and deadline.
-      
      *Special commands*
        - "mm" is for taking meeting notes and keeping overview by the @meeting tag. 
 
@@ -782,7 +773,7 @@
 
 **** SkyTrack Project Templates
      
-     These are identical to [[masters-captures-description]], but for different files.
+     These are identical to [[general-captures-description]], but for different files.
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ("s" "SkyTrack")
@@ -913,22 +904,6 @@
 #+END_SRC
 
 **** Life Templates
-     
-     The life tasks are organized by ~datetime~ since there are not special
-     categories associated with these tasks (at the moment). However, the use of
-     priorities, as I have used in Kanban style organizer. 
-
-     *The main functions are:*
-       - "t" Create a simple task (with no frills besides created timestamp)
-       - "i" Create a task with and write some additional notes
-       - "l" Create a task with a link and info to a file location
-       - "s" Create a task with a link, info, and code snippet based on kill ring
-
-     *The four categories of tasks are:*
-       - "r" Regular Prompts: No time prompts for schedule or deadline
-       - "s" Schedule tasks: For task you want to schedule, but do not have a deadline
-       - "d" Deadline tasks: For task with a Deadline you haven't scheduled
-       - "b" Both time prompts tasks: when you want to schedule and deadline.
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ("l" "Life")
