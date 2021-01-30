@@ -648,22 +648,6 @@
 #+END_SRC
 
 *** Org-Capture
-**** Org Function for refiling
-    Prompt for a location in an org file and jump to it. This is for prompting
-    for ~refile~ targets when doing captures. Targets are selected from
-    ~org-refile-targets~. If TARGETS is given it temporarily overrides
-    ~org-refile-targets~. PROMPT will replace the default prompt message. If
-    CAPTURE-LOC is is given, capture to that location instead of prompting.  
-#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  (defun org-get-target-headline (&optional targets prompt)
-    (let ((org-refile-targets (or targets org-refile-targets))
-          (prompt (or prompt "Capture Location")))
-      (if org-capture-overriding-marker
-          (org-goto-marker-or-bmk org-capture-overriding-marker)
-        (org-refile t nil nil prompt)))
-    )
-#+END_SRC
-
 **** Org Capture Templates Function Start
      The ~org-capture-templates~ idea of where the capture templates are
      accessed by leader keys, such as in emacs. The main categories are:
