@@ -1287,25 +1287,9 @@ will prompt for the values of these arguments.
         :hook (org-roam-mode . org-roam-bibtex-mode))
 #+end_src
 
-#   The code is a snippet is a template for orb
-#  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-#      (setq orb-templates
-#            '(("r" "ref" plain (function org-roam-capture--get-point)
-#               ""
-#               :file-name "${slug}"
-#               :head "#+TITLE: ${=key=}: ${title}\n#+ROAM_KEY: ${ref}
-#    - tags ::
-#    - keywords :: ${keywords}
-#    \n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :URL: ${url}\n  :AUTHOR: ${author-or-editor}\n  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n  :NOTER_PAGE: \n  :END:\n\n"
-#               :unnarrowed t))))
-# #+end_src
-
  This is an org-roam-bibtex template taken from
  https://www.philipperambert.com/Installing-Org-Roam-Bibtex-In-Spacemacs 
- 
- Have tried the two different options below to properly format the files below.
-:NOTER_DOCUMENT: ${file}
-:NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")
+ More suggestions came from [[www.ianjones.us/org-roam-bibtex][Ian Jones website.]]
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
 (setq orb-preformat-keywords
