@@ -566,16 +566,44 @@
 #+END_SRC
  
 *** LaTeX settings 
+   
+**** TeX-view function to look in multiple locations 
+     
+     I created this function to overwrite the current view function as I
+     couldn't figure out how to supply an additional path for the file. The
+     keybindings are overwritten below in [[keybindings]].
+     
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (defun TeX-view-custom ()
+    "Start a viewer without confirmation. It will look for the ~main.pdf~
+  file in the current directory or it will look for it in the tmp directory.
+  The viewer is started either on region or master file, depending on the
+  last command issued."
+    (interactive)
+    (let ((output-file "./main.tex")
+          (output-sub-dir-file "./tmp/main.tex"))
+    (cond ((file-exists-p output-file) (find-file "./main.tex"))
+          ((file-exists-p output-sub-dir-file)  (find-file "./tmp/main.tex"))
+          (t (message "Output file %S does not exist." )output-file))))
+#+END_SRC
+     
+**** Setting the default command to compile main.tex files
+     
     When running latex build (, b) by default it will run "main.tex"
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (setq-default TeX-master "main")
 #+END_SRC
+ 
+**** Enabling folding of latex headings such as seen in org-mode 
+     
     This hides and shows text. The `outline-minor-mode` is used to fold text in
     headings and such. "Folding" in latex allows you to hide the environment types
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (setq latex-enable-folding t)
  (add-hook 'LaTeX-mode-hook 'outline-minor-mode)
 #+END_SRC
+
+**** Using pdf-tools as the default program to show latex files
    
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
