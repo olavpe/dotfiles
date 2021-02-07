@@ -1307,8 +1307,11 @@ will prompt for the values of these arguments.
 #+END_EXAMPLE
     
 *** Org-Roam-Bibtex
+    
    This sets the org roam directory and starts org-roam on startup.
- 
+   A very minimal config can be found at [[github.com/nobiot/Zero-to-Emacs-and-Org-roam/blob/d8cf2c065034f04c205a05c83009ce5e4acd4816/.emacs#L116-L151][nobiot's]] website for reference.
+   More detailed information here in this orb [[org-roam.discourse.group/t/need-help-getting-noter-pdfs-and-org-roam-bibtex-to-work/794/29][Discourse]] website.
+
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
       (use-package org-roam-bibtex
         :after org-roam
