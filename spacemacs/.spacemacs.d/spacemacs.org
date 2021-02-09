@@ -516,6 +516,28 @@
    )
 #+END_SRC
  
+** Flycheck and Syntax stuff
+   
+   There are no flycheck specific configs (yet), other than the ~syntax-highlighting~
+   layer has been enabled. Global settings can be set, but project specific
+   settings can be set using a ~.dir-locals.el~. This will load the variables in
+   this file and apply them to any buffer running within the same folder or any
+   subfolder.
+  
+*** When using venv in python
+    In order for the syntax highlighter to know which packages you are using,
+    it needs to know what python environment you are using. To be able to set
+    flycheck to know which linter to use and which environment you are using you
+    can create a ~.dir-locals.el~ file in the repo root folder with the
+    following contents. The variables have to point to current python
+    environment. This was snagged from this stack [[https://stackoverflow.com/questions/31443527/how-can-i-make-flycheck-use-virtualenv][site.]]
+    
+#+begin_src elisp
+((python-mode
+  (flycheck-python-flake8-executable . "~/gitRepos/python-sdk/venv/bin/python")
+  (flycheck-python-pylint-executable . "~/gitRepos/python-sdk/venv/bin/python")))
+#+end_src
+
 ** Magit Settings 
 *** Evil-Magit 
     This option is set to ensure that the keybindings 'j' and 'k' can be used
