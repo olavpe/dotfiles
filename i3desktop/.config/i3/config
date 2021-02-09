@@ -94,30 +94,30 @@ for_window [instance="math"] move scratchpad
 for_window [instance="math"] border pixel 5
 
 # #---Workspace Locations on Multiple Monitors ---# #
-workspace $workspace1 output $VGA
-workspace $workspace2 output $VGA
-workspace $workspace3 output $VGA
-workspace $workspace4 output $VGA
-workspace $workspace5 output $VGA
-
-workspace $workspace6 output $HDMI
-workspace $workspace7 output $HDMI
-workspace $workspace8 output $HDMI
-workspace $workspace9 output $HDMI
-workspace $workspace10 output $HDMI
+#workspace $workspace1 output $VGA
+#workspace $workspace2 output $VGA
+#workspace $workspace3 output $VGA
+#workspace $workspace4 output $VGA
+#workspace $workspace5 output $VGA
+#
+#workspace $workspace6 output $HDMI
+#workspace $workspace7 output $HDMI
+#workspace $workspace8 output $HDMI
+#workspace $workspace9 output $HDMI
+#workspace $workspace10 output $HDMI
 
 # #---Workspace Locations on Multiple Monitors Trondheim ---# #
-# workspace $workspace1 output $BENQ
-# workspace $workspace2 output $BENQ
-# workspace $workspace3 output $BENQ
-# workspace $workspace4 output $BENQ
-# workspace $workspace5 output $BENQ
+workspace $workspace1 output $BENQ
+workspace $workspace2 output $BENQ
+workspace $workspace3 output $BENQ
+workspace $workspace4 output $BENQ
+workspace $workspace5 output $BENQ
 
-# workspace $workspace6 output $VGA $HDMI
-# workspace $workspace7 output $VGA $HDMI
-# workspace $workspace8 output $VGA $HDMI
-# workspace $workspace9 output $VGA $HDMI
-# workspace $workspace10 output $VGA $HDMI
+workspace $workspace6 output $VGA $HDMI
+workspace $workspace7 output $VGA $HDMI
+workspace $workspace8 output $VGA $HDMI
+workspace $workspace9 output $VGA $HDMI
+workspace $workspace10 output $VGA $HDMI
 
 # #---Modes---# #
 

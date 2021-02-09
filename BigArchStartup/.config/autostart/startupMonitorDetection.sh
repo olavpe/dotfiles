@@ -30,6 +30,8 @@ else
     # For Prediktor office monitor (using both laptop and external)
     # xrandr --output LVDS-0 --primary --auto --right-of DP-1 --auto
     # xrandr --output DP-1 --primary --auto --right-of LVDS-0 --auto
+    # For home office at Lysaker Old
+    # xrandr --output LVDS-0 --off --output VGA-0 --primary --auto --output HDMI-0 --auto --right-of VGA-0
     # For home office at Lysaker
-    xrandr --output LVDS-0 --off --output VGA-0 --primary --auto --output HDMI-0 --auto --right-of VGA-0
+    xrandr --output LVDS-0 --off --output DP-1 --primary --auto --output VGA-0 --auto --right-of DP-1
 fi
