@@ -103,6 +103,7 @@
                                      ;; org-bullets
                                      ;; (org-roam :location (recipe :fetcher github :repo "jethrokuan/org-roam"))
                                      sqlite3
+                                     ;; flycheck-pycheckers
                                      org-pdftools
                                      org-noter-pdftools
                                      org-roam-bibtex
@@ -516,14 +517,30 @@
    )
 #+END_SRC
  
-** Flycheck and Syntax stuff
+** Flycheck and Linting stuff
    
-   There are no flycheck specific configs (yet), other than the ~syntax-highlighting~
-   layer has been enabled. Global settings can be set, but project specific
-   settings can be set using a ~.dir-locals.el~. This will load the variables in
-   this file and apply them to any buffer running within the same folder or any
-   subfolder.
-  
+   The ~syntax-highlighting~ layer has been enabled which contains the flycheck
+   package. Global settings can be set, but project specific settings can be set
+   using a ~.dir-locals.el~. This will load the variables in this file and apply
+   them to any buffer running within the same folder or any subfolder. 
+   
+   The ~flycheck-pycheckers~ package is an additional package which assists in
+   having multiple syntax checkers active at the same time for ~flycheck~ in
+   python. There were some issues with this packages so it is not needed
+   with the newer version of flychecker. The bottom code snippet needs should
+   active to run the function. 
+   
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  ;; (setq flycheck-pycheckers-checkers '(flake8 pylint))
+  ;; (setq flycheck-python-pylint-executable "~/.pylintrc")
+
+  ;; Specify default global pylintrc file
+  (setq flycheck-pylintrc "~/.pylintrc")
+
+  ;; (with-eval-after-load 'flycheck
+  ;;   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup)) 
+#+END_SRC
+   
 *** When using venv in python
     In order for the syntax highlighter to know which packages you are using,
     it needs to know what python environment you are using. To be able to set
@@ -535,8 +552,41 @@
 #+begin_src elisp
 ((python-mode
   (flycheck-python-flake8-executable . "~/gitRepos/python-sdk/venv/bin/python")
-  (flycheck-python-pylint-executable . "~/gitRepos/python-sdk/venv/bin/python")))
+  (flycheck-python-pylint-executable . "~/gitRepos/python-sdk/venv/bin/pylint")))
 #+end_src
+
+*** Flake8
+    
+    Setting the ~flycheck-python-flake8-executable~ variable in the
+    ~.dir-locals.el~ file will set the flake8 linter properly for current
+    system. I have had no issues so far. *This should be used in each project
+    .dir-locals.el* 
+
+*** Pylint
+    
+    Pylint is a bitch. Spent hours mucking around with ~pylint-venv~ [[https://pypi.org/project/pylint-venv/][package]].
+    The idea I had was to set emacs to use the system ~pylint~ package as the
+    default and then add the path to potential venvs as described [[https://github.com/jgosmann/pylint-venv/pull/9/commits/9e2abbff09fd9b71f55ecf42168500a9bd9ffc51][here]]. This was
+    done by creating a system wide ~/.pylintrc~ file to include [[https://stackoverflow.com/questions/1899436/pylint-unable-to-import-error-how-to-set-pythonpath][this
+    supplemental link]].
+
+    It turns out it was working, but there was a problem with
+    ~pylint~ for the ~pydantic~ package, which the [[https://github.com/samuelcolvin/pydantic/issues/1961][error]] I thought indicated the
+    environment was not working (I added the solution in issue in the error
+    link).
+
+    Another issue with pylint was it have an
+    ~attemped-relative-import-beyond-top-level-package~ which was perfectly
+    described and should be fixed by the outcome of [[https://github.com/flycheck/flycheck/issues/1758][this]] issue. However, I could
+    not get spacemacs to update to the newest version of ~flycheck~.
+    Unfortunately, I did not implement commit directly as there were other
+    variables which did not exist. Replacing ~from .generic import
+    UtcTimedSignal, ...~ with the full path ~from common_library.models.generic
+    import UtcTimedSignal, ...~ makes the pylint error go away.
+    
+    Currently, ~dir-locals.el~ contains the executable link as described above,
+    but it uses the global ~~/.pylintrc~ config file, and seems to work. Unsure
+    if ~pylint-venv~ package needs to be installed in any of the environments.
 
 ** Magit Settings 
 *** Evil-Magit 
