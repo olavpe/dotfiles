@@ -665,10 +665,10 @@
   The viewer is started either on region or master file, depending on the
   last command issued."
     (interactive)
-    (let ((output-file "./main.tex")
-          (output-sub-dir-file "./tmp/main.tex"))
-    (cond ((file-exists-p output-file) (find-file "./main.tex"))
-          ((file-exists-p output-sub-dir-file)  (find-file "./tmp/main.tex"))
+    (let ((output-file "./main.pdf")
+          (output-sub-dir-file "./tmp/main.pdf"))
+    (cond ((file-exists-p output-file) (find-file "./main.pdf"))
+          ((file-exists-p output-sub-dir-file)  (find-file "./tmp/main.pdf"))
           (t (message "Output file %S does not exist." )output-file))))
 #+END_SRC
      
