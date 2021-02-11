@@ -638,7 +638,20 @@
 #+END_SRC
  
 *** LaTeX settings 
-   
+**** Specifying a build directory 
+     
+     This function was found [[https://tex.stackexchange.com/questions/111834/auctex-output-directory-copy-pdf-to-working-directory][here]], and describes the way I would like for auctex
+     to function. 
+
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (add-hook 'LaTeX-mode-hook (lambda ()
+                  (push 
+                    '("Latex_outdir" "%`pdflatex --output-directory=/tmp %(mode)%' %t" 
+                  TeX-run-TeX nil (latex-mode doctex-mode) 
+                  :help "Run pdflatex with output in /tmp")
+                    TeX-command-list)))
+#+END_SRC
+
 **** TeX-view function to look in multiple locations 
      
      I created this function to overwrite the current view function as I
