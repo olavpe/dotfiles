@@ -487,6 +487,7 @@
   (with-eval-after-load 'org (setq
    org-agenda-files '("/home/olav/Dropbox/org-agenda/life.org"
                       "/home/olav/Dropbox/org-agenda/masters.org"
+                      "/home/olav/Dropbox/org-agenda/masters_meetings.org"
                       "/home/olav/Dropbox/org-agenda/skytrack.org"
                       "/home/olav/Dropbox/org-agenda/thesis.org"
                       "/home/olav/Dropbox/org-agenda/recommendations.org"
@@ -763,6 +764,7 @@
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (setq agenda_masters (concat org_agenda_dir "masters.org"))
+  (setq agenda_masters_meetings (concat org_agenda_dir "masters_meetings.org"))
   (setq agenda_skytrack (concat org_agenda_dir "skytrack.org"))
   (setq agenda_life (concat org_agenda_dir "life.org"))
   (setq agenda_thesis (concat org_agenda_dir "thesis.org"))
@@ -811,8 +813,8 @@
   ("m" "Masters General")
 
   ("mm" "Meeting Notes" entry
-  (file+olp+datetree agenda_masters)
-   "* Meeting - %? \t :meeting: \n CREATED: %U")
+  (file+olp+datetree agenda_masters_meetings)
+   "* %? \t :meeting: \n CREATED: %U")
 
   ;; No Date Prompts
   ("mr" "Regular Tasks")
