@@ -67,7 +67,7 @@
     git
     markdown
     (latex :variables
-           latex-build-command "LaTeX"
+           ;; latex-build-command "LaTeX"
            latex-enable-auto-fill t
            latex-enable-folding t
            latex-enable-magic t)
