@@ -66,6 +66,8 @@
     ;; (extra-langs :variables matlab-mode)
     git
     markdown
+    (mu4e :variables
+          mu4e-installation-path "/usr/share/emacs/site-lisp")
     (latex :variables
            ;; latex-build-command "LaTeX"
            latex-enable-auto-fill t
@@ -103,6 +105,7 @@
                                      ;; org-bullets
                                      ;; (org-roam :location (recipe :fetcher github :repo "jethrokuan/org-roam"))
                                      sqlite3
+                                     smtpmail
                                      ;; flycheck-pycheckers
                                      org-pdftools
                                      org-noter-pdftools
@@ -597,7 +600,86 @@
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ;; (setq evil-magit-use-y-for-yank nil)
 #+END_SRC
+ 
+** Mu4e
+*** General Settings 
+    
+    These were taken and adopted from [[https://gitlab.com/dwt1/dotfiles/-/blob/master/.doom.d/config.org#mu4e][DistroTubes]] gitlab dotfiles.
+
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+  (setq user-mail-address "olavpe@gmail.com"
+        user-full-name  "Olav Landmark Pedersen"
+        mu4e-get-mail-command "mbsync -c ~/.config/mu4e/mbsyncrc -a"
+        ;; This option is to avoid mail syncing issues with gmail
+        mu4e-change-filenames-when-moving t
+        mu4e-update-interval  300
+        mu4e-main-buffer-hide-personal-addresses t
+        message-send-mail-function 'smtpmail-send-it
+        starttls-use-gnutls t
+        smtpmail-starttls-credentials '(("smtp.1and1.com" 587 nil nil))
+        mu4e-sent-folder "/olavpe-gmail/[Gmail]/Sent Mail"
+        mu4e-drafts-folder "/olavpe-gmail/[Gmail]/Drafts"
+        mu4e-trash-folder "/olavpe-gmail/[Gmail]/Trash"
+        mu4e-refile-folder "/olavpe-gmail/[Gmail]/All Mail"
+        mu4e-maildir-shortcuts
+        '(("/olavpe-gmail/[Gmail]/INBOX"      . ?i)
+          ("/olavpe-gmail/[Gmail]/Sent Mail" . ?s)
+          ("/olavpe-gmail/[Gmail]/Drafts"     . ?d)
+          ("/olavpe-gmail/[Gmail]/Trash"      . ?t)))
+#+END_SRC
   
+*** Account specific headings 
+ 
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (defvar my-mu4e-account-alist
+    '(("olavpe-gmail"
+       (mu4e-sent-folder "/olavpe-gmail/[Gmail]/Sent Mail")
+       (mu4e-drafts-folder "/olavpe-gmail/[Gmail]/Drafts")
+       (mu4e-trash-folder "/olavpe-gmail/[Gmail]/Trash")
+       (mu4e-refile-folder "/olavpe-gmail/[Gmail]/All Mail")
+       (mu4e-compose-signature
+         (concat
+           "Olav Pedersen\n"
+           "olavpe@gmail.com\n"))
+       (user-mail-address "olavpe@gmail.com")
+       (smtpmail-default-smtp-server "smtp.domain.com")
+       (smtpmail-smtp-server "smtp.domain.com")
+       (smtpmail-smtp-user "acc1@domain.com")
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-service 587))
+
+      ;; ("olavlp-ntnu"
+      ;;  (mu4e-sent-folder "/olavlp-ntnu/Sendte elementer")
+      ;;  (mu4e-drafts-folder "/olavlp-ntnu/Kladd")
+      ;;  (mu4e-trash-folder "/olavlp-ntnu/Slettede elementer")
+      ;;  (mu4e-compose-signature
+      ;;    (concat
+      ;;      "Suzy Q\n"
+      ;;      "acc2@domain.com\n"))
+      ;;  (user-mail-address "acc2@domain.com")
+      ;;  (smtpmail-default-smtp-server "smtp.domain.com")
+      ;;  (smtpmail-smtp-server "smtp.domain.com")
+      ;;  (smtpmail-smtp-user "acc2@domain.com")
+      ;;  (smtpmail-stream-type starttls)
+      ;;  (smtpmail-smtp-service 587))
+    
+      ;; ("acc3-domain"
+      ;;  (mu4e-sent-folder "/acc3-domain/Sent")
+      ;;  (mu4e-drafts-folder "/acc3-domain/Drafts")
+      ;;  (mu4e-trash-folder "/acc3-domain/Trash")
+      ;;  (mu4e-compose-signature
+      ;;    (concat
+      ;;      "John Boy\n"
+      ;;      "acc3@domain.com\n"))
+      ;;  (user-mail-address "acc3@domain.com")
+      ;;  (smtpmail-default-smtp-server "smtp.domain.com")
+      ;;  (smtpmail-smtp-server "smtp.domain.com")
+      ;;  (smtpmail-smtp-user "acc3@domain.com")
+      ;;  (smtpmail-stream-type starttls)
+      ;;  (smtpmail-smtp-service 587))))
+#+END_SRC
+
 ** Programming Languages
 *** C 
     Simply sets the correct comment style as "//"
