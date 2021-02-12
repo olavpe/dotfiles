@@ -1678,21 +1678,26 @@ will prompt for the values of these arguments.
    Non-specific keybindings are defined below 
    
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  ;; Emacs System functions
-  (spacemacs/set-leader-keys "feo" 'open-org-config-file)
-  (spacemacs/set-leader-keys "fen" 'open-system-notes-file)
-  (spacemacs/set-leader-keys "hh" 'describe-thing-in-popup)
-  (spacemacs/set-leader-keys "jg" 'dumb-jump-go)
-  (spacemacs/set-leader-keys "jp" 'dumb-jump-back)
-  ;; Latex functions
-  (spacemacs/set-leader-keys-for-major-mode 'TeX-mode "v" 'TeX-view-custom)
-  ;; Org functions
-  (spacemacs/set-leader-keys "aors" 'org-roam-server-mode)
-  (spacemacs/set-leader-keys-for-major-mode 'org-mode "rs" 'org-roam-server-mode)
-  (spacemacs/set-leader-keys "aorw" 'open-roam-server-pages)
-  (spacemacs/set-leader-keys-for-major-mode 'org-mode "rw" 'open-roam-server-pages)
-  (spacemacs/set-leader-keys "aorh" 'helm-bibtex)
-  (spacemacs/set-leader-keys-for-major-mode 'org-mode "rh" 'helm-bibtex)
+    ;; Emacs System functions
+    (spacemacs/set-leader-keys "feo" 'open-org-config-file)
+    (spacemacs/set-leader-keys "fen" 'open-system-notes-file)
+    (spacemacs/set-leader-keys "hh" 'describe-thing-in-popup)
+    (spacemacs/set-leader-keys "jg" 'xref-find-definitions)
+    (spacemacs/set-leader-keys "jp" 'xref-pop-marker-stack)
+    ;; Latex functions
+    ;; (with-eval-after-load 'latex
+    ;; (spacemacs|use-package-add-hook latex
+    ;;   :post-config
+      (spacemacs/set-leader-keys-for-major-mode 'latex-mode "v" 'TeX-view-custom)
+;; )
+  ;; )
+    ;; Org functions
+    (spacemacs/set-leader-keys "aors" 'org-roam-server-mode)
+    (spacemacs/set-leader-keys-for-major-mode 'org-mode "rs" 'org-roam-server-mode)
+    (spacemacs/set-leader-keys "aorw" 'open-roam-server-pages)
+    (spacemacs/set-leader-keys-for-major-mode 'org-mode "rw" 'open-roam-server-pages)
+    (spacemacs/set-leader-keys "aorh" 'helm-bibtex)
+    (spacemacs/set-leader-keys-for-major-mode 'org-mode "rh" 'helm-bibtex)
 #+END_SRC
 
 ** Finishing user-config
