@@ -143,6 +143,7 @@ alias sourcez='source ~/.zshrc'
 alias puu='sudo pacman -Syu'
 alias pac='sudo pacman -Syu'
 alias ranger='TERM=xterm ranger'
+alias startvenv='source venv/bin/activate'
 
 # Filesystem scripts
 alias replaceSpace='sh ~/.config/desktopScripts/replaceSpaces.sh pwd'
