@@ -608,8 +608,9 @@
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
-  (setq user-mail-address "olavpe@gmail.com"
-        user-full-name  "Olav Landmark Pedersen"
+  (require 'mu4e)
+
+  (setq user-full-name  "Olav Landmark Pedersen"
         mu4e-get-mail-command "mbsync -c ~/.config/mu4e/mbsyncrc -a"
         ;; This option is to avoid mail syncing issues with gmail
         mu4e-change-filenames-when-moving t
@@ -617,16 +618,75 @@
         mu4e-main-buffer-hide-personal-addresses t
         message-send-mail-function 'smtpmail-send-it
         starttls-use-gnutls t
-        smtpmail-starttls-credentials '(("smtp.1and1.com" 587 nil nil))
-        mu4e-sent-folder "/olavpe-gmail/[Gmail]/Sent Mail"
-        mu4e-drafts-folder "/olavpe-gmail/[Gmail]/Drafts"
-        mu4e-trash-folder "/olavpe-gmail/[Gmail]/Trash"
-        mu4e-refile-folder "/olavpe-gmail/[Gmail]/All Mail"
-        mu4e-maildir-shortcuts
-        '(("/olavpe-gmail/[Gmail]/INBOX"      . ?i)
-          ("/olavpe-gmail/[Gmail]/Sent Mail" . ?s)
-          ("/olavpe-gmail/[Gmail]/Drafts"     . ?d)
-          ("/olavpe-gmail/[Gmail]/Trash"      . ?t)))
+        ;; smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+        ;; mu4e-maildir-shortcuts
+        ;; '(("/olavpe-gmail/[Gmail]/INBOX"      . ?i)
+        ;;   ("/olavpe-gmail/[Gmail]/Sent Mail" . ?s)
+        ;;   ("/olavpe-gmail/[Gmail]/Drafts"     . ?d)
+        ;;   ("/olavpe-gmail/[Gmail]/Trash"      . ?t))
+)
+
+  (setq mu4e-contexts
+        (list
+        ;; Work account
+        (make-mu4e-context
+          :name "Gmail"
+          :match-func
+            (lambda (msg)
+              (when msg
+                (string-prefix-p "/olavpe-gmail" (mu4e-message-field msg :maildir))))
+          :vars '(
+                  (user-mail-address . "olavpe@gmail.com")
+                  (user-full-name    . "Olav Pedersen")
+                  (mu4e-sent-folder . "/olavpe-gmail/[Gmail]/Sent Mail")
+                  (mu4e-drafts-folder . "/olavpe-gmail/[Gmail]/Drafts")
+                  (mu4e-trash-folder . "/olavpe-gmail/[Gmail]/Trash")
+                  (mu4e-refile-folder . "/olavpe-gmail/[Gmail]/All Mail")
+                  (mu4e-compose-signature . 
+                    (concat
+                      "Best regards,\n"
+                      "Olav Pedersen\n"
+                      "olavpe@gmail.com\n"))
+                  ;; (smtpmail-auth-credentials "/home/olav/.config/mu4e/mbsyncpass-olavpe-gmail-App.gpg")
+                  (smtpmail-starttls-credentials . '(("smtp.gmail.com" 587 nil nil)))
+                  (smtpmail-default-smtp-server . "smtp.gmail.com")
+                  (smtpmail-smtp-server . "smtp.gmail.com")
+                  (smtpmail-smtp-user . "olavpe@gmail.com")
+                  (smtpmail-stream-type . starttls)
+                  (smtpmail-smtp-service . 587))
+                  ;; (mu4e-maildir-shortcuts
+                  ;; '(("/olavpe-gmail/[Gmail]/INBOX"      . ?i)
+                  ;;   ("/olavpe-gmail/[Gmail]/Sent Mail" . ?s)
+                  ;;   ("/olavpe-gmail/[Gmail]/Drafts"     . ?d)
+                  ;;   ("/olavpe-gmail/[Gmail]/Trash"      . ?t)))
+)
+
+        ;; Personal account
+        (make-mu4e-context
+          :name "NTNU"
+          :match-func
+            (lambda (msg)
+              (when msg
+                (string-prefix-p "/olavlp-ntnu" (mu4e-message-field msg :maildir))))
+          :vars '(
+                  (user-mail-address "olavlp@stud.ntnu.no")
+                  (user-full-name "Olav Pedersen")
+                  (mu4e-sent-folder "/olavlp-ntnu/Sendte elementer")
+                  (mu4e-drafts-folder "/olavlp-ntnu/Kladd")
+                  (mu4e-trash-folder "/olavlp-ntnu/Slettede elementer")
+                  (mu4e-compose-signature
+                    (concat
+                      "Best regards,\n"
+                      "Olav Pedersen\n"
+                      "olavlp@stud.ntnu.no\n"))
+                  ;; (smtpmail-auth-credentials "/home/olav/.config/mu4e/mbsyncpass-olavlp-ntnu.gpg")
+                  (smtpmail-starttls-credentials '(("smtp.office365.com" 587 nil nil)))
+                  (smtpmail-default-smtp-server "smtp.office365.com")
+                  (smtpmail-smtp-server "smtp.office365.com")
+                  (smtpmail-smtp-user "olavlp@ntnu.no")
+                  (smtpmail-stream-type starttls)
+                  (smtpmail-smtp-service 587)))))
+
 #+END_SRC
   
 *** Account specific headings 
@@ -640,30 +700,36 @@
        (mu4e-refile-folder "/olavpe-gmail/[Gmail]/All Mail")
        (mu4e-compose-signature
          (concat
+           "Best regards,\n"
            "Olav Pedersen\n"
            "olavpe@gmail.com\n"))
        (user-mail-address "olavpe@gmail.com")
-       (smtpmail-default-smtp-server "smtp.domain.com")
-       (smtpmail-smtp-server "smtp.domain.com")
-       (smtpmail-smtp-user "acc1@domain.com")
+       (smtpmail-auth-credentials "/home/olav/.config/mu4e/mbsyncpass-olavpe-gmail-App.gpg")
+       (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil)))
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-user "olavpe@gmail.com")
        (smtpmail-stream-type starttls)
        (smtpmail-smtp-service 587))
 
-      ;; ("olavlp-ntnu"
-      ;;  (mu4e-sent-folder "/olavlp-ntnu/Sendte elementer")
-      ;;  (mu4e-drafts-folder "/olavlp-ntnu/Kladd")
-      ;;  (mu4e-trash-folder "/olavlp-ntnu/Slettede elementer")
-      ;;  (mu4e-compose-signature
-      ;;    (concat
-      ;;      "Suzy Q\n"
-      ;;      "acc2@domain.com\n"))
-      ;;  (user-mail-address "acc2@domain.com")
-      ;;  (smtpmail-default-smtp-server "smtp.domain.com")
-      ;;  (smtpmail-smtp-server "smtp.domain.com")
-      ;;  (smtpmail-smtp-user "acc2@domain.com")
-      ;;  (smtpmail-stream-type starttls)
-      ;;  (smtpmail-smtp-service 587))
-    
+      ("olavlp-ntnu"
+       (mu4e-sent-folder "/olavlp-ntnu/Sendte elementer")
+       (mu4e-drafts-folder "/olavlp-ntnu/Kladd")
+       (mu4e-trash-folder "/olavlp-ntnu/Slettede elementer")
+       (mu4e-compose-signature
+         (concat
+           "Best regards,\n"
+           "Olav Pedersen\n"
+           "olavlp@stud.ntnu.no\n"))
+       (user-mail-address "olavlp@stud.ntnu.no")
+       (smtpmail-auth-credentials "/home/olav/.config/mu4e/mbsyncpass-olavlp-ntnu.gpg")
+       (smtpmail-starttls-credentials '(("smtp.office365.com" 587 nil nil)))
+       (smtpmail-default-smtp-server "smtp.office365.com")
+       (smtpmail-smtp-server "smtp.office365.com")
+       (smtpmail-smtp-user "olavlp@ntnu.com")
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-service 587))
+
       ;; ("acc3-domain"
       ;;  (mu4e-sent-folder "/acc3-domain/Sent")
       ;;  (mu4e-drafts-folder "/acc3-domain/Drafts")
@@ -677,8 +743,9 @@
       ;;  (smtpmail-smtp-server "smtp.domain.com")
       ;;  (smtpmail-smtp-user "acc3@domain.com")
       ;;  (smtpmail-stream-type starttls)
-      ;;  (smtpmail-smtp-service 587))))
-#+END_SRC
+      ;;  (smtpmail-smtp-service 587))
+  ))
+  #+END_SRC
 
 ** Programming Languages
 *** C 
