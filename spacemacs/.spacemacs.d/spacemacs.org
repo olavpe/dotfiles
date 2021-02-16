@@ -618,12 +618,17 @@
         mu4e-main-buffer-hide-personal-addresses t
         message-send-mail-function 'smtpmail-send-it
         starttls-use-gnutls t
-        ;; smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-        ;; mu4e-maildir-shortcuts
-        ;; '(("/olavpe-gmail/[Gmail]/INBOX"      . ?i)
-        ;;   ("/olavpe-gmail/[Gmail]/Sent Mail" . ?s)
-        ;;   ("/olavpe-gmail/[Gmail]/Drafts"     . ?d)
-        ;;   ("/olavpe-gmail/[Gmail]/Trash"      . ?t))
+        mu4e-maildir-shortcuts
+        '(
+          ("/olavpe-gmail/INBOX"     . ?i)
+          ("/olavpe-gmail/[Gmail]/Sent Mail" . ?s)
+          ("/olavpe-gmail/[Gmail]/Drafts"    . ?d)
+          ("/olavpe-gmail/[Gmail]/Trash"     . ?t)
+          ("/olavlp-ntnu/INBOX"              . ?I)
+          ("/olavlp-ntnu/Sendte elementer"   . ?S)
+          ("/olavlp-ntnu/Kladd"              . ?D)
+          ("/olavlp-ntnu/Slettede elementer" . ?T)
+)
 )
 
   (setq mu4e-contexts
