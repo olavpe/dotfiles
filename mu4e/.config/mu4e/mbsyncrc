@@ -1,0 +1,108 @@
+# mbsyncrc based on (via DistroTube's dotfiles)
+# http://www.ict4g.net/adolfo/notes/2014/12/27/EmacsIMAP.html
+# To run mbsync from the terminal with the 'stow'ed config file
+#   mbsync -c ~/.config/mu4e/mbsyncrc -a
+
+# ACCOUNT INFORMATION
+IMAPAccount olavpe-gmail
+# Address to connect to
+Host imap.gmail.com
+User olavpe@gmail.com
+# Create a plain text file that contains your password. Name it mbsyncpass-acc1. 
+# Then, gpg encrypt it by running: gpg2 -c mbsyncpass-acc1
+# Then delete the plain text file, leaving only mbsyncpass-acc1.gpg.
+# This is the method for the password files in the path below
+# PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.config/mu4e/mbsyncpass-olavpe-gmail-App.gpg"
+# This uses the encrypted login information from the .authinfo.gpg file
+PassCmd "echo ${PASSWORD:-$(gpg --no-tty -qd ~/.authinfo.gpg | sed -n 's,^machine imap.gmail.com .*password \\([^ ]*\\).*,\\1,p')}"
+AuthMechs LOGIN
+SSLType IMAPS
+SSLVersions TLSv1.2
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+# THEN WE SPECIFY THE LOCAL AND REMOTE STORAGE
+# - THE REMOTE STORAGE IS WHERE WE GET THE MAIL FROM (E.G., THE
+#   SPECIFICATION OF AN IMAP ACCOUNT)
+# - THE LOCAL STORAGE IS WHERE WE STORE THE EMAIL ON OUR COMPUTER
+
+# REMOTE STORAGE (USE THE IMAP ACCOUNT SPECIFIED ABOVE)
+IMAPStore olavpe-gmail-remote
+Account olavpe-gmail
+
+# LOCAL STORAGE (CREATE DIRECTORIES with mkdir -p ~/Maildir/olavpe-gmail)
+MaildirStore olavpe-gmail-local
+Path ~/Maildir/olavpe-gmail/
+Inbox ~/Maildir/olavpe-gmail/INBOX
+# REQUIRED ONLY IF YOU WANT TO DOWNLOAD ALL SUBFOLDERS; SYNCING SLOWS DOWN
+SubFolders Verbatim
+
+# CONNECTIONS SPECIFY LINKS BETWEEN REMOTE AND LOCAL FOLDERS
+#
+# CONNECTIONS ARE SPECIFIED USING PATTERNS, WHICH MATCH REMOTE MAIL
+# FOLDERS. SOME COMMONLY USED PATTERS INCLUDE:
+#
+# 1 "*" TO MATCH EVERYTHING
+# 2 "!DIR" TO EXCLUDE "DIR"
+# 3 "DIR" TO MATCH DIR
+
+Channel olavpe-gmail
+Master :olavpe-gmail-remote:
+Slave :olavpe-gmail-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *
+
+
+# ================================================================================
+
+
+# ACCOUNT INFORMATION
+IMAPAccount olavlp-ntnu
+# Address to connect to
+Host outlook.office365.com
+Port 993
+User olavlp@ntnu.no
+# Create a plain text file that contains your password. Name it mbsyncpass-acc2. 
+# Then, gpg encrypt it by running: gpg2 -c mbsyncpass-acc2
+# Then delete the plain text file, leaving only mbsyncpass-acc2.gpg.
+# This is the method for the password files in the path below
+# PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.config/mu4e/mbsyncpass-olavlp-ntnu.gpg"
+# This uses the encrypted login information from the .authinfo.gpg file
+PassCmd "echo ${PASSWORD:-$(gpg --no-tty -qd ~/.authinfo.gpg | sed -n 's,^machine outlook.office365.com .*password \\([^ ]*\\).*,\\1,p')}"
+AuthMechs LOGIN
+SSLType IMAPS
+SSLVersions TLSv1.2
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+# THEN WE SPECIFY THE LOCAL AND REMOTE STORAGE
+# - THE REMOTE STORAGE IS WHERE WE GET THE MAIL FROM (E.G., THE
+#   SPECIFICATION OF AN IMAP ACCOUNT)
+# - THE LOCAL STORAGE IS WHERE WE STORE THE EMAIL ON OUR COMPUTER
+
+# REMOTE STORAGE (USE THE IMAP ACCOUNT SPECIFIED ABOVE)
+IMAPStore olavlp-ntnu-remote
+Account olavlp-ntnu
+
+# LOCAL STORAGE (CREATE DIRECTORIES with mkdir -p ~/Maildir/olavlp-ntnu)
+MaildirStore olavlp-ntnu-local
+Path ~/Maildir/olavlp-ntnu/
+Inbox ~/Maildir/olavlp-ntnu/INBOX
+SubFolders Verbatim
+
+# CONNECTIONS SPECIFY LINKS BETWEEN REMOTE AND LOCAL FOLDERS
+#
+# CONNECTIONS ARE SPECIFIED USING PATTERNS, WHICH MATCH REMOTE MAIL
+# FOLDERS. SOME COMMONLY USED PATTERS INCLUDE:
+#
+# 1 "*" TO MATCH EVERYTHING
+# 2 "!DIR" TO EXCLUDE "DIR"
+# 3 "DIR" TO MATCH DIR
+
+Channel olavlp-ntnu-inbox
+Master :olavlp-ntnu-remote:
+Slave :olavlp-ntnu-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *
