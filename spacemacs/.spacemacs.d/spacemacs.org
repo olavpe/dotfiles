@@ -659,11 +659,6 @@
                   (smtpmail-smtp-user . "olavpe@gmail.com")
                   (smtpmail-stream-type . starttls)
                   (smtpmail-smtp-service . 587))
-                  ;; (mu4e-maildir-shortcuts
-                  ;; '(("/olavpe-gmail/[Gmail]/INBOX"      . ?i)
-                  ;;   ("/olavpe-gmail/[Gmail]/Sent Mail" . ?s)
-                  ;;   ("/olavpe-gmail/[Gmail]/Drafts"     . ?d)
-                  ;;   ("/olavpe-gmail/[Gmail]/Trash"      . ?t)))
 )
 
         ;; Personal account
@@ -674,23 +669,23 @@
               (when msg
                 (string-prefix-p "/olavlp-ntnu" (mu4e-message-field msg :maildir))))
           :vars '(
-                  (user-mail-address "olavlp@stud.ntnu.no")
-                  (user-full-name "Olav Pedersen")
-                  (mu4e-sent-folder "/olavlp-ntnu/Sendte elementer")
-                  (mu4e-drafts-folder "/olavlp-ntnu/Kladd")
-                  (mu4e-trash-folder "/olavlp-ntnu/Slettede elementer")
-                  (mu4e-compose-signature
+                  (user-mail-address . "olavlp@stud.ntnu.no")
+                  (user-full-name . "Olav Pedersen")
+                  (mu4e-sent-folder . "/olavlp-ntnu/Sendte elementer")
+                  (mu4e-drafts-folder . "/olavlp-ntnu/Kladd")
+                  (mu4e-trash-folder . "/olavlp-ntnu/Slettede elementer")
+                  (mu4e-compose-signature .
                     (concat
                       "Best regards,\n"
                       "Olav Pedersen\n"
                       "olavlp@stud.ntnu.no\n"))
                   ;; (smtpmail-auth-credentials "/home/olav/.config/mu4e/mbsyncpass-olavlp-ntnu.gpg")
-                  (smtpmail-starttls-credentials '(("smtp.office365.com" 587 nil nil)))
-                  (smtpmail-default-smtp-server "smtp.office365.com")
-                  (smtpmail-smtp-server "smtp.office365.com")
-                  (smtpmail-smtp-user "olavlp@ntnu.no")
-                  (smtpmail-stream-type starttls)
-                  (smtpmail-smtp-service 587)))))
+                  (smtpmail-starttls-credentials . '(("smtp.office365.com" 587 nil nil)))
+                  (smtpmail-default-smtp-server . "smtp.office365.com")
+                  (smtpmail-smtp-server . "smtp.office365.com")
+                  (smtpmail-smtp-user . "olavlp@ntnu.no")
+                  (smtpmail-stream-type . starttls)
+                  (smtpmail-smtp-service . 587)))))
 
 #+END_SRC
   
