@@ -6,4 +6,4 @@
 cd ~/gitRepos/perception-router-digitaltwin
 conda deactivate
 source ./venv/bin/activate
-dapr run --app-id perception-twin-app --dapr-http-port 3500 --app-port 3001 -- uvicorn --port 3001 twin_service.twin_service:app
+dapr run --app-id perception-twin --dapr-http-port 3500 --app-port 3001 -- uvicorn --port 3001 twin_service.twin_service:app
