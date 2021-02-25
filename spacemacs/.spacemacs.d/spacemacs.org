@@ -1858,9 +1858,8 @@ will prompt for the values of these arguments.
     ;; (with-eval-after-load 'latex
     ;; (spacemacs|use-package-add-hook latex
     ;;   :post-config
-      (spacemacs/set-leader-keys-for-major-mode 'latex-mode "v" 'TeX-view-custom)
-      (spacemacs/set-leader-keys-for-major-mode 'lsp-mode "Gh" 'lsp-ui-doc-show)
-  ;; )
+    (spacemacs/set-leader-keys-for-major-mode 'latex-mode "v" 'TeX-view-custom)
+    (spacemacs/set-leader-keys-for-major-mode 'lsp-mode "Gh" 'lsp-ui-doc-show)
     ;; Org functions
     (spacemacs/set-leader-keys "aors" 'org-roam-server-mode)
     (spacemacs/set-leader-keys-for-major-mode 'org-mode "rs" 'org-roam-server-mode)
