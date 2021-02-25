@@ -59,12 +59,15 @@
     better-defaults
     ;; (conda :variables
     ;;        conda-anaconda-home "/home/olav/.conda/envs")
+    (dart :variables
+           dart-backend 'lsp) 
     emacs-lisp
     ess
     ;; +lang
     ;; (extra-langs :variables matlab-mode)
     git
-    lsp
+    (lsp :variables
+          lsp-navgation 'both)
     markdown
     (mu4e :variables
           mu4e-installation-path "/usr/share/emacs/site-lisp")
@@ -588,11 +591,11 @@
 ** LSP-mode
    This ensures that ~lsp-imenu~ always runs with lsp-mode.
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)  
-  (add-hook 'python-mode-hook 'lsp-deferred)
+  ;; (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)  
+  ;; (add-hook 'python-mode-hook 'lsp-deferred)
   ;; Turing off autodoc as it makes navigation painfully slow.
   (setq lsp-ui-doc-enable nil)
-  (setq lsp-navigation 'simple)
+  (setq lsp-navigation 'both)
 #+END_SRC
    
 ** Flycheck and Linting stuff
@@ -1859,7 +1862,7 @@ will prompt for the values of these arguments.
     ;; (spacemacs|use-package-add-hook latex
     ;;   :post-config
     (spacemacs/set-leader-keys-for-major-mode 'latex-mode "v" 'TeX-view-custom)
-    (spacemacs/set-leader-keys-for-major-mode 'lsp-mode "Gh" 'lsp-ui-doc-show)
+    (spacemacs/set-leader-keys-for-major-mode 'python-mode "Gh" 'lsp-ui-doc-show)
     ;; Org functions
     (spacemacs/set-leader-keys "aors" 'org-roam-server-mode)
     (spacemacs/set-leader-keys-for-major-mode 'org-mode "rs" 'org-roam-server-mode)
