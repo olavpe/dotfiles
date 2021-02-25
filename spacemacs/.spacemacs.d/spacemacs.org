@@ -532,6 +532,66 @@
    )
 #+END_SRC
  
+** Hydras
+   
+   Hydra is used in attempt to make the helm buffers more manageable.
+   The following function was found at this [[https://github.com/abo-abo/hydra/wiki/Helm][site]], which also suggests two
+   additional functions to avoid answering yes/no questions.
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+(with-eval-after-load 'helm 
+  (defhydra helm-like-unite (:hint nil
+                             :color pink)
+  "
+  Nav ^^^^^^^^^        Mark ^^          Other ^^       Quit
+  ^^^^^^^^^^------------^^----------------^^----------------------
+  _K_ ^ ^ _k_ ^ ^     _m_ark           _v_iew         _i_: cancel
+  ^↕^ _h_ ^✜^ _l_     _t_oggle mark    _H_elp         _o_: quit
+  _J_ ^ ^ _j_ ^ ^     _U_nmark all     _d_elete
+  ^^^^^^^^^^                           _f_ollow: %(helm-attr 'follow)
+  "
+    ;; arrows
+    ("h" helm-beginning-of-buffer)
+    ("j" helm-next-line)
+    ("k" helm-previous-line)
+    ("l" helm-end-of-buffer)
+    ;; beginning/end
+    ("g" helm-beginning-of-buffer)
+    ("G" helm-end-of-buffer)
+    ;; scroll
+    ("K" helm-scroll-other-window-down)
+    ("J" helm-scroll-other-window)
+    ;; mark
+    ("m" helm-toggle-visible-mark)
+    ("t" helm-toggle-all-marks)
+    ("U" helm-unmark-all)
+    ;; exit
+    ("<escape>" keyboard-escape-quit "" :exit t)
+    ("o" keyboard-escape-quit :exit t)
+    ("i" nil)
+    ;; sources
+    ("}" helm-next-source)
+    ("{" helm-previous-source)
+    ;; rest
+    ("H" helm-help)
+    ("v" helm-execute-persistent-action)
+    ("d" helm-persistent-delete-marked)
+    ("f" helm-follow-mode))
+
+  (define-key helm-map (kbd "<escape>") 'helm-like-unite/body)
+  (define-key helm-map (kbd "C-k") 'helm-like-unite/body)
+  (define-key helm-map (kbd "C-o") 'helm-like-unite/body))
+#+END_SRC
+   
+** LSP-mode
+   This ensures that ~lsp-imenu~ always runs with lsp-mode.
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)  
+  (add-hook 'python-mode-hook 'lsp-deferred)
+  ;; Turing off autodoc as it makes navigation painfully slow.
+  (setq lsp-ui-doc-enable nil)
+  (setq lsp-navigation 'simple)
+#+END_SRC
+   
 ** Flycheck and Linting stuff
    
    The ~syntax-highlighting~ layer has been enabled which contains the flycheck
