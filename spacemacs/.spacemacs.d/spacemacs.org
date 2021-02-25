@@ -81,6 +81,7 @@
     ;; ipython-notebook
     (org :variables
         org-enable-roam-support t)
+    rust
     (shell :variables
            shell-default-shell 'shell
            shell-default-height 30
@@ -115,6 +116,7 @@
                                      org-noter-pdftools
                                      org-roam-bibtex
                                      org-roam-server
+                                     ox-hugo
                                      ;; ewal
                                      ewal-spacemacs-themes
                                      ewal-evil-cursors
@@ -1583,6 +1585,14 @@ will prompt for the values of these arguments.
 :END:")))
 
 #+END_SRC
+
+*** Ox-hugo
+    This is to enable compilation for different source code block environments
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (use-package ox-hugo
+    :ensure t
+    :after ox)
+#+END_SRC   
 
 *** Autopairing
 
