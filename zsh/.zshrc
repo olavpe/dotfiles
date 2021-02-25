@@ -143,13 +143,14 @@ alias sourcez='source ~/.zshrc'
 alias puu='sudo pacman -Syu'
 alias pac='sudo pacman -Syu'
 alias ranger='TERM=xterm ranger'
-alias startvenv='source venv/bin/activate'
+alias startvenv='conda deactivate; source venv/bin/activate'
 
 # Filesystem scripts
 alias replaceSpace='sh ~/.config/desktopScripts/replaceSpaces.sh pwd'
 alias mendeleySync='sh ~/.config/desktopScripts/preproject-bib-autosync.sh'
 alias vpnNTNU='sh ~/.config/desktopScripts/vpnNTNU.sh'
 alias startDTRouter='source ~/.config/desktopScripts/startRouterDigitalTwin.sh'
+alias startDTMapper='source ~/.config/desktopScripts/startDTMapper.sh'
 alias DTTerminal='source ~/.config/desktopScripts/DTterminal.sh'
 
 # Shortcut to often edited config files
@@ -207,6 +208,7 @@ export ERL_AFLAGS="-kerel shell_history enabled"
 export ZSH="/home/olav/.oh-my-zsh"
 export FZF_BASE
 export PATH=$PATH:/home/olav/.cargo/bin
+export PATH=$PATH:/home/olav/gitRepos/perception-router-digitaltwin/twin_service/
 export PATH=$PATH:/home/olav/.config/emacsScripts/
 export PATH="/home/olav/.local/bin:$PATH"
 export PATH=$PATH:/opt/easyeda
