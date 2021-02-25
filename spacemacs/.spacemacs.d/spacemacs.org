@@ -703,6 +703,7 @@
           ("/olavlp-ntnu/Kladd"              . ?D)
           ("/olavlp-ntnu/Slettede elementer" . ?T)
 )
+        mu4e-view-show-addresses t
 )
 
   (setq mu4e-contexts
