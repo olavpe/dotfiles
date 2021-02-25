@@ -211,6 +211,7 @@ export FZF_BASE
 export PATH=$PATH:/home/olav/.cargo/bin
 export PATH=$PATH:/home/olav/gitRepos/perception-router-digitaltwin/twin_service/
 export PATH=$PATH:/home/olav/.config/emacsScripts/
+export PATH=$PATH:/home/olav/.config/desktopScripts/blurImage.py
 export PATH="/home/olav/.local/bin:$PATH"
 export PATH=$PATH:/opt/easyeda
 export PATH=$PATH:/opt/anaconda/bin
