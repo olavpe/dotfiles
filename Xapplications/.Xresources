@@ -314,8 +314,14 @@ URxvt.url-select.underline: true
 !keyboard-select
 URxvt.keysym.M-u: perl:keyboard-select:activate
 !Resize-font:
-URxvt.resize-font.smaller: C-j
-URxvt.resize-font.larger: C-k
+! URxvt.keysym.C-j:    resize-font:smaller
+! URxvt.keysym.C-k:    resize-font:bigger
+URxvt.keysym.C-minus:     resize-font:smaller
+URxvt.keysym.C-plus:      resize-font:bigger
+URxvt.keysym.C-equal:     resize-font:reset
+URxvt.keysym.C-question:  resize-font:show
+! URxvt.resize-font.smaller: C-j
+! URxvt.resize-font.larger: C-k
 ! Perl code to be evaluated when all extensions have been registered. See the urxvtperl(3) manpage.
 ! URxvt.perl-eval: string
 
