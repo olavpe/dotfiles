@@ -822,7 +822,7 @@
       ;;  (smtpmail-smtp-user "acc3@domain.com")
       ;;  (smtpmail-stream-type starttls)
       ;;  (smtpmail-smtp-service 587))
-  ))
+  ;; ))
   #+END_SRC
 
 *** Theme and Icons settings 
