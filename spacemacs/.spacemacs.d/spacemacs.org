@@ -122,6 +122,7 @@
                                      ewal-spacemacs-themes
                                      ewal-evil-cursors
                                      autopair
+                                     mu4e-marker-icons
                                      matlab-mode
                                      yasnippet-classic-snippets
                                      yasnippet-snippets
@@ -818,6 +819,15 @@
   ))
   #+END_SRC
 
+*** Theme and Icons settings 
+    This helps set the correct icons for mu4e icons.
+    
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (use-package mu4e-marker-icons
+    :ensure t
+    :init (mu4e-marker-icons-mode 1))
+#+END_SRC
+ 
 ** Programming Languages
 *** C 
     Simply sets the correct comment style as "//"
