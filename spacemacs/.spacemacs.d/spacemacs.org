@@ -81,6 +81,7 @@
     ;; ipython-notebook
     (org :variables
         org-enable-roam-support t)
+    restclient
     rust
     (shell :variables
            shell-default-shell 'shell
