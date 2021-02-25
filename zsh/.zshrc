@@ -144,6 +144,7 @@ alias puu='sudo pacman -Syu'
 alias pac='sudo pacman -Syu'
 alias ranger='TERM=xterm ranger'
 alias startvenv='conda deactivate; source venv/bin/activate'
+alias restartEmacs='systemctl --user stop emacs.service; systemctl --user start emacs.service'
 
 # Filesystem scripts
 alias replaceSpace='sh ~/.config/desktopScripts/replaceSpaces.sh pwd'
