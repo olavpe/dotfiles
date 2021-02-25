@@ -57,14 +57,14 @@
     (c-c++ :variables
            c-c++-enable-clang-support t)
     better-defaults
-    conda
-    (conda :variables
-           conda-anaconda-home "/home/olav/.conda/envs")
+    ;; (conda :variables
+    ;;        conda-anaconda-home "/home/olav/.conda/envs")
     emacs-lisp
     ess
     ;; +lang
     ;; (extra-langs :variables matlab-mode)
     git
+    lsp
     markdown
     (mu4e :variables
           mu4e-installation-path "/usr/share/emacs/site-lisp")
@@ -74,9 +74,9 @@
            latex-enable-folding t
            latex-enable-magic t)
     pandoc
-    python
+    (python :variables
+            python-backend 'lsp)
     pdf
-    ;; (python :variables python-backend 'lsp)
     ;; ipython-notebook
     (org :variables
         org-enable-roam-support t)
@@ -107,6 +107,7 @@
                                      sqlite3
                                      smtpmail
                                      ;; flycheck-pycheckers
+                                     lsp-dart
                                      org-pdftools
                                      org-noter-pdftools
                                      org-roam-bibtex
@@ -755,10 +756,11 @@
 #+END_SRC
  
 *** Python
-    Starting anaconda mode when starting python mode
-#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  (add-hook 'python-mode-hook 'anaconda-mode)
-#+END_SRC
+**** Triggering Anaconda mode with python mode 
+     Starting anaconda mode when starting python mode
+ #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+   ;; (add-hook 'python-mode-hook 'anaconda-mode)
+ #+END_SRC
  
 *** MATLAB config 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
@@ -1756,7 +1758,7 @@ will prompt for the values of these arguments.
     ;; (spacemacs|use-package-add-hook latex
     ;;   :post-config
       (spacemacs/set-leader-keys-for-major-mode 'latex-mode "v" 'TeX-view-custom)
-;; )
+      (spacemacs/set-leader-keys-for-major-mode 'lsp-mode "Gh" 'lsp-ui-doc-show)
   ;; )
     ;; Org functions
     (spacemacs/set-leader-keys "aors" 'org-roam-server-mode)
