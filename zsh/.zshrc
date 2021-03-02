@@ -126,6 +126,10 @@ ZSH_COLORIZE_STYLE="colorful"
 
 export FZF_BASE=/usr/share/fzf
 
+# Setoptions
+setopt extended_glob
+
+# Which plugins would you like to load?
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
