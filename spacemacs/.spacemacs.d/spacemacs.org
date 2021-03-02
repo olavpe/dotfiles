@@ -49,11 +49,12 @@
     bm
     bibtex
     colors
-    javascript
+   (javascript :variables js2-mode-show-strict-warnings nil)
     yaml
     octave
     helm
-    auto-completion
+    (auto-completion :variables
+                     auto-completion-enable-snippets-in-popup t)
     (c-c++ :variables
            c-c++-enable-clang-support t)
     better-defaults
@@ -67,6 +68,7 @@
     ;; +lang
     ;; (extra-langs :variables matlab-mode)
     git
+    html
     (lsp :variables
           lsp-navgation 'both)
     markdown
