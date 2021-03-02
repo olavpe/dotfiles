@@ -1857,11 +1857,12 @@ will prompt for the values of these arguments.
     (spacemacs/set-leader-keys "hh" 'describe-thing-in-popup)
     (spacemacs/set-leader-keys "jg" 'xref-find-definitions)
     (spacemacs/set-leader-keys "jp" 'xref-pop-marker-stack)
-    ;; Latex functions
-    ;; (with-eval-after-load 'latex
-    ;; (spacemacs|use-package-add-hook latex
-    ;;   :post-config
-    (spacemacs/set-leader-keys-for-major-mode 'latex-mode "v" 'TeX-view-custom)
+    ;; Markup functions
+    (with-eval-after-load 'latex
+      (spacemacs/set-leader-keys-for-major-mode 'latex-mode "v" 'TeX-view-custom)
+      (spacemacs/set-leader-keys-for-major-mode 'latex-mode "hh" 'helm-bibtex)
+    )
+    ;; Programming functions
     (spacemacs/set-leader-keys-for-major-mode 'python-mode "Gh" 'lsp-ui-doc-show)
     ;; Org functions
     (spacemacs/set-leader-keys "aors" 'org-roam-server-mode)
