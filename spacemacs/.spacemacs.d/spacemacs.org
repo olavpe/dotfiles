@@ -63,6 +63,7 @@
            dart-backend 'lsp) 
     emacs-lisp
     ess
+    epub
     ;; +lang
     ;; (extra-langs :variables matlab-mode)
     git
