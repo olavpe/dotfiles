@@ -111,6 +111,7 @@
   dotspacemacs-additional-packages '(
                                      ein
                                      jupyter
+                                     citeproc-org
                                      xresources-theme
                                      ;; org-bullets
                                      ;; (org-roam :location (recipe :fetcher github :repo "jethrokuan/org-roam"))
@@ -503,6 +504,7 @@
    org_agenda_dir "/home/olav/Dropbox/org-agenda/"
    mendeley_bib_files
    '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
+   "~/Documents/BibTex/Website.bib"
    "~/Documents/BibTex/Olav_Pedersen_Thesis2021.bib")
    org-directory org_roam_dir
    org-default-notes-file (concat org_roam_dir "/inbox.org")
@@ -534,6 +536,7 @@
    org-ref-notes-directory org_roam_dir
    org-ref-default-bibliography 
    '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
+     "~/Documents/BibTex/Website.bib"
      "~/Documents/BibTex/Olav_Pedersen_Thesis2021.bib")
    org-ref-bibliography-notes (concat org_roam_dir "/bibnotes.org")
    ;; org-ref-default-bibliography mendeley_bib_files
@@ -1673,6 +1676,24 @@ will prompt for the values of these arguments.
   (use-package ox-hugo
     :ensure t
     :after ox)
+#+END_SRC   
+ 
+    The ~citeproc-org~ function is to be able to export citations from org-mode
+    to hugo. In this setting needs to be present, but in addition it require
+    the ~org-ref-default-bibliography~ to contain one file. This solved my
+    problems with "NO_DATA_ITEM" when exporting previously. Adding the following
+    local variable at the bottom of the file, will set the variable to the
+    value, *only for the current buffer*. It will not affect the variable in
+    other files.
+    
+    ~eval: (setq-local org-ref-default-bibliography '("~/Documents/BibTex/Website.bib"))~
+    
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (use-package citeproc-org
+    :ensure t
+    :after ox-hugo
+    :config
+    (citeproc-org-setup))
 #+END_SRC   
 
 *** Autopairing
