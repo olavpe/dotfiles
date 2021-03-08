@@ -511,7 +511,8 @@
    )
   ;; Org-Agenda
   (with-eval-after-load 'org (setq
-   org-agenda-files '("/home/olav/Dropbox/org-agenda/life.org"
+   org-agenda-files '(
+                      "/home/olav/gitRepos/personalsite/content/personalsite.org"
                       "/home/olav/Dropbox/org-agenda/masters.org"
                       "/home/olav/Dropbox/org-agenda/masters_meetings.org"
                       "/home/olav/Dropbox/org-agenda/skytrack.org"
