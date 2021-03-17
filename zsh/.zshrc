@@ -125,6 +125,8 @@ POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON=$'\uF01B '
 ZSH_COLORIZE_STYLE="colorful"
 
 export FZF_BASE=/usr/share/fzf
+# In order to get python to work properly in terminal
+export TERMINFO=/usr/share/terminfo
 
 # Setoptions
 setopt extended_glob
