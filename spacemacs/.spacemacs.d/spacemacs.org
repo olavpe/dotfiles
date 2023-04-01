@@ -7,9 +7,9 @@
 
 * Spacemacs Layers
    Configuration Layers declaration. You should not put any user code in this
-   function besides modifying the variable values. 
+   function besides modifying the variable values.
 ** Function start and default settings
-   
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (defun dotspacemacs/layers ()
     (setq-default
@@ -37,7 +37,7 @@
      dotspacemacs-configuration-layer-path '()
      ;; List of configuration layers to load.
 #+END_SRC
- 
+
 ** Layer Declaration
 
    Declarations of layers which spacemacs should install. When layers are called
@@ -102,7 +102,7 @@
 #+END_SRC
 
 ** Additional packages to install
-   
+
   List of additional packages that will be installed without being wrapped in a
   layer. If you need some configuration for these packages, then consider creating
   a layer. You can also put the configuration in `dotspacemacs/user-config'.
@@ -137,28 +137,28 @@
                                      )
 #+END_SRC
 
-** Extra package options 
+** Extra package options
   - "Frozen Packages" is list of packages that you do not want to be updated
   - "Excluded Packages" is list of packages that will not be installed or loaded
   - 'Install packages': Defines the behaviour of Spacemacs when installing packages.
     - 'used-only': installs only explicitly used packages and uninstall any
-      unused packages as well as their unused dependencies.   
+      unused packages as well as their unused dependencies.
     - `used-but-keep-unused': installs only the used packages but won't
       uninstall them if they become unused.
     - `all' installs *all* packages supported by Spacemacs and never uninstall
-      them. (default is `used-only')  
- 
+      them. (default is `used-only')
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
      dotspacemacs-frozen-packages '()
      dotspacemacs-excluded-packages '()
      dotspacemacs-install-packages 'used-only))
 #+END_SRC
- 
-* Spacemacs Init 
+
+* Spacemacs Init
 ** Start and several functions
     Initialization function. This function is called at the very startup of
     Spacemacs initialization before layers configuration. You should not put any
-    user code in there besides modifying the variable values. 
+    user code in there besides modifying the variable values.
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (defun dotspacemacs/init ()
     ;; This setq-default sexp is an exhaustive list of all the supported
@@ -410,7 +410,7 @@
   Initialization function for user code. It is called immediately after
   `dotspacemacs/init', before layer configuration executes. This function is
   mostly useful for variables that need to be set before packages are loaded. If
-  you are unsure, you should try in setting them in `dotspacemacs/user-config' first. 
+  you are unsure, you should try in setting them in `dotspacemacs/user-config' first.
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (defun dotspacemacs/user-init ()
@@ -423,7 +423,7 @@
             ;; '("/home/olav/.conda/envs" "/home/olav/perception-router-digitaltwin/perception-router-digitaltwin/"))
     )
 #+END_SRC
- 
+
 * User Config
 
 ** Starting user-config
@@ -431,15 +431,15 @@
    of Spacemacs initialization after layers configuration. This is the place
    where most of your configurations should be done. Unless it is explicitly
    specified that a variable should be set before a package is loaded, you should
-   place your code here. 
-  
+   place your code here.
+
   #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (defun dotspacemacs/user-config ()
   #+END_SRC
-  
-** General Functions for Emacs 
+
+** General Functions for Emacs
 *** Pop-info about function
-    
+
    This function was found at [[http://blog.jenkster.com/2013/12/popup-help-in-emacs-lisp.html][this site]]. This code is actually fairly simple, so
    Then we just call ~popup-tip~ to display it. This function does not function
    completely as expect yet as it show th results in a split window.
@@ -464,36 +464,36 @@
     Function to open this literate ~spacemacs.org~ configuration file. This
     could be done in the one liner, but then the name did not in the minibuffer
     when using keybindings
-    
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (defun open-org-config-file ()
      (interactive)
      (find-file "~/.spacemacs.d/spacemacs.org"))
 #+END_SRC
-   
-*** Opening BigArch.org for system note taking
+
+*** Opening M1-system.org for system note taking
     Function to open this literate ~BigArch.org~ configuration file. This file
     is intended to help me keep notes on system things that I will likely forget
     I have done. This function could be one liner, but then the name did not in
-    the mini-buffer when using keybindings. 
-    
+    the mini-buffer when using keybindings.
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (defun open-system-notes-file ()
      (interactive)
      (find-file "~/Insync/olavpe/BigArch.org"))
 #+END_SRC
-   
-** Search and Helm Settings 
-   
+
+** Search and Helm Settings
+
    This is to turn on follow mode for helm commands. On very large projects or
    files, this could cause Emacs to crash, but it is supposed to be a very nice function.
-   
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  (setq helm-follow-mode-persistent t) 
+  (setq helm-follow-mode-persistent t)
 #+END_SRC
-   
-** Folders and Locations  
-   
+
+** Folders and Locations
+
    Note: org_agenda_dir is set as relative to org-directory in order to play
    nicely with org-capture.
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
@@ -545,14 +545,14 @@
    ;; org-ref-pdf-directory
    )
 #+END_SRC
- 
+
 ** Hydras
-   
+
    Hydra is used in attempt to make the helm buffers more manageable.
    The following function was found at this [[https://github.com/abo-abo/hydra/wiki/Helm][site]], which also suggests two
    additional functions to avoid answering yes/no questions.
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-(with-eval-after-load 'helm 
+(with-eval-after-load 'helm
   (defhydra helm-like-unite (:hint nil
                              :color pink)
   "
@@ -595,11 +595,11 @@
   (define-key helm-map (kbd "C-k") 'helm-like-unite/body)
   (define-key helm-map (kbd "C-o") 'helm-like-unite/body))
 #+END_SRC
-   
+
 ** LSP-mode
    This ensures that ~lsp-imenu~ always runs with lsp-mode.
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  ;; (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)  
+  ;; (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
   ;; (add-hook 'python-mode-hook 'lsp-deferred)
   ;; Turing off autodoc as it makes navigation painfully slow.
   (setq lsp-ui-doc-enable nil)
@@ -611,14 +611,14 @@
    The ~syntax-highlighting~ layer has been enabled which contains the flycheck
    package. Global settings can be set, but project specific settings can be set
    using a ~.dir-locals.el~. This will load the variables in this file and apply
-   them to any buffer running within the same folder or any subfolder. 
-   
+   them to any buffer running within the same folder or any subfolder.
+
    The ~flycheck-pycheckers~ package is an additional package which assists in
    having multiple syntax checkers active at the same time for ~flycheck~ in
    python. There were some issues with this packages so it is not needed
    with the newer version of flychecker. The bottom code snippet needs should
-   active to run the function. 
-   
+   active to run the function.
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ;; (setq flycheck-pycheckers-checkers '(flake8 pylint))
   ;; (setq flycheck-python-pylint-executable "~/.pylintrc")
@@ -629,7 +629,7 @@
   ;; (with-eval-after-load 'flycheck
   ;;   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup)) 
 #+END_SRC
-   
+
 *** When using venv in python
     In order for the syntax highlighter to know which packages you are using,
     it needs to know what python environment you are using. To be able to set
@@ -637,7 +637,7 @@
     can create a ~.dir-locals.el~ file in the repo root folder with the
     following contents. The variables have to point to current python
     environment. This was snagged from this stack [[https://stackoverflow.com/questions/31443527/how-can-i-make-flycheck-use-virtualenv][site.]]
-    
+
 #+begin_src elisp
 ((python-mode
   (flycheck-python-flake8-executable . "~/gitRepos/python-sdk/venv/bin/python")
@@ -645,14 +645,14 @@
 #+end_src
 
 *** Flake8
-    
+
     Setting the ~flycheck-python-flake8-executable~ variable in the
     ~.dir-locals.el~ file will set the flake8 linter properly for current
     system. I have had no issues so far. *This should be used in each project
-    .dir-locals.el* 
+    .dir-locals.el*
 
 *** Pylint
-    
+
     Pylint is a bitch. Spent hours mucking around with ~pylint-venv~ [[https://pypi.org/project/pylint-venv/][package]].
     The idea I had was to set emacs to use the system ~pylint~ package as the
     default and then add the path to potential venvs as described [[https://github.com/jgosmann/pylint-venv/pull/9/commits/9e2abbff09fd9b71f55ecf42168500a9bd9ffc51][here]]. This was
@@ -672,7 +672,7 @@
     variables which did not exist. Replacing ~from .generic import
     UtcTimedSignal, ...~ with the full path ~from common_library.models.generic
     import UtcTimedSignal, ...~ makes the pylint error go away.
-    
+
     Currently, ~dir-locals.el~ contains the executable link as described above,
     but it uses the global ~~/.pylintrc~ config file, and seems to work. Unsure
     if ~pylint-venv~ package needs to be installed in any of the environments.
@@ -833,30 +833,30 @@
   ;; ))
   #+END_SRC
 
-*** Theme and Icons settings 
+*** Theme and Icons settings
     This helps set the correct icons for mu4e icons.
-    
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (use-package mu4e-marker-icons
     :ensure t
     :init (mu4e-marker-icons-mode 1))
 #+END_SRC
- 
+
 ** Programming Languages
-*** C 
+*** C
     Simply sets the correct comment style as "//"
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (add-hook 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
 #+END_SRC
- 
+
 *** Python
-**** Triggering Anaconda mode with python mode 
+**** Triggering Anaconda mode with python mode
      Starting anaconda mode when starting python mode
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
    ;; (add-hook 'python-mode-hook 'anaconda-mode)
  #+END_SRC
- 
-*** MATLAB config 
+
+*** MATLAB config
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ;; Matlab
   (defun init-matlab ()
@@ -867,10 +867,10 @@
 
   (add-hook 'matlab-mode-hook 'init-matlab)
 #+END_SRC
-   
-** Writing Settings  
-*** Markdown settings 
-**** Pandoc Settings 
+
+** Writing Settings
+*** Markdown settings
+**** Pandoc Settings
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (add-hook 'markdown-mode-hook 'pandoc-mode)
  (setq markdown-command "/usr/bin/pandoc")
@@ -882,28 +882,28 @@
  (add-hook 'markdown-mode-hook 'auto-fill-mode)
  (add-hook 'markdown-mode-hook 'turn-on-font-lock)
 #+END_SRC
- 
-*** LaTeX settings 
-**** Specifying a build directory 
-     
+
+*** LaTeX settings
+**** Specifying a build directory
+
      This function was found [[https://tex.stackexchange.com/questions/111834/auctex-output-directory-copy-pdf-to-working-directory][here]], and describes the way I would like for auctex
-     to function. 
+     to function.
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (add-hook 'LaTeX-mode-hook (lambda ()
-                  (push 
-                    '("Latex_outdir" "%`pdflatex --output-directory=/tmp %(mode)%' %t" 
-                  TeX-run-TeX nil (latex-mode doctex-mode) 
+                  (push
+                    '("Latex_outdir" "%`pdflatex --output-directory=/tmp %(mode)%' %t"
+                  TeX-run-TeX nil (latex-mode doctex-mode)
                   :help "Run pdflatex with output in /tmp")
                     TeX-command-list)))
 #+END_SRC
 
-**** TeX-view function to look in multiple locations 
-     
+**** TeX-view function to look in multiple locations
+
      I created this function to overwrite the current view function as I
      couldn't figure out how to supply an additional path for the file. The
      keybindings are overwritten below in [[keybindings]].
-     
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (defun TeX-view-custom ()
     "Start a viewer without confirmation. It will look for the ~main.pdf~
@@ -917,16 +917,16 @@
           ((file-exists-p output-sub-dir-file)  (find-file "./tmp/main.pdf"))
           (t (message "Output file %S does not exist." )output-file))))
 #+END_SRC
-     
+
 **** Setting the default command to compile main.tex files
-     
+
     When running latex build (, b) by default it will run "main.tex"
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (setq-default TeX-master "main")
 #+END_SRC
- 
-**** Enabling folding of latex headings such as seen in org-mode 
-     
+
+**** Enabling folding of latex headings such as seen in org-mode
+
     This hides and shows text. The `outline-minor-mode` is used to fold text in
     headings and such. "Folding" in latex allows you to hide the environment types
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
@@ -934,8 +934,8 @@
  (add-hook 'LaTeX-mode-hook 'outline-minor-mode)
 #+END_SRC
 
-**** TODO Clean up this section and fiugre out how to specify the folder path latex  
-   
+**** TODO Clean up this section and fiugre out how to specify the folder path latex
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
        (setq TeX-source-correlate-method 'synctex)
        (setq TeX-source-correlate-mode t)
@@ -948,7 +948,7 @@
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (add-hook 'LaTeX-mode-hook (lambda ()
-                              (push 
+                              (push
                                '("Make" "latexmk -outdir=/tmp %t" TeX-run-TeX nil t
                                  :help "Make pdf output using latexmk.")
                                TeX-command-list)))
@@ -956,7 +956,7 @@
 
    This is a function that will run latex build every time you save, currently
    not active
-   
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (defun run-latex ()
    (interactive)
@@ -965,30 +965,30 @@
    (TeX-command-menu "latex/build"))
  ;; (add-hook 'LaTeX-mode-hook (lambda () (local-set-key (kbd ":w") #'run-latex)))
 #+END_SRC
-   
+
 **** PDF-tools as default for LaTeX mode
-     
+
      This is for using the built in pdfviewer in emacs
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
      (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
            TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
            TeX-source-correlate-start-server t)
 #+END_SRC
- 
-** Org Settings 
-*** Starting with-eval-after-load 
-    
+
+** Org Settings
+*** Starting with-eval-after-load
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (with-eval-after-load 'org
 #+END_SRC
- 
+
 *** ox-beamer
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (setq org-beamer-frame-level 2)
 #+END_SRC
- 
+
 *** Org Default Apps
-    
+
     This is used in order to get org-ref and org-pdftools to use pdf-tools to
     open up a pdf link in an org file.
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
@@ -1019,26 +1019,26 @@
 #+END_SRC
 
 **** General Info about the org-capture templates
-     
+
       <<general-captures-description>>
      There are primarily only 4 different templates defined here. They are
      hidden behind different categories based on time prompts. This is a work in
      progress, and I simply want to figure out if this is a good method of
      working or not. At this moment all of the tasks just create TODO tasks
      These templates store ~org-capture~ templates under 3 main categories.
-     
+
      All the files, besides ~recommendations~, are organized by ~datetime~ since
      there are not special categories associated with these tasks (at the
      moment). However, the use of tags, as I have used in Kanban style
      organizer. These are added such that kaban style can be used later if
-     desired. 
-     
+     desired.
+
      All of the options for organizing these things are organized via:
        - "important"
        - "chill"
        - "soon"
        - "later"
-     
+
      *The four categories of tasks are:*
        - "r" Regular Prompts: No time prompts for schedule or deadline
        - "s" Schedule tasks: For task you want to schedule, but do not have a deadline
@@ -1422,7 +1422,7 @@
   ;; (setq org-agenda-todo-ignore-deadlines (quote all))
   ;; (setq org-agenda-todo-ignore-scheduled (quote all))
 #+END_SRC
-    
+
 *** Defining the keywords agenda terms and colors
     Setting custom colors for the different keywords. I need to figure out how
     to use the ~NEXT~ keyword.
@@ -1435,7 +1435,7 @@
       ("DONE" . (:foreground "#aabf7f" :weight bold))
       ("CANCEL" . (:foreground "#5a7273" :weight bold))))
 #+END_SRC
-    
+
 *** Setting the color of tags
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (setq org-tags-faces '(
@@ -1443,22 +1443,22 @@
        ("soon" . (:foreground "#bf6c68"))
  ))
 #+END_SRC
-    
-*** Colors for Deadlines in Agenda 
-    
+
+*** Colors for Deadlines in Agenda
+
     This is [[www.reddit.com/r/emacs/comments/5cfij7/orgmode_custom_deadline_color/][explains]] the details of how this function works, but for the most
     part this variable sets the face for deadline tasks. The values from 0 to 1
     determine how close the deadline is. ~1~ is the most intense deadline
     warning, and ~0~ is the lowest deadline setting. The setting that dictates
     which color to show is set in ~org-deadline-warning-days~.
-    
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (setq org-agenda-deadline-faces '(
        (1.0 . (:foreground "#bf6c68"))
        (0.5 . (:foreground "#d65f2f"))
        (0.0 . (:foreground "#dabe72"))))
 #+END_SRC
-    
+
 *** Turning on automatic newline and line wrapping
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (setq org-startup-truncated nil)
@@ -1466,7 +1466,7 @@
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'turn-on-font-lock)
 #+END_SRC
-    
+
 *** Settings for bullets and ellipsis
     Org-mode develop uses org-superstar-mode for bullets
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
@@ -1475,10 +1475,10 @@
   (setq org-hide-leading-stars nil)
   (setq org-superstar-leading-bullet ?\s)
 #+END_SRC
-    
-*** Checklist completion changes TODO to DONE 
+
+*** Checklist completion changes TODO to DONE
      Switch header TODO state to DONE when all checkboxes are ticked, to TODO
-     otherwise 
+     otherwise
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
 (defun my/org-checkbox-todo ()
   (let ((todo-state (org-get-todo-state)) beg end)
@@ -1506,7 +1506,7 @@
 
 (add-hook 'org-checkbox-statistics-hook 'my/org-checkbox-todo)
 #+END_SRC
-    
+
 *** Org-babel
     This is to enable compilation for different source code block environments
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
@@ -1515,8 +1515,8 @@
   '((python . t)
     (R . t)
    ))
-#+END_SRC   
- 
+#+END_SRC
+
 *** Org-pdftools and Org-noter
     Using different packages
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
@@ -1540,16 +1540,16 @@
     (with-eval-after-load 'pdf-annot
       (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
 #+END_SRC
-    
+
 *** Org-Roam
    This sets the org roam directory and starts org-roam on startup.
    If you want to add more good org-roam config information checkout the
-   following link: https://rgoswami.me/posts/org-note-workflow/#org-noter 
+   following link: https://rgoswami.me/posts/org-note-workflow/#org-noter
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
    (add-hook 'after-init-hook 'org-roam-mode)
    (setq org-link-file-path-type 'adaptive)
  #+END_SRC
- 
+
 *** Org-Roam-Server
    These are the settings for setting up org-roam-server in order to visualize
    all the work being done in org-roam
@@ -1628,7 +1628,7 @@ will prompt for the values of these arguments.
 #+END_EXAMPLE
     
 *** Org-Roam-Bibtex
-    
+
    This sets the org roam directory and starts org-roam on startup.
    A very minimal config can be found at [[github.com/nobiot/Zero-to-Emacs-and-Org-roam/blob/d8cf2c065034f04c205a05c83009ce5e4acd4816/.emacs#L116-L151][nobiot's]] website for reference.
    More detailed information here in this orb [[org-roam.discourse.group/t/need-help-getting-noter-pdfs-and-org-roam-bibtex-to-work/794/29][Discourse]] website.
@@ -1640,7 +1640,7 @@ will prompt for the values of these arguments.
 #+end_src
 
  This is an org-roam-bibtex template taken from
- https://www.philipperambert.com/Installing-Org-Roam-Bibtex-In-Spacemacs 
+ https://www.philipperambert.com/Installing-Org-Roam-Bibtex-In-Spacemacs
  More suggestions came from [[www.ianjones.us/org-roam-bibtex][Ian Jones website.]]
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
@@ -1686,16 +1686,16 @@ will prompt for the values of these arguments.
     local variable at the bottom of the file, will set the variable to the
     value, *only for the current buffer*. It will not affect the variable in
     other files.
-    
+
     ~eval: (setq-local org-ref-default-bibliography '("~/Documents/BibTex/Website.bib"))~
-    
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (use-package citeproc-org
     :ensure t
     :after ox-hugo
     :config
     (citeproc-org-setup))
-#+END_SRC   
+#+END_SRC
 
 *** Autopairing
 
@@ -1709,8 +1709,8 @@ will prompt for the values of these arguments.
         (modify-syntax-entry ?\[ "(]" org-mode-syntax-table)
         (add-hook 'org-mode-hook 'electric-pair-mode))
  #+END_SRC
- 
-*** Toggles LaTeX fragment 
+
+*** Toggles LaTeX fragment
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
       (defvar org-latex-fragment-last nil
       "Holds last fragment/environment you were on.")
@@ -1790,26 +1790,26 @@ will prompt for the values of these arguments.
       (add-hook 'post-command-hook 'org-latex-fragment-toggle)
  #+END_SRC
 
-*** Ending with-eval-after-load 
+*** Ending with-eval-after-load
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   )
 #+END_SRC
- 
-** Bibtex Settings  
+
+** Bibtex Settings
    These are the following custom settings to make ~helm-bibtex~ easier to work
    together with ~natbib~. Especially when working on the masters. The default
    is set to "cite".
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (setq bibtex-completion-cite-default-command "citep")
  #+END_SRC
- 
+
    Since I rarely ever use optional pre- or post-arguments the following
-   disables the default prompting. 
+   disables the default prompting.
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (setq bibtex-completion-cite-prompt-for-optional-arguments nil)
  #+END_SRC
- 
-    This defines the custom template that bibtex uses. 
+
+    This defines the custom template that bibtex uses.
     [[org-roam.discourse.group/t/need-help-getting-noter-pdfs-and-org-roam-bibtex-to-work/794/12][Appearently]] in this blog post they say that this part is redundant if
     ~org-roam-bibtex-mode~ is activate.
     
@@ -1837,7 +1837,7 @@ will prompt for the values of these arguments.
    
 ** Theme Stuff
 *** Setting cursor and spaceline theme
-   
+
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
       (use-package ewal-evil-cursors
         :after (ewal-spacemacs-themes)
@@ -1851,13 +1851,13 @@ will prompt for the values of these arguments.
       ;;   :after spaceline
       ;;   :config (spaceline-all-the-icons-theme))
  #+END_SRC
- 
-*** Alternate Xresources Theme 
+
+*** Alternate Xresources Theme
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
       ;; Xresources (that is functional)
       ;; (load-theme 'xresources t)
  #+END_SRC
- 
+
 *** Disabling highlight for comments
 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
@@ -1871,11 +1871,11 @@ will prompt for the values of these arguments.
    ;; (setq spaceline-responsive nil)
   (setq spaceline-all-the-icons-separator-scale 1.8)
 #+END_SRC
- 
+
 ** Keybindings
    <<keybindings>>
-   Non-specific keybindings are defined below 
-   
+   Non-specific keybindings are defined below
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
     ;; Emacs System functions
     (spacemacs/set-leader-keys "feo" 'open-org-config-file)
@@ -1903,10 +1903,9 @@ will prompt for the values of these arguments.
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
 )
  #+END_SRC
- 
- 
+
+
 * Local Variables                                                   :ARCHIVE:
 # Local Variables:
 # eval: (add-hook 'after-save-hook (lambda ()(org-babel-tangle)) nil t)
 # End:
-
