@@ -44,61 +44,87 @@
    there are different options for how this should be done
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  dotspacemacs-configuration-layers
-  '(csv
-    bm
-    bibtex
-    colors
-   (javascript :variables js2-mode-show-strict-warnings nil)
-    yaml
-    octave
-    helm
-    (auto-completion :variables
-                     auto-completion-enable-snippets-in-popup t)
-    (c-c++ :variables
-           c-c++-enable-clang-support t)
-    better-defaults
-    ;; (conda :variables
-    ;;        conda-anaconda-home "/home/olav/.conda/envs")
-    (dart :variables
-           dart-backend 'lsp) 
-    emacs-lisp
-    ess
-    epub
-    ;; +lang
-    ;; (extra-langs :variables matlab-mode)
-    git
-    html
-    (lsp :variables
-          lsp-navgation 'both)
-    markdown
-    (mu4e :variables
-          mu4e-installation-path "/usr/share/emacs/site-lisp")
-    my-spaceline
-    (latex :variables
-           ;; latex-build-command "LaTeX"
-           latex-backend 'lsp
-           latex-enable-auto-fill t
-           latex-enable-folding t
-           latex-enable-magic t)
-    pandoc
-    (python :variables
-            python-backend 'lsp)
-    pdf
-    ;; ipython-notebook
-    (org :variables
-        org-enable-roam-support t)
-    restclient
-    rust
-    (shell :variables
-           shell-default-shell 'shell
-           shell-default-height 30
-           shell-default-position 'bottom)
-    ;; (spacemacs-spaceline :location local)
-    spell-checking
-    syntax-checking
-    ;; version-control
-    )
+    dotspacemacs-configuration-layers
+    '(csv
+      bm
+      bibtex
+      colors
+      (docker :variables
+              docker-dockerfile-backend 'lsp) 
+      dap
+     (javascript :variables
+                  js2-mode-show-strict-warnings nil
+                  typescript-backend 'tide)
+      yaml
+      ;; octave
+      helm
+      (auto-completion :variables
+                       auto-completion-enable-snippets-in-popup t)
+      (c-c++ :variables
+             c-c++-enable-clang-support t)
+      ;; (csharp :variables
+      ;;          csharp-backend 'omnisharp-backend)
+      csharp
+      better-defaults
+      (conda :variables
+             conda-anaconda-home "/Users/olav/.conda/envs")
+      (dart :variables
+             dart-backend 'lsp)
+      emacs-lisp
+      osx
+      ;; ess
+      ;; +lang
+      ;; (extra-langs :variables matlab-mode)
+      git
+      html
+      (lsp :variables
+            lsp-navgation 'both)
+      (markdown :variables
+                markdown-live-preview-engine 'vmd)
+      ;; (mu4e :variables
+      ;;       mu4e-installation-path "/usr/share/emacs/site-lisp")
+      ;; my-spaceline
+      (latex :variables
+             ;; latex-build-command "LaTeX"
+             latex-backend 'lsp
+             latex-enable-auto-fill t
+             latex-enable-folding t
+             latex-enable-magic t)
+      ranger
+      pandoc
+      (python :variables
+              python-lsp-server 'pyright
+              python-test-runner 'pytest
+              python-formatter 'black
+              python-format-on-save t
+              python-backend 'lsp)
+      pdf
+      ;; ipython-notebook
+      (org :variables
+          org-enable-hugo-support t
+          org-enable-roam-support t)
+      react
+      restclient
+      ;; rust
+      (shell :variables
+             shell-default-shell 'shell
+             shell-default-height 30
+             shell-default-position 'bottom)
+      ;; (spacemacs-spaceline :location local)
+      spell-checking
+      (sql :variables
+            sql-backend 'lsp
+            sql-lsp-sqls-workspace-config-path 'workspace
+            sql-capitalize-keywords t)
+      syntax-checking
+      tide
+      themes-megapack
+      (typescript :variables
+                  typescript-fmt-on-save t
+                  typescript-backend 'tide
+                  tide-tsserver-executable "/opt/homebrew/lib/node_modules/typescript/bin/tsserver")
+      ;; version-control
+      )
 #+END_SRC
 
 ** Additional packages to install
@@ -116,22 +142,23 @@
                                      ;; org-bullets
                                      ;; (org-roam :location (recipe :fetcher github :repo "jethrokuan/org-roam"))
                                      sqlite3
-                                     smtpmail
+                                     ;; smtpmail
                                      ;; all-the-icons
                                      ;; spaceline-all-the-icons
                                      ;; flycheck-pycheckers
                                      lsp-dart
                                      org-pdftools
                                      org-noter-pdftools
+                                     org-roam-ui
                                      org-roam-bibtex
-                                     org-roam-server
-                                     ox-hugo
+                                     ;; org-roam-server
+                                     ;; ox-hugo
                                      ;; ewal
-                                     ewal-spacemacs-themes
-                                     ewal-evil-cursors
+                                     ;; ewal-spacemacs-themes
+                                     ;; ewal-evil-cursors
                                      autopair
-                                     mu4e-marker-icons
-                                     matlab-mode
+                                     ;; mu4e-marker-icons
+                                     ;; matlab-mode
                                      yasnippet-classic-snippets
                                      yasnippet-snippets
                                      )
@@ -164,6 +191,25 @@
     ;; This setq-default sexp is an exhaustive list of all the supported
     ;; spacemacs settings.
     (setq-default
+     ;; If non-nil then enable support for the portable dumper. You'll need
+     ;; to compile Emacs 27 from source following the instructions in file
+     ;; EXPERIMENTAL.org at to root of the git repository.
+     ;; (default nil)
+     dotspacemacs-enable-emacs-pdumper nil
+
+     ;; Name of executable file pointing to emacs 27+. This executable must be
+     ;; in your PATH.
+     ;; (default "emacs")
+     dotspacemacs-emacs-pdumper-executable-file "emacs"
+
+     ;; Name of the Spacemacs dump file. This is the file will be created by the
+     ;; portable dumper in the cache directory under dumps sub-directory.
+     ;; To load it when starting Emacs add the parameter `--dump-file'
+     ;; when invoking Emacs 27.1 executable on the command line, for instance:
+     ;;   ./emacs --dump-file=$HOME/.emacs.d/.cache/dumps/spacemacs-27.1.pdmp
+     ;; (default (format "spacemacs-%s.pdmp" emacs-version))
+     dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" emacs-version)
+
      ;; If non nil ELPA repositories are contacted via HTTPS whenever it's
      ;; possible. Set it to nil if you have no way to use HTTPS in your
      ;; environment, otherwise it is strongly recommended to let it set to t.
@@ -174,6 +220,20 @@
      dotspacemacs-elpa-https t
      ;; Maximum allowed time in seconds to contact an ELPA repository.
      dotspacemacs-elpa-timeout 5
+
+     ;; Set `gc-cons-threshold' and `gc-cons-percentage' when startup finishes.
+     ;; This is an advanced option and should not be changed unless you suspect
+     ;; performance issues due to garbage collection operations.
+     ;; (default '(100000000 0.1))
+     dotspacemacs-gc-cons '(100000000 0.1)
+
+     ;; Set `read-process-output-max' when startup finishes.
+     ;; This defines how much data is read from a foreign process.
+     ;; Setting this >= 1 MB should increase performance for lsp servers
+     ;; in emacs 27.
+     ;; (default (* 1024 1024))
+     dotspacemacs-read-process-output-max (* 1024 1024)
+
      ;; If non nil then spacemacs will check for updates at startup
      ;; when the current branch is not `develop'. Note that checking for
      ;; new versions works via git commands, thus it calls GitHub services
@@ -192,7 +252,9 @@
      ;; If non-nil, a form that evaluates to a package directory. For example, to
      ;; use different package directories for different Emacs versions, set this
      ;; to `emacs-version'.
-     dotspacemacs-elpa-subdirectory nil
+     ;; dotspacemacs-elpa-subdirectory nil
+     dotspacemacs-elpa-subdirectory 'emacs-version
+
      ;; One of `vim', `emacs' or `hybrid'.
      ;; `hybrid' is like `vim' except that `insert state' is replaced by the
      ;; `hybrid state' with `emacs' key bindings. The value can also be a list
@@ -201,6 +263,12 @@
      ;; (default 'vim)
      dotspacemacs-editing-style 'vim
      ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
+
+     ;; If non-nil show the version string in the Spacemacs buffer. It will
+     ;; appear as (spacemacs version)@(emacs version)
+     ;; (default t)
+     dotspacemacs-startup-buffer-show-version t
+
      dotspacemacs-verbose-loading nil
      ;; Specify the startup banner. Default value is `official', it displays
      ;; the official spacemacs logo. An integer value is the index of text
@@ -217,25 +285,60 @@
      ;; `spacemacs-buffer-startup-lists-length' takes effect.
      dotspacemacs-startup-lists '((recents . 5)
                                   (projects . 7))
-     ;; True if the home buffer should respond to resize events.
+
+     ;; True if the home buffer should respond to resize events. (default t)
      dotspacemacs-startup-buffer-responsive t
+
+     ;; Show numbers before the startup list lines. (default t)
+     dotspacemacs-show-startup-list-numbers t
+
+     ;; The minimum delay in seconds between number key presses. (default 0.4)
+     dotspacemacs-startup-buffer-multi-digit-delay 0.4
+
+     ;; Default major mode for a new empty buffer. Possible values are mode
+     ;; names such as `text-mode'; and `nil' to use Fundamental mode.
+     ;; (default `text-mode')
+     dotspacemacs-new-empty-buffer-major-mode 'text-mode
+
      ;; Default major mode of the scratch buffer (default `text-mode')
      dotspacemacs-scratch-mode 'text-mode
+
+     ;; If non-nil, *scratch* buffer will be persistent. Things you write down in
+     ;; *scratch* buffer will be saved and restored automatically.
+     dotspacemacs-scratch-buffer-persistent nil
+
+     ;; If non-nil, `kill-buffer' on *scratch* buffer
+     ;; will bury it instead of killing.
+     dotspacemacs-scratch-buffer-unkillable nil
+
+     ;; Initial message in the scratch buffer, such as "Welcome to Spacemacs!"
+     ;; (default nil)
+     dotspacemacs-initial-scratch-message nil
 #+END_SRC
 
 ** Declaring the Theme
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
      dotspacemacs-themes '(
                            ;; xresources
-                           ewal-spacemacs-modern
-                           ;; spacemacs-dark
+                           ;; ewal-spacemacs-modern
+                           spacemacs-dark
+                           ;; brin
                            ;;spacemacs-light
                            )
 #+END_SRC
- 
+
 ** Rest of the function
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
+  ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
+  ;; first three are spaceline themes. `doom' is the doom-emacs mode-line.
+  ;; `vanilla' is default Emacs mode-line. `custom' is a user defined themes,
+  ;; refer to the DOCUMENTATION.org for more info on how to create your own
+  ;; spaceline theme. Value can be a symbol or list with additional properties.
+  ;; (default '(spacemacs :separator wave :separator-scale 1.5))
+  dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
+
   ;; If non nil the cursor color matches the state color in GUI Emacs.
   dotspacemacs-colorize-cursor-according-to-state t
   ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -243,7 +346,7 @@
   dotspacemacs-default-font '(
                               "SauceCodePro Nerd Font"
                               ;; "SourceCodePro"
-                              :size 15
+                              :size 14
                               :weight normal
                               :width normal
                               ;; :powerline-scale 1.1
@@ -263,8 +366,10 @@
   ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
   dotspacemacs-major-mode-leader-key ","
   ;; Major mode leader key accessible in `emacs state' and `insert state'.
-  ;; (default "C-M-m")
-  dotspacemacs-major-mode-emacs-leader-key "C-M-m"
+  ;; (default "C-M-m" for terminal mode, "<M-return>" for GUI mode).
+  ;; Thus M-RET should work as leader key in both GUI and terminal modes.
+  ;; C-M-m also should work in terminal mode, but not in GUI mode.
+  dotspacemacs-major-mode-emacs-leader-key (if window-system "<M-return>" "C-M-m")
   ;; These variables control whether separate commands are bound in the GUI to
   ;; the key pairs C-i, TAB and C-m, RET.
   ;; Setting it to a non-nil value, allows for separate commands under <C-i>
@@ -290,7 +395,7 @@
   dotspacemacs-display-default-layout nil
   ;; If non nil then the last auto saved layouts are resume automatically upon
   ;; start. (default nil)
-  dotspacemacs-auto-resume-layouts t
+  dotspacemacs-auto-resume-layouts nil
   ;; Size (in MB) above which spacemacs will prompt to open the large file
   ;; literally to avoid performance issues. Opening a file literally means that
   ;; no major mode or minor modes are active. (default is 1)
@@ -326,6 +431,12 @@
   ;; right; if there is insufficient space it displays it at the bottom.
   ;; (default 'bottom)
   dotspacemacs-which-key-position 'bottom
+  ;; Control where `switch-to-buffer' displays the buffer. If nil,
+  ;; `switch-to-buffer' displays the buffer in the current window even if
+  ;; another same-purpose window is available. If non-nil, `switch-to-buffer'
+  ;; displays the buffer in a same-purpose window even if the buffer can be
+  ;; displayed in the current window. (default nil)
+  dotspacemacs-switch-to-buffer-prefers-purpose nil
   ;; If non nil a progress bar is displayed when spacemacs is loading. This
   ;; may increase the boot time on some systems and emacs builds, set it to
   ;; nil to boost the loading time. (default t)
@@ -378,6 +489,9 @@
   ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
   ;; (default nil)
   dotspacemacs-smartparens-strict-mode nil
+  ;; If non-nil smartparens-mode will be enabled in programming modes.
+  ;; (default t)
+  dotspacemacs-activate-smartparens-mode t
   ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
   ;; over any automatically added closing parenthesis, bracket, quote, etc…
   ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
@@ -386,24 +500,104 @@
   ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
   ;; emphasis the current one). (default 'all)
   dotspacemacs-highlight-delimiters 'all
+  ;; If non-nil, start an Emacs server if one is not already running.
+  ;; (default nil)
+  dotspacemacs-enable-server nil
+
+  ;; Set the emacs server socket location.
+  ;; If nil, uses whatever the Emacs default is, otherwise a directory path
+  ;; like \"~/.emacs.d/server\". It has no effect if
+  ;; `dotspacemacs-enable-server' is nil.
+  ;; (default nil)
+  dotspacemacs-server-socket-dir nil
   ;; If non nil, advise quit functions to keep server open when quitting.
   ;; (default nil)
   dotspacemacs-persistent-server nil
   ;; List of search tool executable names. Spacemacs uses the first installed
-  ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
+  ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
   ;; (default '("ag" "pt" "ack" "grep"))
-  dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
+  dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
   ;; The default package repository used if no explicit repository has been
   ;; specified with an installed package.
   ;; Not used for now. (default nil)
   dotspacemacs-default-package-repository nil
+  ;; Format specification for setting the frame title.
+  ;; %a - the `abbreviated-file-name', or `buffer-name'
+  ;; %t - `projectile-project-name'
+  ;; %I - `invocation-name'
+  ;; %S - `system-name'
+  ;; %U - contents of $USER
+  ;; %b - buffer name
+  ;; %f - visited file name
+  ;; %F - frame name
+  ;; %s - process status
+  ;; %p - percent of buffer above top of window, or Top, Bot or All
+  ;; %P - percent of buffer above bottom of window, perhaps plus Top, or Bot or All
+  ;; %m - mode name
+  ;; %n - Narrow if appropriate
+  ;; %z - mnemonics of buffer, terminal, and keyboard coding systems
+  ;; %Z - like %z, but including the end-of-line format
+  ;; If nil then Spacemacs uses default `frame-title-format' to avoid
+  ;; performance issues, instead of calculating the frame title by
+  ;; `spacemacs/title-prepare' all the time.
+  ;; (default "%I@%S")
+  dotspacemacs-frame-title-format "%I@%S"
+  ;; Format specification for setting the icon title format
+  ;; (default nil - same as frame-title-format)
+  dotspacemacs-icon-title-format nil
+  ;; Show trailing whitespace (default t)
+  dotspacemacs-show-trailing-whitespace t
   ;; Delete whitespace while saving buffer. Possible values are `all'
   ;; to aggressively delete empty line and long sequences of whitespace,
   ;; `trailing' to delete only the whitespace at end of lines, `changed'to
   ;; delete only whitespace for changed lines or `nil' to disable cleanup.
   ;; (default nil)
   dotspacemacs-whitespace-cleanup nil
+  ;; If non-nil activate `clean-aindent-mode' which tries to correct
+  ;; virtual indentation of simple modes. This can interfere with mode specific
+  ;; indent handling like has been reported for `go-mode'.
+  ;; If it does deactivate it here.
+  ;; (default t)
+  dotspacemacs-use-clean-aindent-mode t
+
+  ;; Accept SPC as y for prompts if non-nil. (default nil)
+  dotspacemacs-use-SPC-as-y nil
+
+  ;; If non-nil shift your number row to match the entered keyboard layout
+  ;; (only in insert state). Currently supported keyboard layouts are:
+  ;; `qwerty-us', `qwertz-de' and `querty-ca-fr'.
+  ;; New layouts can be added in `spacemacs-editing' layer.
+  ;; (default nil)
+  dotspacemacs-swap-number-row nil
+
+  ;; Either nil or a number of seconds. If non-nil zone out after the specified
+  ;; number of seconds. (default nil)
+  dotspacemacs-zone-out-when-idle nil
+
+  ;; Run `spacemacs/prettify-org-buffer' when
+  ;; visiting README.org files of Spacemacs.
+  ;; (default nil)
+  dotspacemacs-pretty-docs nil
+
+  ;; If nil the home buffer shows the full path of agenda items
+  ;; and todos. If non-nil only the file name is shown.
+  dotspacemacs-home-shorten-agenda-source nil
+
+  ;; If non-nil then byte-compile some of Spacemacs files.
+  dotspacemacs-byte-compile nil
   ))
+#+END_SRC
+
+* User Environment
+
+  Environment variables setup. This function defines the environment variables for your
+  Emacs session. By default it calls `spacemacs/load-spacemacs-env' which loads the environment
+  variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'. See the
+  header of this file for more information.
+
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (defun dotspacemacs/user-env ()
+  (spacemacs/load-spacemacs-env))
 #+END_SRC
 
 * User Init
@@ -416,10 +610,12 @@
   (defun dotspacemacs/user-init ()
   ;;  (setq spacemacs-theme-comment-bg nil)
     ;; (setenv "WORKON_HOME" "/opt/anaconda3/envs")
+    (setq package-check-signature nil)
     (setq spacemacs-theme-comment-bg nil)
+    (setq org-roam-v2-ack t)
     ;; (add-to-list 'load-path "/home/olav/.spacemacs.d/")
     ;; (setq dotspacemacs-configuration-layer-path "/home/olav/.spacemacs.d/")
-    (setenv "WORKON_HOME" "/home/olav/.conda/envs")
+    ;; (setenv "WORKON_HOME" "/home/olav/.conda/envs")
             ;; '("/home/olav/.conda/envs" "/home/olav/perception-router-digitaltwin/perception-router-digitaltwin/"))
     )
 #+END_SRC
@@ -480,7 +676,7 @@
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (defun open-system-notes-file ()
      (interactive)
-     (find-file "~/Insync/olavpe/BigArch.org"))
+     (find-file "~/Library/Mobile Documents/com~apple~CloudDocs/M1-system.org"))
 #+END_SRC
 
 ** Search and Helm Settings
@@ -499,51 +695,53 @@
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ;; Regular Org
   (setq
-   org_roam_dir "~/Insync/olavpe/org-roam"
-   ;; org_agenda_dir "../../Dropbox/org-agenda/"
-   org_agenda_dir "/home/olav/Dropbox/org-agenda/"
-   mendeley_bib_files
-   '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
-   "~/Documents/BibTex/Website.bib"
-   "~/Documents/BibTex/Olav_Pedersen_Thesis2021.bib")
-   org-directory org_roam_dir
-   org-default-notes-file (concat org_roam_dir "/inbox.org")
-   )
+  org_roam_dir "~/Library/Mobile Documents/com~apple~CloudDocs/org-roam"
+  org_agenda_dir "~/Library/Mobile Documents/com~apple~CloudDocs/org-agenda/"
+  mendeley_bib_files
+  '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
+  "~/Documents/BibTex/Website.bib"
+  "~/Documents/BibTex/Nootropics.bib"
+  "~/Documents/BibTex/Olav_Pedersen_Thesis2021.bib")
+  org-directory org_roam_dir
+  org-default-notes-file (concat org_roam_dir "/inbox.org")
+  )
+  
   ;; Org-Agenda
   (with-eval-after-load 'org (setq
    org-agenda-files '(
-                      "/home/olav/gitRepos/personalsite/content/personalsite.org"
-                      "/home/olav/Dropbox/org-agenda/masters.org"
-                      "/home/olav/Dropbox/org-agenda/masters_meetings.org"
-                      "/home/olav/Dropbox/org-agenda/skytrack.org"
-                      "/home/olav/Dropbox/org-agenda/thesis.org"
-                      "/home/olav/Dropbox/org-agenda/recommendations.org"
-                      "/home/olav/Dropbox/org-agenda/hobbies.org")
+                      "~/Library/Mobile Documents/com~apple~CloudDocs/org-agenda/prediktor_meetings.org"
+                      "~/Library/Mobile Documents/com~apple~CloudDocs/org-agenda/meetings.org"
+                      "~/Library/Mobile Documents/com~apple~CloudDocs/org-agenda/work.org"
+                      "~/Library/Mobile Documents/com~apple~CloudDocs/org-agenda/code.org")
    ))
+  
   ;; Org-Roam
   (setq
    org-roam-directory org_roam_dir
    org-roam-index-file (concat org_roam_dir "/index.org")
    deft-directory org_roam_dir
    org-roam-db-location (concat org_roam_dir "/org-roam.db"))
+  
   ;; Bibtex
   (setq
    bibtex-completion-notes-path org_roam_dir
    bibtex-completion-bibliography mendeley_bib_files
-   bibtex-completion-library-path '("~/Dropbox/MendeleyDocs/"))
+   ;; bibtex-completion-library-path '("~/Documents/MendeleyDocs/"))
+   bibtex-completion-library-path org_roam_dir
    ;; bibtex-completion-notes-path (concat org_roam_dir "/bibnotes.org"))
-  ;; Org-ref
-  (setq
-   org-ref-notes-directory org_roam_dir
-   org-ref-default-bibliography 
-   '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
-     "~/Documents/BibTex/Website.bib"
-     "~/Documents/BibTex/Olav_Pedersen_Thesis2021.bib")
-   org-ref-bibliography-notes (concat org_roam_dir "/bibnotes.org")
-   ;; org-ref-default-bibliography mendeley_bib_files
-   ;; org-ref-pdf-directory "~/Dropbox/MendeleyDocs/"
-   ;; org-ref-pdf-directory
    )
+  ;; Org-ref
+  ;; (setq
+  ;;  org-ref-notes-directory org_roam_dir
+  ;;  org-ref-default-bibliography
+  ;;  '("~/Documents/BibTex/Olav_Pedersen_PreProject2020.bib"
+  ;;    "~/Documents/BibTex/Website.bib"
+  ;;    "~/Documents/BibTex/Olav_Pedersen_Thesis2021.bib")
+  ;;  org-ref-bibliography-notes (concat org_roam_dir "/bibnotes.org")
+  ;;  ;; org-ref-default-bibliography mendeley_bib_files
+  ;;  ;; org-ref-pdf-directory "~/Dropbox/MendeleyDocs/"
+  ;;  ;; org-ref-pdf-directory
+  ;;  )
 #+END_SRC
 
 ** Hydras
@@ -604,10 +802,12 @@
   ;; Turing off autodoc as it makes navigation painfully slow.
   (setq lsp-ui-doc-enable nil)
   (setq lsp-navigation 'both)
+  (with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\venv*\\'"))
 #+END_SRC
-   
-** Flycheck and Linting stuff
-   
+
+** TODO Flycheck and Linting stuff
+
    The ~syntax-highlighting~ layer has been enabled which contains the flycheck
    package. Global settings can be set, but project specific settings can be set
    using a ~.dir-locals.el~. This will load the variables in this file and apply
@@ -627,7 +827,10 @@
   (setq flycheck-pylintrc "~/.pylintrc")
 
   ;; (with-eval-after-load 'flycheck
-  ;;   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup)) 
+  ;;   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
+
+  ;; Only wanting Flycheck to show errors when the files is saved
+  (setq flycheck-check-syntax-automatically '(mode-enabled save))
 #+END_SRC
 
 *** When using venv in python
@@ -677,106 +880,131 @@
     but it uses the global ~~/.pylintrc~ config file, and seems to work. Unsure
     if ~pylint-venv~ package needs to be installed in any of the environments.
 
-** Magit Settings 
-*** Evil-Magit 
+** Snippets
+
+This addition is to easily document python code in the Google Documentation
+Style.
+
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+(use-package yasnippet-radical-snippets
+  :ensure t
+  :after yasnippet
+  :config
+  (yasnippet-radical-snippets-initialize))
+#+END_SRC
+
+** Terminal Settings
+
+In order to avoid the terminal-here package to not load ~Terminal~ application.
+This sets the terminal to be iTerm on the MacOS.
+
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+(setq terminal-here-mac-terminal-command 'iterm2)
+#+END_SRC
+
+#+RESULTS:
+: iterm2
+
+** Magit Settings
+*** Evil-Magit
     This option is set to ensure that the keybindings 'j' and 'k' can be used
      for navigating up and down. If the following option is activated it enables
      a visual mode for magit, but overrides more natural vim bindings 'j' and 'k'.
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ;; (setq evil-magit-use-y-for-yank nil)
 #+END_SRC
- 
-** Mu4e
-*** General Settings 
-    
+
+** COMMENT Mu4e
+*** General Settings
+
     These were taken and adopted from [[https://gitlab.com/dwt1/dotfiles/-/blob/master/.doom.d/config.org#mu4e][DistroTubes]] gitlab dotfiles.
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
-  (require 'mu4e)
+;;   (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+;;   (require 'mu4e)
 
-  (setq user-full-name  "Olav Landmark Pedersen"
-        mu4e-get-mail-command "mbsync -c ~/.config/mu4e/mbsyncrc -a"
-        ;; This option is to avoid mail syncing issues with gmail
-        mu4e-change-filenames-when-moving t
-        mu4e-update-interval  300
-        mu4e-main-buffer-hide-personal-addresses t
-        message-send-mail-function 'smtpmail-send-it
-        starttls-use-gnutls t
-        mu4e-maildir-shortcuts
-        '(
-          ("/olavpe-gmail/INBOX"     . ?i)
-          ("/olavpe-gmail/[Gmail]/Sent Mail" . ?s)
-          ("/olavpe-gmail/[Gmail]/Drafts"    . ?d)
-          ("/olavpe-gmail/[Gmail]/Trash"     . ?t)
-          ("/olavlp-ntnu/INBOX"              . ?I)
-          ("/olavlp-ntnu/Sendte elementer"   . ?S)
-          ("/olavlp-ntnu/Kladd"              . ?D)
-          ("/olavlp-ntnu/Slettede elementer" . ?T)
-)
-        mu4e-view-show-addresses t
-)
+;;   (setq user-full-name  "Olav Landmark Pedersen"
+;;         mu4e-get-mail-command "mbsync -c ~/.config/mu4e/mbsyncrc -a"
+;;         ;; This option is to avoid mail syncing issues with gmail
+;;         mu4e-change-filenames-when-moving t
+;;         mu4e-update-interval  300
+;;         mu4e-main-buffer-hide-personal-addresses t
+;;         message-send-mail-function 'smtpmail-send-it
+;;         starttls-use-gnutls t
+;;         mu4e-maildir-shortcuts
+;;         '(
+;;           ("/olavpe-gmail/INBOX"     . ?i)
+;;           ("/olavpe-gmail/[Gmail]/Sent Mail" . ?s)
+;;           ("/olavpe-gmail/[Gmail]/Drafts"    . ?d)
+;;           ("/olavpe-gmail/[Gmail]/Trash"     . ?t)
+;;           ("/olavlp-ntnu/INBOX"              . ?I)
+;;           ("/olavlp-ntnu/Sendte elementer"   . ?S)
+;;           ("/olavlp-ntnu/Kladd"              . ?D)
+;;           ("/olavlp-ntnu/Slettede elementer" . ?T)
+;; )
+;;         mu4e-view-show-addresses t
+;; )
 
-  (setq mu4e-contexts
-        (list
-        ;; Work account
-        (make-mu4e-context
-          :name "Gmail"
-          :match-func
-            (lambda (msg)
-              (when msg
-                (string-prefix-p "/olavpe-gmail" (mu4e-message-field msg :maildir))))
-          :vars '(
-                  (user-mail-address . "olavpe@gmail.com")
-                  (user-full-name    . "Olav Pedersen")
-                  (mu4e-sent-folder . "/olavpe-gmail/[Gmail]/Sent Mail")
-                  (mu4e-drafts-folder . "/olavpe-gmail/[Gmail]/Drafts")
-                  (mu4e-trash-folder . "/olavpe-gmail/[Gmail]/Trash")
-                  (mu4e-refile-folder . "/olavpe-gmail/[Gmail]/All Mail")
-                  (mu4e-compose-signature . 
-                    (concat
-                      "Best regards,\n"
-                      "Olav Pedersen\n"
-                      "olavpe@gmail.com\n"))
-                  ;; (smtpmail-auth-credentials "/home/olav/.config/mu4e/mbsyncpass-olavpe-gmail-App.gpg")
-                  (smtpmail-starttls-credentials . '(("smtp.gmail.com" 587 nil nil)))
-                  (smtpmail-default-smtp-server . "smtp.gmail.com")
-                  (smtpmail-smtp-server . "smtp.gmail.com")
-                  (smtpmail-smtp-user . "olavpe@gmail.com")
-                  (smtpmail-stream-type . starttls)
-                  (smtpmail-smtp-service . 587))
-)
+;;   (setq mu4e-contexts
+;;         (list
+;;         ;; Work account
+;;         (make-mu4e-context
+;;           :name "Gmail"
+;;           :match-func
+;;             (lambda (msg)
+;;               (when msg
+;;                 (string-prefix-p "/olavpe-gmail" (mu4e-message-field msg :maildir))))
+;;           :vars '(
+;;                   (user-mail-address . "olavpe@gmail.com")
+;;                   (user-full-name    . "Olav Pedersen")
+;;                   (mu4e-sent-folder . "/olavpe-gmail/[Gmail]/Sent Mail")
+;;                   (mu4e-drafts-folder . "/olavpe-gmail/[Gmail]/Drafts")
+;;                   (mu4e-trash-folder . "/olavpe-gmail/[Gmail]/Trash")
+;;                   (mu4e-refile-folder . "/olavpe-gmail/[Gmail]/All Mail")
+;;                   (mu4e-compose-signature .
+;;                     (concat
+;;                       "Best regards,\n"
+;;                       "Olav Pedersen\n"
+;;                       "olavpe@gmail.com\n"))
+;;                   ;; (smtpmail-auth-credentials "/home/olav/.config/mu4e/mbsyncpass-olavpe-gmail-App.gpg")
+;;                   (smtpmail-starttls-credentials . '(("smtp.gmail.com" 587 nil nil)))
+;;                   (smtpmail-default-smtp-server . "smtp.gmail.com")
+;;                   (smtpmail-smtp-server . "smtp.gmail.com")
+;;                   (smtpmail-smtp-user . "olavpe@gmail.com")
+;;                   (smtpmail-stream-type . starttls)
+;;                   (smtpmail-smtp-service . 587))
+;; )
 
-        ;; Personal account
-        (make-mu4e-context
-          :name "NTNU"
-          :match-func
-            (lambda (msg)
-              (when msg
-                (string-prefix-p "/olavlp-ntnu" (mu4e-message-field msg :maildir))))
-          :vars '(
-                  (user-mail-address . "olavlp@stud.ntnu.no")
-                  (user-full-name . "Olav Pedersen")
-                  (mu4e-sent-folder . "/olavlp-ntnu/Sendte elementer")
-                  (mu4e-drafts-folder . "/olavlp-ntnu/Kladd")
-                  (mu4e-trash-folder . "/olavlp-ntnu/Slettede elementer")
-                  (mu4e-compose-signature .
-                    (concat
-                      "Best regards,\n"
-                      "Olav Pedersen\n"
-                      "olavlp@stud.ntnu.no\n"))
-                  ;; (smtpmail-auth-credentials "/home/olav/.config/mu4e/mbsyncpass-olavlp-ntnu.gpg")
-                  (smtpmail-starttls-credentials . '(("smtp.office365.com" 587 nil nil)))
-                  (smtpmail-default-smtp-server . "smtp.office365.com")
-                  (smtpmail-smtp-server . "smtp.office365.com")
-                  (smtpmail-smtp-user . "olavlp@ntnu.no")
-                  (smtpmail-stream-type . starttls)
-                  (smtpmail-smtp-service . 587)))))
+;;         ;; Personal account
+;;         (make-mu4e-context
+;;           :name "NTNU"
+;;           :match-func
+;;             (lambda (msg)
+;;               (when msg
+;;                 (string-prefix-p "/olavlp-ntnu" (mu4e-message-field msg :maildir))))
+;;           :vars '(
+;;                   (user-mail-address . "olavlp@stud.ntnu.no")
+;;                   (user-full-name . "Olav Pedersen")
+;;                   (mu4e-sent-folder . "/olavlp-ntnu/Sendte elementer")
+;;                   (mu4e-drafts-folder . "/olavlp-ntnu/Kladd")
+;;                   (mu4e-trash-folder . "/olavlp-ntnu/Slettede elementer")
+;;                   (mu4e-compose-signature .
+;;                     (concat
+;;                       "Best regards,\n"
+;;                       "Olav Pedersen\n"
+;;                       "olavlp@stud.ntnu.no\n"))
+;;                   ;; (smtpmail-auth-credentials "/home/olav/.config/mu4e/mbsyncpass-olavlp-ntnu.gpg")
+;;                   (smtpmail-starttls-credentials . '(("smtp.office365.com" 587 nil nil)))
+;;                   (smtpmail-default-smtp-server . "smtp.office365.com")
+;;                   (smtpmail-smtp-server . "smtp.office365.com")
+;;                   (smtpmail-smtp-user . "olavlp@ntnu.no")
+;;                   (smtpmail-stream-type . starttls)
+;;                   (smtpmail-smtp-service . 587)))))
 
 #+END_SRC
-  
-*** Account specific headings 
- 
+
+*** Account specific headings
+
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ;; (defvar my-mu4e-account-alist
   ;;   '(("olavpe-gmail"
@@ -837,9 +1065,9 @@
     This helps set the correct icons for mu4e icons.
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  (use-package mu4e-marker-icons
-    :ensure t
-    :init (mu4e-marker-icons-mode 1))
+  ;; (use-package mu4e-marker-icons
+  ;;   :ensure t
+  ;;   :init (mu4e-marker-icons-mode 1))
 #+END_SRC
 
 ** Programming Languages
@@ -873,13 +1101,13 @@
 **** Pandoc Settings
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (add-hook 'markdown-mode-hook 'pandoc-mode)
- (setq markdown-command "/usr/bin/pandoc")
+ (setq markdown-command "/opt/homebrew/bin/pandoc")
 #+END_SRC
-    
+
 **** Turning on automatic newline and autofill
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
  (add-hook 'markdown-mode-hook '(lambda () (setq fill-column 80)))
- (add-hook 'markdown-mode-hook 'auto-fill-mode)
+ (add-hook 'markdown-mode-hook 'turn-on-auto-fill)
  (add-hook 'markdown-mode-hook 'turn-on-font-lock)
 #+END_SRC
 
@@ -1000,21 +1228,16 @@
      The ~org-capture-templates~ idea of where the capture templates are
      accessed by leader keys, such as in emacs. The main categories are:
 
-     - "Life"
-     - "Masters"
-     - "SkyTrack"
-     - "Thesis"
-     - "Hobbies"
-     - "Recommendation"
+     - "Prediktor Company Meetings"
+     - "Meetings"
+     - "Code"
+     - "Work"
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  (setq agenda_masters (concat org_agenda_dir "masters.org"))
-  (setq agenda_masters_meetings (concat org_agenda_dir "masters_meetings.org"))
-  (setq agenda_skytrack (concat org_agenda_dir "skytrack.org"))
-  (setq agenda_life (concat org_agenda_dir "life.org"))
-  (setq agenda_thesis (concat org_agenda_dir "thesis.org"))
-  (setq agenda_recommendations (concat org_agenda_dir "recommendations.org"))
-  (setq agenda_hobbies (concat org_agenda_dir "hobbies.org"))
+  (setq agenda_meetings (concat org_agenda_dir "meetings.org"))
+  (setq agenda_prediktor_meetings (concat org_agenda_dir "prediktor_meetings.org"))
+  (setq agenda_code (concat org_agenda_dir "code.org"))
+  (setq agenda_work (concat org_agenda_dir "work.org"))
   (setq org-capture-templates '(
 #+END_SRC
 
@@ -1050,361 +1273,159 @@
        - "l" Create a task with a link and info to a file location
        - "s" Create a task with a link, info, and code snippet based on kill ring
 
-**** Masters General Project Templates
-     *Special commands*
-       - "mm" is for taking meeting notes and keeping overview by the @meeting tag. 
+**** Meeting General Templates
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  ("m" "Masters General")
+  ("m" "General Meeting Notes" entry
+  (file+olp+datetree agenda_meetings)
+   "* %^{Name} \t :%^{Tag}: \n CREATED: %U \n %?")
 
-  ("mm" "Meeting Notes" entry
-  (file+olp+datetree agenda_masters_meetings)
-   "* %? \t :meeting: \n CREATED: %U")
+  ("p" "Prediktor Company Meeting Notes")
 
-  ;; No Date Prompts
-  ("mr" "Regular Tasks")
-  ("mrt" "Create task" entry
-  (file+olp+datetree agenda_masters)
-   "* TODO %? \t%^g \n CREATED: %U")
-  ("mri" "Create task with info" entry
-  (file+olp+datetree agenda_masters)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n %?")
-  ("mrl" "Create task with link" entry
-  (file+olp+datetree agenda_masters)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
-  ("mrc"  "Create task with link and snippet" entry 
-  (file+olp+datetree agenda_masters)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
-
-  ("ms" "Schedule Tasks")
-  ("mst" "Schedule a task" entry
-  (file+olp+datetree agenda_masters)
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
-  ("msi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_masters)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
-  ("msl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_masters)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
-  ("msc"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_masters)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
-
-  ("md" "Deadline Tasks")
-  ("mdt" "Schedule a task" entry
-  (file+olp+datetree agenda_masters)
-   "* TODO %? \t%^g \n CREATED: %U \n DEADLINE: %^t")
-  ("mdi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_masters)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %?")
-  ("mdl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_masters)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %a \n %?")
-  ("mdc"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_masters)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n DEADLINE:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
-
-  ;; Deadline and Schedule Prompted 
-  ("mb" "Deadline and Schedule tasks")
-  ("mbt" "Schedule a task" entry
-  (file+olp+datetree agenda_masters)
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t")
-  ("mbi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_masters)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %?")
-  ("mbl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_masters)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %a \n %?")
-  ("mbs"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_masters)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n DEADLINE: %^t \n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+  ("ps" "Standups" entry
+  (file+olp+datetree agenda_prediktor_meetings)
+   "* Daily Standup \t :standup: \n CREATED: %U \n %?")
+  ("po" "Team Orca Notes" entry
+  (file+olp+datetree agenda_prediktor_meetings)
+   "* %^{Name} \t :team-orca: \n CREATED: %U \n %?")
+  ("pt" "R&D Tilsammans Notes" entry
+  (file+olp+datetree agenda_prediktor_meetings)
+   "* %^{Name} \t :tilsammans: \n CREATED: %U \n %?")
+  ("pp" "Team Company Pulse Notes" entry
+  (file+olp+datetree agenda_prediktor_meetings)
+   "* %^{Name} \t :company-pulse: \n CREATED: %U \n %?")
 #+END_SRC
 
-**** SkyTrack Project Templates
-     
+**** Code Project Templates
+
      These are identical to [[general-captures-description]], but for different files.
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  ("s" "SkyTrack")
+  ("c" "Coding")
 
   ;; No Date Prompts
-  ("sr" "Regular Prompts")
-  ("srt" "Create task" entry
-  (file+olp+datetree agenda_skytrack)
+  ("cr" "Regular Prompts")
+  ("crt" "Create task" entry
+  (file+olp+datetree agenda_code)
    "* TODO %? \t%^g \n CREATED: %U")
-  ("sri" "Create task with info" entry
-  (file+olp+datetree agenda_skytrack)
+  ("cri" "Create task with info" entry
+  (file+olp+datetree agenda_code)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n %?")
-  ("srl" "Create task with link" entry
-  (file+olp+datetree agenda_skytrack)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
-  ("src"  "Create task with link and snippet" entry 
-  (file+olp+datetree agenda_skytrack)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+  ("crl" "Create task with link" entry
+  (file+olp+datetree agenda_code)
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n %a \n %?")
+  ("crc"  "Create task with link and snippet" entry
+  (file+olp+datetree agenda_code)
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n %a \n %? \n #+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 
-  ("ss" "Schedule Tasks")
-  ("sst" "Schedule a task" entry
-  (file+olp+datetree agenda_skytrack)
+  ("cs" "Schedule Tasks")
+  ("cst" "Schedule a task" entry
+  (file+olp+datetree agenda_code)
    "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
-  ("ssi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_skytrack)
+  ("csi" "Schedule a task with info" entry
+  (file+olp+datetree agenda_code)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
-  ("ssl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_skytrack)
+  ("csl" "Schedule a task with link" entry
+  (file+olp+datetree agenda_code)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
-  ("ssc"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_skytrack)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+  ("csc"  "Scheduled task with link and snippet" entry
+  (file+olp+datetree agenda_code)
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %? \n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 
-  ("sd" "Deadline Tasks")
-  ("sdt" "Schedule a task" entry
-  (file+olp+datetree agenda_skytrack)
+  ("cd" "Deadline Tasks")
+  ("cdt" "Schedule a task" entry
+  (file+olp+datetree agenda_code)
    "* TODO %? \t%^g \n CREATED: %U \n DEADLINE: %^t")
-  ("sdi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_skytrack)
+  ("cdi" "Schedule a task with info" entry
+  (file+olp+datetree agenda_code)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %?")
-  ("sdl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_skytrack)
+  ("cdl" "Schedule a task with link" entry
+  (file+olp+datetree agenda_code)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %a \n %?")
-  ("sdc"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_skytrack)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n DEADLINE:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+  ("cdc"  "Scheduled task with link and snippet" entry
+  (file+olp+datetree agenda_code)
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %a \n %? \n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 
-  ;; Deadline and Schedule Prompted 
-  ("sb" "Deadline and Schedule tasks")
-  ("sbt" "Schedule a task" entry
-  (file+olp+datetree agenda_skytrack)
+  ;; Deadline and Schedule Prompted
+  ("cb" "Deadline and Schedule tasks")
+  ("cbt" "Schedule a task" entry
+  (file+olp+datetree agenda_code)
    "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t DEADLINE: %^t \n")
-  ("sbi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_skytrack)
+  ("cbi" "Schedule a task with info" entry
+  (file+olp+datetree agenda_code)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %?")
-  ("sbl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_skytrack)
+  ("cbl" "Schedule a task with link" entry
+  (file+olp+datetree agenda_code)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %a \n %?")
-  ("sbs"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_skytrack)
+  ("cbs"  "Scheduled task with link and snippet" entry
+  (file+olp+datetree agenda_code)
    "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n DEADLINE: %^t \n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 #+END_SRC
 
-**** Thesis Project Templates
-     
-     These are identical to [[masters-captures-description]], but for different files.
+**** General Work Project Templates
+
+     These are identical to [[general-captures-description]], but for different files.
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  ("t" "Thesis")
+  ("w" "General Work")
 
   ;; No Date Prompts
-  ("tr" "Regular Prompts")
-  ("trt" "Create task" entry
-  (file+olp+datetree agenda_thesis)
+  ("wr" "Regular Prompts")
+  ("wrt" "Create task" entry
+  (file+olp+datetree agenda_work)
    "* TODO %? \t%^g \n CREATED: %U")
-  ("tri" "Create task with info" entry
-  (file+olp+datetree agenda_thesis)
+  ("wri" "Create task with info" entry
+  (file+olp+datetree agenda_work)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n %?")
-  ("trl" "Create task with link" entry
-  (file+olp+datetree agenda_thesis)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
-  ("trc"  "Create task with link and snippet" entry 
-  (file+olp+datetree agenda_thesis)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
+  ("wrl" "Create task with link" entry
+  (file+olp+datetree agenda_work)
+   "* TODO %^{Task} \t%^g \n CREATED: %U \n %a \n %?")
+  ("wrc"  "Create task with link and snippet" entry
+  (file+olp+datetree agenda_work)
+   "* TODO %^{Task} \t%^g \n CREATED:%U\n %a \n %? \n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 
-  ("ts" "Schedule Tasks")
-  ("tst" "Schedule a task" entry
-  (file+olp+datetree agenda_thesis)
+  ("ws" "Schedule Tasks")
+  ("wst" "Schedule a task" entry
+  (file+olp+datetree agenda_work)
    "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
-  ("tsi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_thesis)
+  ("wsi" "Schedule a task with info" entry
+  (file+olp+datetree agenda_work)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
-  ("tsl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_thesis)
+  ("wsl" "Schedule a task with link" entry
+  (file+olp+datetree agenda_work)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
-  ("tsc"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_thesis)
+  ("wsc"  "Scheduled task with link and snippet" entry
+  (file+olp+datetree agenda_work)
    "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 
-  ("td" "Deadline Tasks")
-  ("tdt" "Schedule a task" entry
-  (file+olp+datetree agenda_thesis)
+  ("wd" "Deadline Tasks")
+  ("wdt" "Schedule a task" entry
+  (file+olp+datetree agenda_work)
    "* TODO %? \t%^g \n CREATED: %U \n DEADLINE: %^t")
-  ("tdi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_thesis)
+  ("wdi" "Schedule a task with info" entry
+  (file+olp+datetree agenda_work)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %?")
-  ("tdl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_thesis)
+  ("wdl" "Schedule a task with link" entry
+  (file+olp+datetree agenda_work)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %a \n %?")
-  ("tdc"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_thesis)
+  ("wdc"  "Scheduled task with link and snippet" entry
+  (file+olp+datetree agenda_work)
    "* TODO %^{Task} \t%^g \n CREATED:%U\n DEADLINE:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
 
-  ;; Deadline and Schedule Prompted 
-  ("tb" "Deadline and Schedule tasks")
-  ("tbt" "Schedule a task" entry
-  (file+olp+datetree agenda_thesis)
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t")
-  ("tbi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_thesis)
+  ;; Deadline and Schedule Prompted
+  ("wb" "Deadline and Schedule tasks")
+  ("wbt" "Schedule a task" entry
+  (file+olp+datetree agenda_work)
+   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t DEADLINE: %^t \n")
+  ("wbi" "Schedule a task with info" entry
+  (file+olp+datetree agenda_work)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %?")
-  ("tbl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_thesis)
+  ("wbl" "Schedule a task with link" entry
+  (file+olp+datetree agenda_work)
    "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %a \n %?")
-  ("tbs"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_thesis)
+  ("wbs"  "Scheduled task with link and snippet" entry
+  (file+olp+datetree agenda_work)
    "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n DEADLINE: %^t \n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
-#+END_SRC
-
-**** Life Templates
-
-#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  ("l" "Life")
-
-  ;; No Date Prompts
-  ("lr" "Regular Prompts")
-  ("lrt" "Create task" entry
-  (file+olp+datetree agenda_life)
-   "* TODO %? \t%^g \n CREATED: %U")
-  ("lri" "Create task with info" entry
-  (file+olp+datetree agenda_life)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n %?")
-  ("lrl" "Create task with link" entry
-  (file+olp+datetree agenda_life)
-   "* TODO %^{Task} \t%^g\n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
-  ("lrc"  "Create task with link and snippet" entry 
-  (file+olp+datetree agenda_life)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
-
-  ("ls" "Schedule Tasks")
-  ("lst" "Schedule a task" entry
-  (file+olp+datetree agenda_life)
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
-  ("lsi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_life)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
-  ("lsl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_life)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
-  ("lsc"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_life)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
-
-  ("ld" "Deadline Tasks")
-  ("ldt" "Schedule a task" entry
-  (file+olp+datetree agenda_life)
-   "* TODO %? \t%^g \n CREATED: %U \n DEADLINE: %^t")
-  ("ldi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_life)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %?")
-  ("ldl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_life)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %a \n %?")
-  ("ldc"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_life)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n DEADLINE:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
-
-  ;; Deadline and Schedule Prompted 
-  ("lb" "Deadline and Schedule tasks")
-  ("lbt" "Schedule a task" entry
-  (file+olp+datetree agenda_life)
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t")
-  ("lbi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_life)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %?")
-  ("lbl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_life)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %a \n %?")
-  ("lbs"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_life)
-  "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n DEADLINE: %^t \n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
-#+END_SRC
-
-**** Hobbies Templates
-     
-     The life tasks are organized by ~datetime~ since there are not special
-     categories associated with these tasks (at the moment). However, the use of
-     priorities, as I have used in Kanban style organizer. 
-
-#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  ("h" "Hobbies")
-
-  ;; No Date Prompts
-  ("hr" "Regular Prompts")
-  ("hrt" "Create task" entry
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %? \t%^g \n CREATED: %U")
-  ("hri" "Create task with info" entry
-  (fihe+olp+datetree agenda_hobbies)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n %?")
-  ("hrl" "Create task with link" entry
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %^{Task} \t%^g\n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
-  ("hrc"  "Create task with link and snippet" entry 
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
-
-  ("hs" "Schedule Tasks")
-  ("hst" "Schedule a task" entry
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t")
-  ("hsi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %?")
-  ("hsl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n %a \n %?")
-  ("hsc"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
-
-  ("hd" "Deadline Tasks")
-  ("hdt" "Schedule a task" entry
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %? \t%^g \n CREATED: %U \n DEADLINE: %^t")
-  ("hdi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %?")
-  ("hdl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n DEADLINE: %^t \n %a \n %?")
-  ("hdc"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %^{Task} \t%^g \n CREATED:%U\n DEADLINE:%^t\n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
-
-  ;; Deadline and Schedule Prompted 
-  ("hb" "Deadline and Schedule tasks")
-  ("hbt" "Schedule a task" entry
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %? \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t")
-  ("hbi" "Schedule a task with info" entry
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %?")
-  ("hbl" "Schedule a task with link" entry
-  (file+olp+datetree agenda_hobbies)
-   "* TODO %^{Task} \t%^g \n CREATED: %U \n SCHEDULED: %^t \n DEADLINE: %^t \n %a \n %?")
-  ("hbs"  "Scheduled task with link and snippet" entry 
-  (file+olp+datetree agenda_hobbies)
-  "* TODO %^{Task} \t%^g \n CREATED:%U\n SCHEDULED:%^t\n DEADLINE: %^t \n %a\n %?\n#+BEGIN_SRC %^{Language}\n%c\n#+END_SRC")
-#+END_SRC
-
-**** Recommendations Templates
-     
-     This recommendations is sorted by headings defined below. If a need arises
-     for another category just create a new version of the following template!
-
-#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  ("r" "Recommendations")
-
-  ;; No Date Prompts
-  ("rf" "Food" entry
-  (file+headline agenda_recommendations "Food")
-   "* %^{Task} \n CREATED: %U \n %?")
-  ("rm" "Movies" entry
-  (file+headline agenda_recommendations "Movies")
-   "* %^{Task} \n CREATED: %U \n %?")
-  ("rb" "Books" entry
-  (file+headline agenda_recommendations "Books")
-   "* %^{Task} \n CREATED: %U \n %?")
-  ("rs" "Shows" entry
-  (file+headline agenda_recommendations "Shows")
-   "* %^{Task} \n CREATED: %U \n %?")
 #+END_SRC
 
 **** Finishing template function
@@ -1463,7 +1484,7 @@
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (setq org-startup-truncated nil)
   (add-hook 'org-mode-hook '(lambda () (setq fill-column 80)))
-  (add-hook 'org-mode-hook 'auto-fill-mode)
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
   (add-hook 'org-mode-hook 'turn-on-font-lock)
 #+END_SRC
 
@@ -1547,59 +1568,79 @@
    following link: https://rgoswami.me/posts/org-note-workflow/#org-noter
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
    (add-hook 'after-init-hook 'org-roam-mode)
+   (add-hook 'after-init-hook 'org-roam-db-autosync-mode)
    (setq org-link-file-path-type 'adaptive)
+   (setq org-roam-mode-section-functions
+      (list #'org-roam-backlinks-section
+            #'org-roam-reflinks-section
+            #'org-roam-unlinked-references-section))
  #+END_SRC
 
 *** Org-Roam-Server
    These are the settings for setting up org-roam-server in order to visualize
    all the work being done in org-roam
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-(use-package org-roam-server
-  :ensure t
-  :config
-  (setq org-roam-server-host "127.0.0.1"
-        org-roam-server-port 8080
-        org-roam-server-authenticate nil
-        org-roam-server-export-inline-images t
-        org-roam-server-serve-files nil
-        org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
-        org-roam-server-network-poll t
-        org-roam-server-network-arrows nil
-        org-roam-server-network-label-truncate t
-        org-roam-server-network-label-truncate-length 60
-        org-roam-server-network-label-wrap-length 20))
+;; (use-package org-roam-server
+;;   :ensure t
+;;   :config
+;;   (setq org-roam-server-host "127.0.0.1"
+;;         org-roam-server-port 8080
+;;         org-roam-server-authenticate nil
+;;         org-roam-server-export-inline-images t
+;;         org-roam-server-serve-files nil
+;;         org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
+;;         org-roam-server-network-poll t
+;;         org-roam-server-network-arrows nil
+;;         org-roam-server-network-label-truncate t
+;;         org-roam-server-network-label-truncate-length 60
+;;         org-roam-server-network-label-wrap-length 20))
  #+END_SRC
- 
-   This function opens up a browser to the location of the org-roam-server. 
+
+   This function opens up a browser to the location of the org-roam-server.
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-   (defun open-roam-server-pages () (interactive) (browse-url "http://127.0.0.1:8080")
-   (funcall 'org-roam-server-mode))
+   ;; (defun open-roam-server-pages () (interactive) (browse-url "http://127.0.0.1:8080")
+   ;; (funcall 'org-roam-server-mode))
  #+END_SRC
- 
+
 *** Org-Ref
     This section was copied from Ian Jones, as much of the settings above, but
-this section was originally found at: https://rgoswami.me/posts/org-note-workflow/#org-ref 
+this section was originally found at: https://rgoswami.me/posts/org-note-workflow/#org-ref
  - ~org-ref-get-pdf-filename-function~ will use helm-bibtex settings to find the pdf
  - ~org-ref-notes-function~, currently this will expect one file per pdf and to
    use ~org-roam~ rather than ref or bibtex systems.
-   
+
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-   (use-package org-ref
-       :config
-       (setq
-        org-ref-open-pdf-filename 'org-pdftools-open
-        org-ref-completion-library 'org-ref-ivy-cite
-        org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
-        org-ref-note-title-format "* TODO %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
-        org-ref-notes-function 'orb-edit-notes
-       ))
+   ;; (use-package org-ref
+   ;;     :config
+   ;;     (setq
+   ;;      org-ref-open-pdf-filename 'org-pdftools-open
+   ;;      org-ref-completion-library 'org-ref-ivy-cite
+   ;;      org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
+   ;;      org-ref-note-title-format "* TODO %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
+   ;;      org-ref-notes-function 'orb-edit-notes
+   ;;     ))
+   ;;;;;THIS WAS USED PRIOR TO TESTING ORG_CITE
+   ;; (use-package org-ref-helm
+   ;;     :config
+   ;;     (setq
+   ;;      org-ref-insert-link-function 'org-ref-insert-link-hydra/body
+   ;;      org-ref-insert-cite-function 'org-ref-cite-insert-helm
+   ;;      org-ref-insert-label-function 'org-ref-insert-label-link
+   ;;      org-ref-insert-ref-function 'org-ref-insert-ref-link
+   ;;      org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body))
+   ;;      org-ref-open-pdf-filename 'org-pdftools-open
+   ;;      org-ref-completion-library 'org-ref-ivy-cite
+   ;;      org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
+   ;;      org-ref-note-title-format "* TODO %y - %t\n :PROPERTIES:\n  :Custom_ID: %k\n  :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n  :AUTHOR: %9a\n  :JOURNAL: %j\n  :YEAR: %y\n  :VOLUME: %v\n  :PAGES: %p\n  :DOI: %D\n  :URL: %U\n :END:\n\n"
+   ;;      org-ref-notes-function 'orb-edit-notes
+   ;;     ))
     #+END_SRC
 
-**** Cheatsheet for using org-ref fields 
+**** Cheatsheet for using org-ref fields
 
      These are format specifiers for org-ref. The are *not* the same as the keys
      in the .bib files.
-     
+
 #+BEGIN_EXAMPLE
 In the format, the following percent escapes will be expanded.
 %l The BibTeX label of the citation.
@@ -1626,7 +1667,46 @@ string has been formatted.
 A pair of square brackets indicates an optional argument, and RefTeX
 will prompt for the values of these arguments.
 #+END_EXAMPLE
-    
+
+*** Org-Cite
+  Org-cite was a newly created package which implements citation support in Org
+  mode. It is kind of like an alternative to ~org-ref~. The citation styles
+  should not be used within the same document as they are two different citation
+  systems. The following settings were gotten from the following issue to get
+  org-cite to work with ~ox-hugo~.
+
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (use-package oc
+  :after org
+  :config
+  ;; (setq org-cite-global-bibliography '("~/Documents/BibTex/Website.bib"))
+  (setq org-cite-global-bibliography mendeley_bib_files)
+  (setq org-cite-export-processors
+        '((beamer natbib)
+          (html csl "chicago-author-date-16th-edition.csl")
+          (latex biblatex)
+          (t basic))))
+
+  (use-package oc-basic
+  :after oc)
+
+  (use-package oc-biblatex
+    :after oc)
+
+  (use-package oc-csl
+    :after oc
+    :init
+    ;; make sure to download csl
+    ;; https://citationstyles.org
+    ;; https://github.com/citation-style-language
+    ;; repos for styles & locales
+    (setq org-cite-csl-styles-dir "/Users/olav/Documents/csl_styles"))
+    ;;(setq org-cite-csl-locales-dir "~/.local/share/csl/locales"))
+
+  (use-package citeproc
+  :after (oc oc-csl))
+#+END_SRC
+
 *** Org-Roam-Bibtex
 
    This sets the org roam directory and starts org-roam on startup.
@@ -1674,11 +1754,11 @@ will prompt for the values of these arguments.
 *** Ox-hugo
     This is to enable compilation for different source code block environments
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-  (use-package ox-hugo
-    :ensure t
-    :after ox)
-#+END_SRC   
- 
+  ;; (use-package ox-hugo
+  ;;   :ensure t
+  ;;   :after ox)
+#+END_SRC
+
     The ~citeproc-org~ function is to be able to export citations from org-mode
     to hugo. In this setting needs to be present, but in addition it require
     the ~org-ref-default-bibliography~ to contain one file. This solved my
@@ -1692,7 +1772,7 @@ will prompt for the values of these arguments.
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (use-package citeproc-org
     :ensure t
-    :after ox-hugo
+    :after (oc oc-csl ox-hugo)
     :config
     (citeproc-org-setup))
 #+END_SRC
@@ -1812,44 +1892,51 @@ will prompt for the values of these arguments.
     This defines the custom template that bibtex uses.
     [[org-roam.discourse.group/t/need-help-getting-noter-pdfs-and-org-roam-bibtex-to-work/794/12][Appearently]] in this blog post they say that this part is redundant if
     ~org-roam-bibtex-mode~ is activate.
-    
- #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-   (setq
-    bibtex-completion-pdf-field "file"
-    ;; bibtex-completion-notes-template-multiple-files
-    ;; (concat
-    ;;  "#+TITLE: ${title}\n"
-    ;;  "#+ROAM_KEY: cite:${=key=}\n"
-    ;;  "* TODO Notes\n"
-    ;;  ":PROPERTIES:\n"
-    ;;  ":Custom_ID: ${=key=}\n"
-    ;;  ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
-    ;;  ":AUTHOR: ${author-abbrev}\n"
-    ;;  ":JOURNAL: ${journaltitle}\n"
-    ;;  ":DATE: ${date}\n"
-    ;;  ":YEAR: ${year}\n"
-    ;;  ":DOI: ${doi}\n"
-    ;;  ":URL: ${url}\n"
-    ;;  ":END:\n\n"
-    ;;  )
-    )
- #+END_SRC
-   
+
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+  (setq
+   bibtex-completion-pdf-field "file"
+   ;; bibtex-completion-format-citation-functions
+   ;; '((org-mode      . bibtex-completion-format-citation-org-cite)
+   ;; (latex-mode    . bibtex-completion-format-citation-cite)
+   ;; (markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
+   ;; (python-mode   . bibtex-completion-format-citation-sphinxcontrib-bibtex)
+   ;; (rst-mode      . bibtex-completion-format-citation-sphinxcontrib-bibtex)
+   ;; (default       . bibtex-completion-format-citation-default))
+   ;; bibtex-completion-notes-template-multiple-files
+   ;; (concat
+   ;;  "#+TITLE: ${title}\n"
+   ;;  "#+ROAM_KEY: cite:${=key=}\n"
+   ;;  "* TODO Notes\n"
+   ;;  ":PROPERTIES:\n"
+   ;;  ":Custom_ID: ${=key=}\n"
+   ;;  ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
+   ;;  ":AUTHOR: ${author-abbrev}\n"
+   ;;  ":JOURNAL: ${journaltitle}\n"
+   ;;  ":DATE: ${date}\n"
+   ;;  ":YEAR: ${year}\n"
+   ;;  ":DOI: ${doi}\n"
+   ;;  ":URL: ${url}\n"
+   ;;  ":END:\n\n"
+   ;;  )
+   )
+#+END_SRC
+
 ** Theme Stuff
 *** Setting cursor and spaceline theme
 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-      (use-package ewal-evil-cursors
-        :after (ewal-spacemacs-themes)
-        :config (ewal-evil-cursors-get-colors
-                 :apply t :spaceline t))
-      ;; (use-package spaceline
-      ;;   :after (ewal-evil-cursors winum)
-      ;;   :init (setq powerline-default-separator nil)
-      ;;   :config (spaceline-spacemacs-theme))
-      ;; (use-package spaceline-all-the-icons
-      ;;   :after spaceline
-      ;;   :config (spaceline-all-the-icons-theme))
+      ;; (use-package ewal-evil-cursors
+      ;;   :after (ewal-spacemacs-themes)
+      ;;   :config (ewal-evil-cursors-get-colors
+      ;;            :apply t :spaceline t))
+      ;; ;; (use-package spaceline
+      ;; ;;   :after (ewal-evil-cursors winum)
+      ;; ;;   :init (setq powerline-default-separator nil)
+      ;; ;;   :config (spaceline-spacemacs-theme))
+      ;; ;; (use-package spaceline-all-the-icons
+      ;; ;;   :after spaceline
+      ;; ;;   :config (spaceline-all-the-icons-theme))
  #+END_SRC
 
 *** Alternate Xresources Theme
@@ -1862,6 +1949,7 @@ will prompt for the values of these arguments.
 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
    (global-hl-line-mode -1)
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
    (spacemacs/toggle-highlight-current-line-globally-off)
  #+END_SRC
 
@@ -1877,26 +1965,32 @@ will prompt for the values of these arguments.
    Non-specific keybindings are defined below
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-    ;; Emacs System functions
+    ;;;; Emacs System functions
     (spacemacs/set-leader-keys "feo" 'open-org-config-file)
     (spacemacs/set-leader-keys "fen" 'open-system-notes-file)
     (spacemacs/set-leader-keys "hh" 'describe-thing-in-popup)
     (spacemacs/set-leader-keys "jg" 'xref-find-definitions)
     (spacemacs/set-leader-keys "jp" 'xref-pop-marker-stack)
-    ;; Markup functions
+    (define-key evil-normal-state-map (kbd "zs") 'hs-hide-level)
+    ;;;; Markup functions
     (with-eval-after-load 'latex
       (spacemacs/set-leader-keys-for-major-mode 'latex-mode "v" 'TeX-view-custom)
-      (spacemacs/set-leader-keys-for-major-mode 'latex-mode "hh" 'helm-bibtex)
+      (spacemacs/set-leader-keys-for-major-mode 'latex-mode "hh" 'org-cite-insert)
     )
-    ;; Programming functions
+    ;;;; Programming functions
     (spacemacs/set-leader-keys-for-major-mode 'python-mode "Gh" 'lsp-ui-doc-show)
-    ;; Org functions
-    (spacemacs/set-leader-keys "aors" 'org-roam-server-mode)
-    (spacemacs/set-leader-keys-for-major-mode 'org-mode "rs" 'org-roam-server-mode)
+    ;; csharp
+    (spacemacs/set-leader-keys "==" 'omnisharp-code-format-entire-file)
+    (spacemacs/set-leader-keys-for-major-mode 'csharp-mode "==" 'omnisharp-code-format-entire-file)
+    (spacemacs/set-leader-keys "=r" 'omnisharp-code-format-region)
+    (spacemacs/set-leader-keys-for-major-mode 'csharp-mode "=r" 'omnisharp-code-format-region)
+    ;;;; Org functions
+    ;; (spacemacs/set-leader-keys "aors" 'org-roam-server-mode)
+    ;; (spacemacs/set-leader-keys-for-major-mode 'org-mode "rs" 'org-roam-server-mode)
     (spacemacs/set-leader-keys "aorw" 'open-roam-server-pages)
     (spacemacs/set-leader-keys-for-major-mode 'org-mode "rw" 'open-roam-server-pages)
     (spacemacs/set-leader-keys "aorh" 'helm-bibtex)
-    (spacemacs/set-leader-keys-for-major-mode 'org-mode "rh" 'helm-bibtex)
+    (spacemacs/set-leader-keys-for-major-mode 'org-mode "rh" 'org-cite-insert)
 #+END_SRC
 
 ** Finishing user-config
