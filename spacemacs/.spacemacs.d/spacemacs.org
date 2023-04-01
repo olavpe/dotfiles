@@ -50,7 +50,7 @@
       bibtex
       colors
       (docker :variables
-              docker-dockerfile-backend 'lsp) 
+              docker-dockerfile-backend 'lsp)
       dap
      (javascript :variables
                   js2-mode-show-strict-warnings nil
@@ -705,7 +705,7 @@
   org-directory org_roam_dir
   org-default-notes-file (concat org_roam_dir "/inbox.org")
   )
-  
+
   ;; Org-Agenda
   (with-eval-after-load 'org (setq
    org-agenda-files '(
@@ -714,14 +714,14 @@
                       "~/Library/Mobile Documents/com~apple~CloudDocs/org-agenda/work.org"
                       "~/Library/Mobile Documents/com~apple~CloudDocs/org-agenda/code.org")
    ))
-  
+
   ;; Org-Roam
   (setq
    org-roam-directory org_roam_dir
    org-roam-index-file (concat org_roam_dir "/index.org")
    deft-directory org_roam_dir
    org-roam-db-location (concat org_roam_dir "/org-roam.db"))
-  
+
   ;; Bibtex
   (setq
    bibtex-completion-notes-path org_roam_dir
