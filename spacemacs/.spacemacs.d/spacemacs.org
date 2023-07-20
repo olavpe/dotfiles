@@ -64,9 +64,8 @@
                        auto-completion-enable-snippets-in-popup t)
       (c-c++ :variables
              c-c++-enable-clang-support t)
-      ;; (csharp :variables
-      ;;          csharp-backend 'omnisharp-backend)
-      csharp
+      (csharp :variables
+               csharp-backend 'lsp)
       better-defaults
       (conda :variables
              conda-anaconda-home "/Users/olav/.conda/envs")
