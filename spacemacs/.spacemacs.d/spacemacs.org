@@ -86,12 +86,12 @@
       ;; (mu4e :variables
       ;;       mu4e-installation-path "/usr/share/emacs/site-lisp")
       ;; my-spaceline
-      (latex :variables
-             ;; latex-build-command "LaTeX"
-             latex-backend 'lsp
-             latex-enable-auto-fill t
-             latex-enable-folding t
-             latex-enable-magic t)
+      ;;(latex :variables
+      ;;       ;; latex-build-command "LaTeX"
+      ;;       latex-backend 'lsp
+      ;;       latex-enable-auto-fill t
+      ;;       latex-enable-folding t
+      ;;       latex-enable-magic t)
       ranger
       pandoc
       (python :variables
@@ -105,7 +105,7 @@
       (org :variables
           org-enable-hugo-support t
           org-enable-roam-support t)
-      react
+      ;;react
       restclient
       ;; rust
       (shell :variables
@@ -120,11 +120,11 @@
             sql-capitalize-keywords t)
       syntax-checking
       tide
-      themes-megapack
-      (typescript :variables
-                  typescript-fmt-on-save t
-                  typescript-backend 'tide
-                  tide-tsserver-executable "/opt/homebrew/lib/node_modules/typescript/bin/tsserver")
+      ;;themes-megapack
+      ;;(typescript :variables
+      ;;            typescript-fmt-on-save t
+      ;;            typescript-backend 'tide
+      ;;            tide-tsserver-executable "/opt/homebrew/lib/node_modules/typescript/bin/tsserver")
       ;; version-control
       )
 #+END_SRC
@@ -140,7 +140,7 @@
                                      ein
                                      jupyter
                                      citeproc-org
-                                     xresources-theme
+                                     ;;xresources-theme
                                      ;; org-bullets
                                      ;; (org-roam :location (recipe :fetcher github :repo "jethrokuan/org-roam"))
                                      sqlite3
@@ -149,16 +149,16 @@
                                      ;; spaceline-all-the-icons
                                      ;; flycheck-pycheckers
                                      lsp-dart
-                                     org-pdftools
-                                     org-noter-pdftools
+                                     ;;org-pdftools
+                                     ;;org-noter-pdftools
                                      org-roam-ui
-                                     org-roam-bibtex
+                                     ;;org-roam-bibtex
                                      ;; org-roam-server
                                      ;; ox-hugo
                                      ;; ewal
                                      ;; ewal-spacemacs-themes
                                      ;; ewal-evil-cursors
-                                     autopair
+                                     ;; autopair
                                      ;; mu4e-marker-icons
                                      ;; matlab-mode
                                      yasnippet-classic-snippets
@@ -888,11 +888,13 @@ This addition is to easily document python code in the Google Documentation
 Style.
 
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
-(use-package yasnippet-radical-snippets
-  :ensure t
-  :after yasnippet
-  :config
-  (yasnippet-radical-snippets-initialize))
+;; (use-package yasnippet-radical-snippets
+;;   :ensure t
+;;   :after yasnippet
+;;   :config
+;;   (yasnippet-radical-snippets-initialize))
+#+END_SRC
+
 #+END_SRC
 
 ** Terminal Settings
@@ -1086,7 +1088,7 @@ This sets the terminal to be iTerm on the MacOS.
    ;; (add-hook 'python-mode-hook 'anaconda-mode)
  #+END_SRC
 
-*** MATLAB config
+*** COMMENT MATLAB config
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   ;; Matlab
   (defun init-matlab ()
@@ -1113,7 +1115,7 @@ This sets the terminal to be iTerm on the MacOS.
  (add-hook 'markdown-mode-hook 'turn-on-font-lock)
 #+END_SRC
 
-*** LaTeX settings
+*** COMMENT LaTeX settings
 **** Specifying a build directory
 
      This function was found [[https://tex.stackexchange.com/questions/111834/auctex-output-directory-copy-pdf-to-working-directory][here]], and describes the way I would like for auctex
@@ -1212,7 +1214,7 @@ This sets the terminal to be iTerm on the MacOS.
   (with-eval-after-load 'org
 #+END_SRC
 
-*** ox-beamer
+*** COMMENT ox-beamer
 #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
   (setq org-beamer-frame-level 2)
 #+END_SRC
@@ -1779,7 +1781,7 @@ will prompt for the values of these arguments.
     (citeproc-org-setup))
 #+END_SRC
 
-*** Autopairing
+*** COMMENT Autopairing
 
  #+BEGIN_SRC emacs-lisp :tangle spacemacs.el
       ;; For autopairing in org-mode
