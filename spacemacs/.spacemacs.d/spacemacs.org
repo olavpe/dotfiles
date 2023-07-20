@@ -57,7 +57,9 @@
                   typescript-backend 'tide)
       yaml
       ;; octave
-      helm
+      (helm :variables
+            helm-ag-insert-at-point 'symbol
+            )
       (auto-completion :variables
                        auto-completion-enable-snippets-in-popup t)
       (c-c++ :variables
