@@ -139,6 +139,10 @@
                                      ein
                                      jupyter
                                      citeproc-org
+                                     (copilot :location (recipe
+                                              :fetcher github
+                                              :repo "zerolfx/copilot.el"
+                                              :files ("*.el" "dist")))
                                      ;;xresources-theme
                                      ;; org-bullets
                                      ;; (org-roam :location (recipe :fetcher github :repo "jethrokuan/org-roam"))
@@ -894,6 +898,24 @@ Style.
 ;;   (yasnippet-radical-snippets-initialize))
 #+END_SRC
 
+** Github-Copilot
+
+These are the settings copied from official repository as suggested config for
+Spacemacs. Additionally, the ~auto-completion~ layer has to be activated in the
+layer config.
+
+#+BEGIN_SRC emacs-lisp :tangle spacemacs.el
+(with-eval-after-load 'company
+  ;; disable inline previews
+  (delq 'company-preview-if-just-one-frontend company-frontends))
+(with-eval-after-load 'copilot
+  (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+  (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
+
+(add-hook 'prog-mode-hook 'copilot-mode)
+
+(define-key evil-insert-state-map (kbd "C-<tab>") 'copilot-accept-completion-by-word)
+(define-key evil-insert-state-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
 #+END_SRC
 
 ** Terminal Settings
