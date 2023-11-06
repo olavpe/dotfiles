@@ -94,7 +94,7 @@
       ranger
       pandoc
       (python :variables
-              python-lsp-server 'pyright
+              python-lsp-server 'pylsp
               python-test-runner 'pytest
               python-formatter 'black
               python-format-on-save t
@@ -351,7 +351,7 @@
   dotspacemacs-default-font '(
                               "SauceCodePro Nerd Font"
                               ;; "SourceCodePro"
-                              :size 14
+                              :size 12
                               :weight normal
                               :width normal
                               ;; :powerline-scale 1.1
