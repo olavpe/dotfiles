@@ -112,6 +112,7 @@
              shell-default-height 30
              shell-default-position 'bottom)
       ;; (spacemacs-spaceline :location local)
+      semantic-web
       spell-checking
       (sql :variables
             sql-backend 'lsp
@@ -1560,6 +1561,7 @@ This sets the terminal to be iTerm on the MacOS.
   'org-babel-load-languages
   '((python . t)
     (R . t)
+    (sparql . t)
    ))
 #+END_SRC
 
