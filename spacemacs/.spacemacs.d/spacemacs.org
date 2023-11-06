@@ -149,16 +149,16 @@
                                      ;; (org-roam :location (recipe :fetcher github :repo "jethrokuan/org-roam"))
                                      sqlite3
                                      ;; smtpmail
-                                     ;; all-the-icons
-                                     ;; spaceline-all-the-icons
+                                     all-the-icons
+                                     spaceline-all-the-icons
                                      ;; flycheck-pycheckers
                                      lsp-dart
-                                     ;;org-pdftools
-                                     ;;org-noter-pdftools
+                                     org-pdftools
+                                     org-noter-pdftools
                                      org-roam-ui
-                                     ;;org-roam-bibtex
+                                     ;; org-roam-bibtex
                                      ;; org-roam-server
-                                     ;; ox-hugo
+                                     ox-hugo
                                      ;; ewal
                                      ;; ewal-spacemacs-themes
                                      ;; ewal-evil-cursors
@@ -618,7 +618,7 @@
     ;; (setenv "WORKON_HOME" "/opt/anaconda3/envs")
     (setq package-check-signature nil)
     (setq spacemacs-theme-comment-bg nil)
-    (setq org-roam-v2-ack t)
+    ;;(setq org-roam-v2-ack t)
     ;; (add-to-list 'load-path "/home/olav/.spacemacs.d/")
     ;; (setq dotspacemacs-configuration-layer-path "/home/olav/.spacemacs.d/")
     ;; (setenv "WORKON_HOME" "/home/olav/.conda/envs")
@@ -2026,7 +2026,7 @@ will prompt for the values of these arguments.
  #+END_SRC
 
 
-* Local Variables                                                   :ARCHIVE:
+* Local Variables                                  :ARCHIVE:
 # Local Variables:
 # eval: (add-hook 'after-save-hook (lambda ()(org-babel-tangle)) nil t)
 # End:
