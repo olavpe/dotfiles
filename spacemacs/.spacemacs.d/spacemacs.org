@@ -76,7 +76,7 @@
       ;; ess
       ;; +lang
       ;; (extra-langs :variables matlab-mode)
-      git
+      (git :variables git-enable-magit-todos-plugin t)
       html
       (lsp :variables
             lsp-navgation 'both)
